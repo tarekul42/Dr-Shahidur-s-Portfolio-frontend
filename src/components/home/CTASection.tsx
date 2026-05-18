@@ -1,7 +1,12 @@
+"use client";
+
 import { AnimatedSection } from "@/components/shared/AnimatedSection";
 import { Button } from "@/components/ui/Button";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export function CTASection({ clinicHours }: { clinicHours?: string }) {
+  const { t } = useTranslation();
+
   return (
     <AnimatedSection className="py-24">
       <div className="container mx-auto px-6">
@@ -9,11 +14,10 @@ export function CTASection({ clinicHours }: { clinicHours?: string }) {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.25),transparent_50%)]" />
           <div className="relative max-w-4xl space-y-6">
             <h2 className="text-3xl md:text-4xl font-bold leading-tight">
-              Ready to Take the First Step?
+              {t("cta.title")}
             </h2>
             <p className="text-white/85 leading-relaxed max-w-2xl">
-              Book a consultation and get a personalized plan for recovery and
-              long-term mobility.
+              {t("cta.subtitle")}
             </p>
 
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
@@ -22,21 +26,21 @@ export function CTASection({ clinicHours }: { clinicHours?: string }) {
                 variant="ghost"
                 className="bg-white text-brand-primary hover:bg-white/90 justify-center"
               >
-                Book an Appointment
+                {t("cta.book")}
               </Button>
               <Button
                 href="/contact"
                 variant="outline"
                 className="border-white text-white hover:bg-white/10 justify-center"
               >
-                Ask a Question
+                {t("cta.ask")}
               </Button>
             </div>
 
             {clinicHours ? (
               <div className="pt-6 border-t border-white/20">
                 <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/80">
-                  Clinic Hours
+                  {t("cta.clinicHours")}
                 </div>
                 <div className="mt-1 font-semibold text-white/95">
                   {clinicHours}

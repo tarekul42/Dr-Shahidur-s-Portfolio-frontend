@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { Button } from "@/components/ui/Button";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface AboutHeroProps {
   doctorName: string;
@@ -17,6 +18,7 @@ export function AboutHero({
   doctorSpecialty,
   doctorImageUrl,
 }: AboutHeroProps) {
+  const { t } = useTranslation();
   return (
     <section className="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center pt-32 pb-20">
       {/* Photo column */}
@@ -50,7 +52,7 @@ export function AboutHero({
             15+
           </span>
           <span className="text-xs font-bold uppercase tracking-widest text-text-para-light dark:text-text-para-dark opacity-60">
-            Years of Surgery
+            {t("hero.stat1")}
           </span>
         </motion.div>
       </div>
@@ -63,7 +65,7 @@ export function AboutHero({
           viewport={{ once: true }}
         >
           <span className="inline-block px-4 py-1.5 bg-brand-primary/10 text-brand-primary rounded-full text-xs font-bold tracking-widest uppercase mb-4">
-            About the Doctor
+            {t("about.badge")}
           </span>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-text-heading-light dark:text-text-heading-dark leading-tight">
             {doctorName}
@@ -88,8 +90,7 @@ export function AboutHero({
           transition={{ delay: 0.2 }}
         >
           <p className="text-lg text-text-para-light dark:text-text-para-dark max-w-lg leading-relaxed">
-            Restoring mobility through precision, compassion, and innovation —
-            dedicated to helping every patient reclaim their active life.
+            {t("aboutHero.tagline")}
           </p>
         </motion.div>
 
@@ -100,7 +101,7 @@ export function AboutHero({
           transition={{ delay: 0.3 }}
         >
           <Button size="lg" href="/appointment">
-            Book a Consultation
+            {t("hero.cta.primary")}
           </Button>
         </motion.div>
       </div>

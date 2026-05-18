@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { AnimatedSection } from "@/components/shared/AnimatedSection";
 import { SectionHeading } from "@/components/shared/SectionHeading";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface AboutBioProps {
   doctorBio?: string;
@@ -16,7 +17,7 @@ const BIO_PARAGRAPHS = [
   "Whether performing a complex joint replacement, managing a challenging trauma case, or guiding a patient through rehabilitation, Dr. Sahidur's philosophy remains the same: treat every patient as you would want your own family to be treated — with skill, empathy, and respect.",
 ];
 
-const VALUES = [
+const _VALUES = [
   {
     icon: (
       <svg
@@ -85,12 +86,78 @@ const VALUES = [
 ];
 
 export function AboutBio({ doctorBio }: AboutBioProps) {
+  const { t } = useTranslation();
+
+  const VALUES = [
+    {
+      icon: (
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <title>Value Icon</title>
+          <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+          <path d="M3.22 12H9.5l.5-1 2 4.5 2-7 1.5 3.5h5.27" />
+        </svg>
+      ),
+      titleKey: "aboutBio.val1.title",
+      descKey: "aboutBio.val1.desc",
+    },
+    {
+      icon: (
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <title>Value Icon</title>
+          <path d="M9 2H15a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H9a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1Z" />
+          <path d="M4 5a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" />
+          <path d="M9 14l2 2 4-4" />
+        </svg>
+      ),
+      titleKey: "aboutBio.val2.title",
+      descKey: "aboutBio.val2.desc",
+    },
+    {
+      icon: (
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <title>Value Icon</title>
+          <path d="M22 10c0-5.52-4.48-10-10-10S2 4.48 2 10c0 4.13 2.5 7.65 6 9.2V22h8v-2.8c3.5-1.55 6-5.07 6-9.2Z" />
+          <path d="M9 22h6" />
+          <path d="M12 14v4" />
+        </svg>
+      ),
+      titleKey: "aboutBio.val3.title",
+      descKey: "aboutBio.val3.desc",
+    },
+  ];
   return (
     <AnimatedSection className="py-24 bg-white dark:bg-bg-dark">
       <div className="container mx-auto px-6">
         <SectionHeading
-          badge="My Journey"
-          title="A Life Dedicated to Orthopedic Excellence"
+          badge={t("aboutBio.badge")}
+          title={t("aboutBio.title")}
           centered
           className="mb-12"
         />
@@ -117,7 +184,7 @@ export function AboutBio({ doctorBio }: AboutBioProps) {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
           {VALUES.map((item, idx) => (
             <motion.div
-              key={item.title}
+              key={item.titleKey}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -128,10 +195,10 @@ export function AboutBio({ doctorBio }: AboutBioProps) {
                 {item.icon}
               </div>
               <h3 className="text-xl font-bold text-text-heading-light dark:text-text-heading-dark mb-4">
-                {item.title}
+                {t(item.titleKey)}
               </h3>
               <p className="text-sm text-text-para-light dark:text-text-para-dark leading-relaxed">
-                {item.description}
+                {t(item.descKey)}
               </p>
             </motion.div>
           ))}

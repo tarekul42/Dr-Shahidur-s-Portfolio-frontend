@@ -2,38 +2,11 @@
 
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
-import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Skeleton } from "@/components/ui/Skeleton";
-import { FALLBACKS } from "@/constants/fallbacks";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import { useTranslation } from "@/hooks/useTranslation";
 import { useTheme } from "@/providers/ThemeProvider";
-
-function useCountUp(target: number, duration = 2000) {
-  const [count, setCount] = useState(0);
-  const ref = useRef<HTMLSpanElement>(null);
-  useEffect(() => {
-    let start: number;
-    const animate = (ts: number) => {
-      if (!start) start = ts;
-      const progress = Math.min((ts - start) / duration, 1);
-      setCount(Math.floor(progress * target));
-      if (progress < 1) requestAnimationFrame(animate);
-    };
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          requestAnimationFrame(animate);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.5 },
-    );
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, [target, duration]);
-  return { count, ref };
-}
 
 const SkeletonViewer = dynamic(
   () =>
@@ -49,8 +22,7 @@ const SkeletonViewer = dynamic(
 export const Hero = () => {
   const { resolvedTheme } = useTheme();
   const isDesktop = useMediaQuery("(min-width: 1024px)");
-  const { count: years, ref: yearsRef } = useCountUp(15);
-  const { count: surgeries, ref: surgeriesRef } = useCountUp(5000, 2500);
+  const { t } = useTranslation();
 
   return (
     /**
@@ -81,24 +53,18 @@ export const Hero = () => {
               transition={{ delay: 0.2 }}
               className="inline-block px-4 py-1.5 bg-brand-primary/10 text-brand-primary rounded-full text-xs font-bold tracking-widest uppercase"
             >
-              Excellence in Orthopedics
+              {t("hero.badge")}
             </motion.span>
 
             <h1 className="text-5xl md:text-6xl lg:text-[4.5rem] font-bold text-text-heading-light dark:text-text-heading-dark leading-[1.08]">
-              Precision Care
+              {t("hero.title1")}
               <br />
-              for Your{" "}
-              <span className="text-brand-primary">
-                Mobility
-                <br />
-                &amp; Strength
-              </span>
+              {t("hero.title2")}{" "}
+              <span className="text-brand-primary">{t("hero.title3")}</span>
             </h1>
 
             <p className="text-lg text-text-para-light dark:text-text-para-dark max-w-lg leading-relaxed">
-              {FALLBACKS.doctorName} combines advanced surgical techniques with
-              compassionate care. Specialising in joint replacement, sports
-              medicine, and complex trauma.
+              {t("hero.subtitle")}
             </p>
           </div>
 
@@ -108,7 +74,7 @@ export const Hero = () => {
               className="h-14 px-8 text-base"
               href="/appointment"
             >
-              Book Consultation
+              {t("hero.cta.primary")}
             </Button>
             <Button
               variant="outline"
@@ -116,36 +82,26 @@ export const Hero = () => {
               className="h-14 px-8 text-base"
               href="/articles"
             >
-              Explore Articles
+              {t("hero.cta.secondary")}
             </Button>
           </div>
 
-          {/* Trust badges */}
           <div className="flex items-center gap-8 pt-2 border-t border-border-light dark:border-border-dark w-fit">
             <div>
-              <span
-                ref={yearsRef}
-                className="block text-3xl font-bold text-brand-primary"
-              >
-                {years}+
+              <span className="block text-3xl font-bold text-brand-primary">
+                11+
               </span>
               <span className="text-[11px] uppercase tracking-wider font-semibold opacity-50">
-                Years Experience
+                {t("hero.stat1")}
               </span>
             </div>
             <div className="w-px h-10 bg-border-light dark:bg-border-dark" />
             <div>
-              <span
-                ref={surgeriesRef}
-                className="block text-3xl font-bold text-brand-primary"
-              >
-                {surgeries > 999
-                  ? `${(surgeries / 1000).toFixed(0)}k`
-                  : surgeries}
-                +
+              <span className="block text-3xl font-bold text-brand-primary">
+                5
               </span>
               <span className="text-[11px] uppercase tracking-wider font-semibold opacity-50">
-                Successful Surgeries
+                {t("hero.stat2")}
               </span>
             </div>
           </div>

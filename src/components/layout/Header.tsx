@@ -4,10 +4,12 @@ import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { LanguageToggle } from "@/components/shared/LanguageToggle";
 import { Button } from "@/components/ui/Button";
 import { FALLBACKS } from "@/constants/fallbacks";
 import { NAV_LINKS } from "@/constants/navigation";
 import { useScrollPosition } from "@/hooks/useScrollPosition";
+import { useTranslation } from "@/hooks/useTranslation";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/providers/ThemeProvider";
 import { useUIStore } from "@/store/use-ui-store";
@@ -20,6 +22,7 @@ export const Header = ({ appInfo }: { appInfo?: AppInfo }) => {
   const { setTheme, resolvedTheme } = useTheme();
   const menuToggleRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const { t } = useTranslation();
 
   const [mounted, setMounted] = useState(false);
 
@@ -42,6 +45,14 @@ export const Header = ({ appInfo }: { appInfo?: AppInfo }) => {
 
   const toggleTheme = () => {
     setTheme(resolvedTheme === "dark" ? "light" : "dark");
+  };
+
+  const navLabelKeys: Record<string, string> = {
+    "/": "nav.home",
+    "/articles": "nav.articles",
+    "/research": "nav.research",
+    "/testimonials": "nav.testimonials",
+    "/contact": "nav.contact",
   };
 
   return (
@@ -82,7 +93,7 @@ export const Header = ({ appInfo }: { appInfo?: AppInfo }) => {
                   : "text-text-para-light dark:text-text-para-dark",
               )}
             >
-              {link.label}
+              {t(navLabelKeys[link.href] ?? link.label)}
               <span
                 className={cn(
                   "absolute -bottom-1 left-0 h-0.5 bg-brand-primary transition-all duration-300",
@@ -95,6 +106,7 @@ export const Header = ({ appInfo }: { appInfo?: AppInfo }) => {
 
         {/* Actions */}
         <div className="flex items-center gap-4">
+          <LanguageToggle />
           <button
             onClick={toggleTheme}
             className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-text-para-light dark:text-text-para-dark min-w-9 min-h-9 flex items-center justify-center"
@@ -147,7 +159,7 @@ export const Header = ({ appInfo }: { appInfo?: AppInfo }) => {
             size="sm"
             className="hidden md:flex shadow-lg shadow-brand-primary/20"
           >
-            Book Appointment
+            {t("nav.bookAppointment")}
           </Button>
 
           {/* Mobile Menu Toggle */}
@@ -210,6 +222,12 @@ export const Header = ({ appInfo }: { appInfo?: AppInfo }) => {
               ref={menuRef}
               className="container mx-auto px-6 py-8 flex flex-col gap-6"
             >
+              <div className="flex items-center justify-between py-2 mb-4 border-b border-border-light dark:border-border-dark">
+                <span className="text-sm font-semibold text-text-para-light dark:text-text-para-dark">
+                  Language / ভাষা
+                </span>
+                <LanguageToggle />
+              </div>
               {NAV_LINKS.map((link, i) => (
                 <motion.div
                   key={link.href}
@@ -226,7 +244,7 @@ export const Header = ({ appInfo }: { appInfo?: AppInfo }) => {
                         : "text-text-para-light dark:text-text-para-dark",
                     )}
                   >
-                    {link.label}
+                    {t(navLabelKeys[link.href] ?? link.label)}
                   </Link>
                 </motion.div>
               ))}
@@ -236,7 +254,7 @@ export const Header = ({ appInfo }: { appInfo?: AppInfo }) => {
                 transition={{ delay: NAV_LINKS.length * 0.05 }}
               >
                 <Button href="/appointment" className="w-full mt-4">
-                  Book Appointment
+                  {t("nav.bookAppointment")}
                 </Button>
               </motion.div>
             </div>

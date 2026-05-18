@@ -12,6 +12,7 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { Textarea } from "@/components/ui/Textarea";
+import { useTranslation } from "@/hooks/useTranslation";
 import { createAppointment, getBookedSlots } from "@/lib/api/appointments";
 import { extractHttpStatus } from "@/lib/utils";
 import { useAppointmentPrefill } from "@/store/use-appointment-prefill";
@@ -42,6 +43,7 @@ export const AppointmentForm = () => {
   const [step, setStep] = useState(0);
   const { executeRecaptcha } = useGoogleReCaptcha();
   const { message: prefillMessage, clearPrefill } = useAppointmentPrefill();
+  const { t } = useTranslation();
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   const minDate = tomorrow.toISOString().slice(0, 10);
@@ -175,11 +177,10 @@ export const AppointmentForm = () => {
 
         <div className="space-y-3">
           <h3 className="text-3xl font-bold text-text-heading-light dark:text-text-heading-dark">
-            Request Received
+            {t("appointment.received")}
           </h3>
           <p className="text-text-para-light dark:text-text-para-dark max-w-sm mx-auto leading-relaxed">
-            Thank you for reaching out. We’ve received your request and our team
-            will contact you shortly to finalize your appointment.
+            {t("appointment.receivedDesc")}
           </p>
         </div>
 
@@ -189,7 +190,7 @@ export const AppointmentForm = () => {
           variant="outline"
           className="px-8 h-12"
         >
-          Book Another Appointment
+          {t("appointment.bookAnother")}
         </Button>
       </div>
     );
@@ -199,7 +200,11 @@ export const AppointmentForm = () => {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
       <div className="flex flex-col gap-4 mb-2">
         <div className="flex items-center justify-between gap-4">
-          {["Personal Info", "Date & Time", "Notes"].map((label, index) => {
+          {[
+            t("appointment.step1"),
+            t("appointment.step2"),
+            t("appointment.step3"),
+          ].map((label, index) => {
             const isActive = index <= step;
             const isCurrent = index === step;
             return (
@@ -264,31 +269,31 @@ export const AppointmentForm = () => {
             >
               <div className="space-y-2">
                 <h4 className="text-xl font-bold text-text-heading-light dark:text-text-heading-dark">
-                  Who is the patient?
+                  {t("appointment.step1.heading")}
                 </h4>
                 <p className="text-sm text-text-para-light dark:text-text-para-dark opacity-60">
-                  Please provide the basic details so we can reach out to you.
+                  {t("appointment.step1.sub")}
                 </p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <Input
-                  label="Patient Name"
-                  placeholder="John Doe"
+                  label={t("appointment.name")}
+                  placeholder={t("appointment.namePlaceholder")}
                   error={errors.name?.message}
                   {...register("name")}
                 />
                 <Input
-                  label="Email Address"
+                  label={t("appointment.email")}
                   type="email"
-                  placeholder="john@example.com"
+                  placeholder={t("appointment.emailPlaceholder")}
                   error={errors.email?.message}
                   {...register("email")}
                 />
               </div>
               <Input
-                label="Phone Number"
+                label={t("appointment.phone")}
                 type="tel"
-                placeholder="+8801XXXXXXXXX"
+                placeholder={t("appointment.phonePlaceholder")}
                 helperText="Format: +8801XXXXXXXXX"
                 error={errors.phone?.message}
                 {...register("phone")}
@@ -311,22 +316,22 @@ export const AppointmentForm = () => {
             >
               <div className="space-y-2">
                 <h4 className="text-xl font-bold text-text-heading-light dark:text-text-heading-dark">
-                  Preferred Schedule
+                  {t("appointment.step2.heading")}
                 </h4>
                 <p className="text-sm text-text-para-light dark:text-text-para-dark opacity-60">
-                  Select a date and time that fits your schedule best.
+                  {t("appointment.step2.sub")}
                 </p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <Input
-                  label="Preferred Date"
+                  label={t("appointment.date")}
                   type="date"
                   min={minDate}
                   error={errors.preferredDate?.message}
                   {...register("preferredDate")}
                 />
                 <Select
-                  label="Preferred Time Slot"
+                  label={t("appointment.time")}
                   options={[
                     {
                       value: "10:00 AM",
@@ -444,15 +449,15 @@ export const AppointmentForm = () => {
             >
               <div className="space-y-2">
                 <h4 className="text-xl font-bold text-text-heading-light dark:text-text-heading-dark">
-                  Anything else?
+                  {t("appointment.step3.heading")}
                 </h4>
                 <p className="text-sm text-text-para-light dark:text-text-para-dark opacity-60">
-                  (Optional) Help us understand your concerns before the visit.
+                  {t("appointment.step3.sub")}
                 </p>
               </div>
               <Textarea
-                label="Message"
-                placeholder="Briefly describe your orthopedic concern..."
+                label={t("appointment.concern")}
+                placeholder={t("appointment.concernPlaceholder")}
                 error={errors.message?.message}
                 maxLength={500}
                 className="min-h-40"
@@ -498,7 +503,7 @@ export const AppointmentForm = () => {
               onClick={handleBack}
               className="flex-1 sm:flex-none h-12 px-8 text-base font-bold"
             >
-              Back
+              {t("appointment.back")}
             </Button>
           )}
           {step < 2 ? (
@@ -507,7 +512,7 @@ export const AppointmentForm = () => {
               onClick={handleNext}
               className="flex-2 sm:flex-none h-12 px-10 text-base font-bold shadow-lg shadow-brand-primary/20"
             >
-              Continue
+              {t("appointment.continue")}
             </Button>
           ) : (
             <Button
@@ -515,7 +520,7 @@ export const AppointmentForm = () => {
               loading={appointmentMutation.isPending}
               className="flex-2 sm:flex-none h-12 px-10 text-base font-bold shadow-lg shadow-brand-primary/20"
             >
-              Submit Request
+              {t("appointment.submit")}
             </Button>
           )}
         </div>

@@ -3,8 +3,9 @@
 import { motion } from "framer-motion";
 import { AnimatedSection } from "@/components/shared/AnimatedSection";
 import { SectionHeading } from "@/components/shared/SectionHeading";
+import { useTranslation } from "@/hooks/useTranslation";
 
-const SPECIALTIES = [
+const SPECIALTY_KEYS = [
   {
     icon: (
       <svg
@@ -17,16 +18,12 @@ const SPECIALTIES = [
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <title>Specialty Icon</title>
-        <path d="M10 21v-8a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8" />
-        <path d="M17 21v-4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v4" />
-        <path d="M2 14h20" />
-        <path d="M20 10c0-4.418-3.582-8-8-8s-8 3.582-8 8" />
+        <title>Ilizarov Icon</title>
+        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
       </svg>
     ),
-    title: "Joint Replacement",
-    description:
-      "Specialized knee and hip replacement surgeries using minimally invasive techniques for faster recovery.",
+    titleKey: "specialties.ilizarov.title",
+    descKey: "specialties.ilizarov.desc",
   },
   {
     icon: (
@@ -40,13 +37,12 @@ const SPECIALTIES = [
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <title>Specialty Icon</title>
-        <path d="M18 6L6 18M6 6l12 12" />
+        <title>Spine Icon</title>
+        <path d="M12 2v20M8 6h8M8 12h8M8 18h8" />
       </svg>
     ),
-    title: "Trauma Surgery",
-    description:
-      "Expert management of complex fractures and musculoskeletal injuries with advanced reconstructive techniques.",
+    titleKey: "specialties.spine.title",
+    descKey: "specialties.spine.desc",
   },
   {
     icon: (
@@ -60,14 +56,13 @@ const SPECIALTIES = [
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <title>Specialty Icon</title>
+        <title>Joint Replacement Icon</title>
         <circle cx="12" cy="12" r="10" />
         <path d="M12 8v4l3 3" />
       </svg>
     ),
-    title: "Sports Medicine",
-    description:
-      "Treatment of athletic injuries, including ACL reconstruction and arthroscopic procedures to get you back in the game.",
+    titleKey: "specialties.arthroplasty.title",
+    descKey: "specialties.arthroplasty.desc",
   },
   {
     icon: (
@@ -81,32 +76,74 @@ const SPECIALTIES = [
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <title>Specialty Icon</title>
-        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+        <title>Sports Medicine Icon</title>
+        <path d="M10 21v-8a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8" />
+        <path d="M17 21v-4a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v4" />
+        <path d="M2 14h20" />
       </svg>
     ),
-    title: "Research & Innovation",
-    description:
-      "Actively contributing to the orthopedic community through clinical research and innovative surgical practices.",
+    titleKey: "specialties.arthroscopy.title",
+    descKey: "specialties.arthroscopy.desc",
+  },
+  {
+    icon: (
+      <svg
+        width="32"
+        height="32"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <title>Reconstructive Icon</title>
+        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+        <polyline points="15 3 21 3 21 9" />
+        <line x1="10" y1="14" x2="21" y2="3" />
+      </svg>
+    ),
+    titleKey: "specialties.reconstructive.title",
+    descKey: "specialties.reconstructive.desc",
+  },
+  {
+    icon: (
+      <svg
+        width="32"
+        height="32"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <title>Trauma Icon</title>
+        <path d="M18 6L6 18M6 6l12 12" />
+      </svg>
+    ),
+    titleKey: "specialties.trauma.title",
+    descKey: "specialties.trauma.desc",
   },
 ];
 
 export const Specialties = () => {
+  const { t } = useTranslation();
+
   return (
     <AnimatedSection className="py-24 bg-white dark:bg-bg-dark">
       <div className="container mx-auto px-6">
         <SectionHeading
-          badge="Specializations"
-          title="Focused on Your Physical Freedom"
-          subtitle="Comprehensive orthopedic solutions tailored to your unique recovery path."
+          badge={t("specialties.badge")}
+          title={t("specialties.title")}
+          subtitle={t("specialties.subtitle")}
           centered
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {SPECIALTIES.map((item, idx) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {SPECIALTY_KEYS.map((item, idx) => (
             <motion.div
-              key={item.title}
+              key={item.titleKey}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -117,10 +154,10 @@ export const Specialties = () => {
                 {item.icon}
               </div>
               <h3 className="text-xl font-bold text-text-heading-light dark:text-text-heading-dark mb-4">
-                {item.title}
+                {t(item.titleKey)}
               </h3>
               <p className="text-sm text-text-para-light dark:text-text-para-dark leading-relaxed">
-                {item.description}
+                {t(item.descKey)}
               </p>
             </motion.div>
           ))}

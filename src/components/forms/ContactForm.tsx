@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { Textarea } from "@/components/ui/Textarea";
+import { useTranslation } from "@/hooks/useTranslation";
 import { submitContact } from "@/lib/api/contact";
 import { extractHttpStatus } from "@/lib/utils";
 
@@ -26,6 +27,7 @@ type ContactFormData = z.infer<typeof contactSchema>;
 
 export const ContactForm = () => {
   const { executeRecaptcha } = useGoogleReCaptcha();
+  const { t } = useTranslation();
 
   const {
     register,
@@ -78,48 +80,48 @@ export const ContactForm = () => {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Input
-          label="Full Name"
-          placeholder="John Doe"
+          label={t("contact.name")}
+          placeholder={t("contact.namePlaceholder")}
           error={errors.name?.message}
           {...register("name")}
         />
         <Input
-          label="Email Address"
+          label={t("contact.email")}
           type="email"
-          placeholder="john@example.com"
+          placeholder={t("contact.emailPlaceholder")}
           error={errors.email?.message}
           {...register("email")}
         />
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Input
-          label="Phone (optional)"
+          label={t("contact.phoneOptional")}
           type="tel"
-          placeholder="+8801XXXXXXXXX"
+          placeholder={t("contact.phonePlaceholder")}
           error={errors.phone?.message}
           {...register("phone")}
         />
         <Select
-          label="Reason"
+          label={t("contact.reason")}
           options={[
-            { value: "medical-inquiry", label: "Medical Inquiry" },
-            { value: "general", label: "General" },
-            { value: "media", label: "Media" },
-            { value: "other", label: "Other" },
+            { value: "medical-inquiry", label: t("contact.reason.medical") },
+            { value: "general", label: t("contact.reason.general") },
+            { value: "media", label: t("contact.reason.media") },
+            { value: "other", label: t("contact.reason.other") },
           ]}
           error={errors.reason?.message}
           {...register("reason")}
         />
       </div>
       <Input
-        label="Subject"
-        placeholder="How can I help you?"
+        label={t("contact.subject")}
+        placeholder={t("contact.subjectPlaceholder")}
         error={errors.subject?.message}
         {...register("subject")}
       />
       <Textarea
-        label="Your Message"
-        placeholder="Please describe your inquiry..."
+        label={t("contact.yourMessage")}
+        placeholder={t("contact.messagePlaceholder")}
         error={errors.message?.message}
         maxLength={1000}
         {...register("message")}
@@ -129,17 +131,17 @@ export const ContactForm = () => {
         loading={contactMutation.isPending}
         className="w-full h-14 text-lg"
       >
-        Send Message
+        {t("contact.send")}
       </Button>
       <p className="text-[10px] text-center text-text-para-light dark:text-text-para-dark opacity-50 leading-relaxed">
-        This site is protected by reCAPTCHA and the Google{" "}
+        {t("contact.recaptcha")}{" "}
         <a
           href="https://policies.google.com/privacy"
           target="_blank"
           rel="noreferrer"
           className="underline hover:text-brand-primary transition-colors"
         >
-          Privacy Policy
+          {t("contact.privacyPolicy")}
         </a>{" "}
         and{" "}
         <a
@@ -148,9 +150,9 @@ export const ContactForm = () => {
           rel="noreferrer"
           className="underline hover:text-brand-primary transition-colors"
         >
-          Terms of Service
+          {t("contact.termsOfService")}
         </a>{" "}
-        apply.
+        {t("contact.apply")}
       </p>
     </form>
   );

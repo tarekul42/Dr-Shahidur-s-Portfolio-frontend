@@ -2,19 +2,21 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-const LABELS: Record<string, string> = {
-  articles: "Articles",
-  research: "Research",
-  appointment: "Appointment",
-  contact: "Contact",
-  testimonials: "Testimonials",
-  about: "About",
-};
+import { useTranslation } from "@/hooks/useTranslation";
 
 export const Breadcrumbs = ({ title }: { title?: string }) => {
   const pathname = usePathname();
   const segments = pathname.split("/").filter(Boolean);
+  const { t } = useTranslation();
+
+  const LABELS: Record<string, string> = {
+    articles: t("nav.articles"),
+    research: t("nav.articles"),
+    appointment: t("nav.appointment"),
+    contact: t("nav.contact"),
+    testimonials: t("nav.testimonials"),
+    about: t("nav.about"),
+  };
 
   return (
     <nav
@@ -22,7 +24,7 @@ export const Breadcrumbs = ({ title }: { title?: string }) => {
       className="flex flex-wrap items-center gap-2 text-sm text-text-para-light dark:text-text-para-dark mb-8"
     >
       <Link href="/" className="hover:text-brand-primary transition-colors">
-        Home
+        {t("breadcrumb.home")}
       </Link>
 
       {segments.map((segment, index) => {

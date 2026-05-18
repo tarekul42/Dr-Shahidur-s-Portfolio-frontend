@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { TestimonialCard } from "@/components/testimonials/TestimonialCard";
 import { Button } from "@/components/ui/Button";
+import { useTranslation } from "@/hooks/useTranslation";
 import { cn } from "@/lib/utils";
 import type { Testimonial } from "@/types/testimonial";
 
@@ -14,6 +15,7 @@ export function TestimonialsCarousel({
 }) {
   const scrollerRef = useRef<HTMLDivElement | null>(null);
   const [active, setActive] = useState(0);
+  const { t } = useTranslation();
 
   const visible = useMemo(
     () => testimonials.filter((t) => t.isVisible !== false),
@@ -69,9 +71,8 @@ export function TestimonialsCarousel({
       <div className="container mx-auto px-6 relative">
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-12 mb-16">
           <SectionHeading
-            badge="Patient Voices"
-            title="Wall of Gratitude"
-            subtitle="Read real experiences from people who regained their mobility and quality of life through our specialized orthopedic care."
+            badge={t("testimonials.badge")}
+            title={t("testimonials.title")}
             className="mb-0"
           />
           <div className="flex items-center gap-4">
@@ -162,7 +163,7 @@ export function TestimonialsCarousel({
             variant="outline"
             className="w-full sm:w-auto h-14 px-10 rounded-2xl font-bold uppercase tracking-widest text-sm"
           >
-            View All Success Stories
+            {t("testimonialsCta.read")}
           </Button>
         </div>
       </div>
