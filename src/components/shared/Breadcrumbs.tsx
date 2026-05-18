@@ -9,6 +9,7 @@ const LABELS: Record<string, string> = {
   appointment: "Appointment",
   contact: "Contact",
   testimonials: "Testimonials",
+  about: "About",
 };
 
 export const Breadcrumbs = ({ title }: { title?: string }) => {

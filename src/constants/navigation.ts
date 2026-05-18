@@ -10,6 +10,7 @@ export const FOOTER_LINKS = [
   {
     title: "Platform",
     links: [
+      { label: "About Dr. Shahid", href: "/about" },
       { label: "Articles", href: "/articles" },
       { label: "Research Papers", href: "/research" },
       { label: "Patient Testimonials", href: "/testimonials" },

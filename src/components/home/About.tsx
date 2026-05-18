@@ -75,7 +75,7 @@ export const About = () => {
           </div>
 
           <div className="pt-8 flex flex-col sm:flex-row items-center gap-6">
-            <Button size="lg" href="/contact">
+            <Button size="lg" href="/about">
               Learn More About My Journey
             </Button>
             <div className="flex -space-x-4">
