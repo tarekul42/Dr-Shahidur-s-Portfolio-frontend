@@ -52,7 +52,7 @@ export const Header = ({ appInfo }: { appInfo?: AppInfo }) => {
     "/articles": "nav.articles",
     "/research": "nav.research",
     "/testimonials": "nav.testimonials",
-    "/contact": "nav.contact",
+    "/chambers": "nav.chambers",
   };
 
   return (

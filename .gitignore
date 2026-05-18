@@ -40,6 +40,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# frontend_plans_and_works
 frontend_plans_and_works/
 
 #test
@@ -47,3 +48,8 @@ playwright-report/
 rest-results/
 .playwright/
 test-results/
+
+#config files
+package-lock.json
+biome.json
+.vscode/

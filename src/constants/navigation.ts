@@ -3,7 +3,7 @@ export const NAV_LINKS = [
   { label: "Articles", href: "/articles" },
   { label: "Research", href: "/research" },
   { label: "Testimonials", href: "/testimonials" },
-  { label: "Contact", href: "/contact" },
+  { label: "Chambers", href: "/chambers" },
 ];
 
 export const FOOTER_LINKS = [
@@ -19,7 +19,7 @@ export const FOOTER_LINKS = [
   {
     title: "Support",
     links: [
-      { label: "Contact Us", href: "/contact" },
+      { label: "Chamber Schedule", href: "/chambers" },
       { label: "Book Appointment", href: "/appointment" },
       { label: "Privacy Policy", href: "/privacy" },
     ],

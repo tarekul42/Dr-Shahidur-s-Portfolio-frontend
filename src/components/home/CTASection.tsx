@@ -1,11 +1,13 @@
 "use client";
 
+import Link from "next/link";
 import { AnimatedSection } from "@/components/shared/AnimatedSection";
 import { Button } from "@/components/ui/Button";
 import { useTranslation } from "@/hooks/useTranslation";
 
-export function CTASection({ clinicHours }: { clinicHours?: string }) {
-  const { t } = useTranslation();
+export function CTASection() {
+  const { t, language } = useTranslation();
+  const isBn = language === "bn";
 
   return (
     <AnimatedSection className="py-24">
@@ -29,7 +31,7 @@ export function CTASection({ clinicHours }: { clinicHours?: string }) {
                 {t("cta.book")}
               </Button>
               <Button
-                href="/contact"
+                href="/chambers"
                 variant="outline"
                 className="border-white text-white hover:bg-white/10 justify-center"
               >
@@ -37,19 +39,29 @@ export function CTASection({ clinicHours }: { clinicHours?: string }) {
               </Button>
             </div>
 
-            {clinicHours ? (
-              <div className="pt-6 border-t border-white/20">
-                <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/80">
-                  {t("cta.clinicHours")}
-                </div>
-                <div className="mt-1 font-semibold text-white/95">
-                  {clinicHours}
-                </div>
+            <div className="pt-6 border-t border-white/20">
+              <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/80">
+                {t("chambers.schedule")}
               </div>
-            ) : null}
+              <div className="mt-2 text-xs md:text-sm font-semibold text-white/95 flex flex-wrap items-center gap-x-2 gap-y-1">
+                <span>
+                  {isBn
+                    ? "ইবনে সিনা মেডিকেল কলেজ হাসপাতাল (শনি, সোম, বুধ, শুক্র)"
+                    : "Ibn Sina Medical College Hospital (Sat, Mon, Wed, Fri)"}
+                </span>
+                <span className="text-white/40 hidden sm:inline">|</span>
+                <Link
+                  href="/chambers"
+                  className="underline text-white hover:text-white/80 transition-colors"
+                >
+                  {isBn ? "অন্যান্য চেম্বার দেখুন" : "View other chambers"}
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </AnimatedSection>
   );
 }
+export default CTASection;

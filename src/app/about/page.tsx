@@ -32,7 +32,7 @@ export default async function AboutPage() {
 
       <AboutQualifications />
 
-      <AboutCTA clinicHours={appInfo?.clinicHours} />
+      <AboutCTA />
     </div>
   );
 }

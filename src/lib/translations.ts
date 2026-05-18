@@ -561,4 +561,57 @@ export const translations: Record<string, TranslationEntry> = {
   "contact.privacyPolicy": { en: "Privacy Policy", bn: "গোপনীয়তা নীতি" },
   "contact.termsOfService": { en: "Terms of Service", bn: "সেবার শর্ত" },
   "contact.apply": { en: "apply.", bn: "প্রযোজ্য।" },
+
+  // Chambers & Booking Redesign Keys
+  "nav.chambers": { en: "Chambers", bn: "চেম্বার সমূহ" },
+  "breadcrumbs.chambers": { en: "Chambers", bn: "চেম্বার" },
+  "chambers.badge": { en: "Chamber Schedule", bn: "চেম্বার সমূহ" },
+  "chambers.title": {
+    en: "Visit at a Chamber Near You",
+    bn: "নিকটবর্তী চেম্বারে ভিজিট করুন",
+  },
+  "chambers.subtitle": {
+    en: "4 locations across Dhaka and Manikganj. Choose the chamber that's closest to you and book your serial.",
+    bn: "ঢাকা ও মানিকগঞ্জ জুড়ে ৪টি চেম্বার। আপনার সবচেয়ে কাছের চেম্বারটি বেছে নিন এবং সিরিয়াল বুক করুন।",
+  },
+  "chambers.primary": { en: "Primary", bn: "প্রধান" },
+  "chambers.primaryChamber": { en: "Primary Chamber", bn: "প্রধান চেম্বার" },
+  "chambers.book": { en: "Book", bn: "বুক করুন" },
+  "chambers.callSerial": { en: "Call Serial", bn: "সিরিয়াল কল" },
+  "chambers.callForSerial": {
+    en: "Call for Serial",
+    bn: "সিরিয়ালের জন্য কল করুন",
+  },
+  "chambers.getDirections": { en: "Get Directions", bn: "দিকনির্দেশনা পান" },
+  "chambers.schedule": { en: "Schedule", bn: "সময়সূচী" },
+  "chambers.contact": { en: "Contact", bn: "যোগাযোগ" },
+  "chambers.serialBooking": { en: "Serial / Booking", bn: "সিরিয়াল / বুকিং" },
+  "chambers.assistant": { en: "Chamber Assistant", bn: "চেম্বার সহকারী" },
+  "chambers.stillQuestions": {
+    en: "Still Have Questions?",
+    bn: "এখনও প্রশ্ন আছে?",
+  },
+  "chambers.sendMessage": { en: "Send Us a Message", bn: "আমাদের বার্তা পাঠান" },
+  "chambers.messageDesc": {
+    en: "For general inquiries or if you need guidance before booking, fill out the form and our team will get back to you. For urgent cases, use the emergency numbers below.",
+    bn: "সাধারণ জিজ্ঞাসা বা বুকিংয়ের আগে নির্দেশনার জন্য ফর্মটি পূরণ করুন এবং আমাদের দল আপনার সাথে যোগাযোগ করবে। জরুরি প্রয়োজনে নীচের নম্বরগুলিতে যোগাযোগ করুন।",
+  },
+  "chambers.emergencyContact": { en: "Emergency Contact", bn: "জরুরী যোগাযোগ" },
+  "chambers.emergency": { en: "Emergency", bn: "জরুরী" },
+  "chambers.whatsapp": { en: "WhatsApp", bn: "হোয়াটসঅ্যাপ" },
+
+  // Booking Flow Step 0 Selection
+  "appointment.step0": { en: "Chamber", bn: "চেম্বার" },
+  "appointment.step0.heading": {
+    en: "Where would you like to visit?",
+    bn: "আপনি কোথায় ভিজিট করতে চান?",
+  },
+  "appointment.step0.sub": {
+    en: "Select a chamber to see available dates and times.",
+    bn: "তারিখ ও সময় দেখতে একটি চেম্বার নির্বাচন করুন।",
+  },
+  "appointment.step2.availableOn": {
+    en: "Available on {days} only",
+    bn: "শুধুমাত্র {days}-বারে উপলব্ধ",
+  },
 };

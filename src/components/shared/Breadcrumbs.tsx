@@ -16,6 +16,7 @@ export const Breadcrumbs = ({ title }: { title?: string }) => {
     contact: t("nav.contact"),
     testimonials: t("nav.testimonials"),
     about: t("nav.about"),
+    chambers: t("nav.chambers"),
   };
 
   return (

@@ -16,7 +16,7 @@ import type { AppInfo } from "@/types/app-info";
 
 export const Footer = ({ appInfo }: { appInfo?: AppInfo }) => {
   const currentYear = new Date().getFullYear();
-  const { t } = useTranslation();
+  const { t, language } = useTranslation();
 
   return (
     <footer className="bg-bg-light dark:bg-footer-bg text-text-para-light dark:text-footer-text pt-20 pb-10 border-t border-border-light dark:border-transparent">
@@ -104,21 +104,39 @@ export const Footer = ({ appInfo }: { appInfo?: AppInfo }) => {
             <h4 className="text-text-heading-light dark:text-white font-bold uppercase tracking-widest text-xs">
               {t("footer.contact")}
             </h4>
-            <p className="text-sm opacity-80">
-              {appInfo?.address
-                ? appInfo.address
-                : "For urgent orthopedic inquiries or emergency appointments, please contact the clinic directly."}
-            </p>
+            <div className="space-y-2">
+              <p className="text-[10px] font-bold text-brand-primary uppercase tracking-wider">
+                {language === "bn" ? "প্রধান চেম্বার" : "Primary Chamber"}
+              </p>
+              <p className="text-sm font-semibold text-text-heading-light dark:text-white leading-tight">
+                {language === "bn"
+                  ? "ইবনে সিনা মেডিকেল কলেজ হাসপাতাল"
+                  : "Ibn Sina Medical College Hospital"}
+              </p>
+              <p className="text-xs opacity-75">
+                {language === "bn"
+                  ? "১/১-বি, কল্যাণপুর, ঢাকা"
+                  : "1/1-B, Kalyanpur, Dhaka"}
+              </p>
+            </div>
             <div className="p-4 rounded-xl bg-gray-100 dark:bg-white/5 border border-border-light dark:border-white/10 space-y-2">
               <span className="block text-[10px] text-brand-primary font-bold uppercase tracking-wider">
-                {t("footer.phone")}
+                {language === "bn" ? "চেম্বার সহকারী" : "Chamber Assistant"}
               </span>
               <a
-                href={`tel:${(appInfo?.phone ?? FALLBACKS.phone).replace(/\D/g, "")}`}
-                className="text-lg font-bold text-text-heading-light dark:text-white hover:text-brand-primary dark:hover:text-brand-primary transition-colors"
+                href="tel:01777079696"
+                className="text-base font-bold text-text-heading-light dark:text-white hover:text-brand-primary dark:hover:text-brand-primary transition-colors block"
               >
-                {appInfo?.phone ?? FALLBACKS.phone}
+                01777-079696 (Farzana)
               </a>
+              <Link
+                href="/chambers"
+                className="text-[10px] underline hover:text-brand-primary text-text-para-light dark:text-footer-text transition-colors block font-semibold"
+              >
+                {language === "bn"
+                  ? "সকল চেম্বার ও সময়সূচী দেখুন"
+                  : "View all chambers & schedules"}
+              </Link>
             </div>
           </div>
         </div>
