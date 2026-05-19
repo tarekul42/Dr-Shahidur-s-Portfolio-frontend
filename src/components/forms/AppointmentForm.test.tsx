@@ -44,7 +44,7 @@ describe("AppointmentForm", () => {
 
   it("renders step 0 (chamber selection) initially", () => {
     render(<AppointmentForm />, { wrapper });
-    expect(screen.getByText("Which chamber would you like to visit?")).toBeInTheDocument();
+    expect(screen.getByText("Where would you like to visit?")).toBeInTheDocument();
     expect(screen.getByText("Ibn Sina Medical College Hospital")).toBeInTheDocument();
     expect(screen.getByText("Payra Hospital Limited")).toBeInTheDocument();
     expect(screen.getByText("Islami Bank Community Hospital, Manikganj")).toBeInTheDocument();
@@ -68,7 +68,7 @@ describe("AppointmentForm", () => {
 
     await waitFor(() => {
       expect(screen.getByText("Who is the patient?")).toBeInTheDocument();
-      expect(screen.getByLabelText("Patient Name")).toBeInTheDocument();
+      expect(screen.getByLabelText("Full Name")).toBeInTheDocument();
     });
   });
 
@@ -98,7 +98,7 @@ describe("AppointmentForm", () => {
     });
 
     // Try incorrect phone number format
-    await user.type(screen.getByLabelText("Patient Name"), "Test Patient");
+    await user.type(screen.getByLabelText("Full Name"), "Test Patient");
     await user.type(screen.getByLabelText("Phone Number"), "017123456"); // too short, no +880
     await user.click(screen.getByRole("button", { name: /continue/i }));
 
@@ -113,7 +113,7 @@ describe("AppointmentForm", () => {
     render(<AppointmentForm />, { wrapper });
 
     // Step 1: Patient Info
-    await user.type(screen.getByLabelText("Patient Name"), "John Doe");
+    await user.type(screen.getByLabelText("Full Name"), "John Doe");
     await user.type(screen.getByLabelText("Email Address"), "john@example.com");
     await user.type(screen.getByLabelText("Phone Number"), "+8801712345678");
     await user.click(screen.getByRole("button", { name: /continue/i }));
@@ -137,7 +137,7 @@ describe("AppointmentForm", () => {
     await user.type(screen.getByLabelText("Preferred Date"), dateStr);
     
     // Select time slot
-    await user.selectOptions(screen.getByLabelText("Preferred Time Slot"), "6:00 PM");
+    await user.selectOptions(screen.getByLabelText("Preferred Time"), "6:00 PM");
     await user.click(screen.getByRole("button", { name: /continue/i }));
 
     // Step 3: Concern Notes
@@ -146,7 +146,7 @@ describe("AppointmentForm", () => {
     });
 
     await user.type(screen.getByLabelText("Primary Concern"), "Severe knee pain");
-    await user.click(screen.getByRole("button", { name: /submit request/i }));
+    await user.click(screen.getByRole("button", { name: /book appointment/i }));
 
     await waitFor(() => {
       expect(createAppointment).toHaveBeenCalledOnce();
@@ -179,7 +179,7 @@ describe("AppointmentForm", () => {
     await user.click(screen.getByRole("button", { name: /back/i }));
 
     await waitFor(() => {
-      expect(screen.getByText("Which chamber would you like to visit?")).toBeInTheDocument();
+      expect(screen.getByText("Where would you like to visit?")).toBeInTheDocument();
     });
   });
 
@@ -189,7 +189,7 @@ describe("AppointmentForm", () => {
     render(<AppointmentForm />, { wrapper });
 
     // Step 1: fill info
-    await user.type(screen.getByLabelText("Patient Name"), "John Doe");
+    await user.type(screen.getByLabelText("Full Name"), "John Doe");
     await user.type(screen.getByLabelText("Phone Number"), "+8801712345678");
     await user.click(screen.getByRole("button", { name: /continue/i }));
 
@@ -225,7 +225,7 @@ describe("AppointmentForm", () => {
     render(<AppointmentForm />, { wrapper });
 
     // Step 1
-    await user.type(screen.getByLabelText("Patient Name"), "John Doe");
+    await user.type(screen.getByLabelText("Full Name"), "John Doe");
     await user.type(screen.getByLabelText("Phone Number"), "+8801712345678");
     await user.click(screen.getByRole("button", { name: /continue/i }));
 

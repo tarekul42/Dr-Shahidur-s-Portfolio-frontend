@@ -24,7 +24,7 @@ describe("ChamberDetailList component", () => {
     render(<ChamberDetailList chambers={CHAMBERS} />);
     
     // Primary badge text
-    expect(screen.getByText("PRIMARY CHAMBER")).toBeInTheDocument();
+    expect(screen.getByText("Primary Chamber")).toBeInTheDocument();
   });
 
   it("renders assistant contact details", () => {

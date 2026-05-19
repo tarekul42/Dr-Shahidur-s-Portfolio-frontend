@@ -53,7 +53,7 @@ describe("AppointmentForm Integration - Full 4-Step Flow", () => {
 
     // Step 1: Patient Info
     expect(screen.getByText("Who is the patient?")).toBeInTheDocument();
-    await user.type(screen.getByLabelText(/Patient Name/i), "John Doe");
+    await user.type(screen.getByLabelText(/Full Name/i), "John Doe");
     await user.type(screen.getByLabelText(/Phone Number/i), "+8801712345678");
     await user.click(screen.getByRole("button", { name: /continue/i }));
 
@@ -66,24 +66,22 @@ describe("AppointmentForm Integration - Full 4-Step Flow", () => {
     
     // Select time slot
     const timeSelect = screen.getByLabelText(/Preferred Time/i);
-    await user.selectOptions(timeSelect, "18:00");
+    await user.selectOptions(timeSelect, "6:00 PM");
     await user.click(screen.getByRole("button", { name: /continue/i }));
 
     // Step 3: Notes & Submit
     expect(screen.getByText("Anything else?")).toBeInTheDocument();
-    const submitButton = screen.getByRole("button", { name: /submit/i });
+    const submitButton = screen.getByRole("button", { name: /book appointment/i });
     await user.click(submitButton);
 
     // Verification
     await waitFor(() => {
-      expect(mockedCreateAppointment).toHaveBeenCalledWith(
-        expect.objectContaining({
-          name: "John Doe",
-          phone: "+8801712345678",
-          preferredDate: "2026-05-25",
-          preferredTime: "6:00 PM",
-        }),
-      );
+      expect(mockedCreateAppointment).toHaveBeenCalled();
     });
+    const callArgs = mockedCreateAppointment.mock.calls[0][0];
+    expect(callArgs.name).toBe("John Doe");
+    expect(callArgs.phone).toBe("+8801712345678");
+    expect(callArgs.preferredDate).toBe("2026-05-25");
+    expect(callArgs.preferredTime).toBe("6:00 PM");
   });
 });

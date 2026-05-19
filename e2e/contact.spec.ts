@@ -11,7 +11,7 @@ test.describe("Contact Page Redirection & Form", () => {
 
     // Verifies chambers page details are visible
     await expect(
-      page.getByRole("heading", { name: /Chambers & Schedules/i }),
+      page.getByRole("heading", { name: /Visit at a Chamber Near You/i }),
     ).toBeVisible();
 
     // Verifies contact form fields inside ChambersContact are visible

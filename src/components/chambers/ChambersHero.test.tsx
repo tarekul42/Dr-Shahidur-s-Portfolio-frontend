@@ -20,9 +20,9 @@ describe("ChambersHero component", () => {
   it("renders primary badge only on the primary chamber", () => {
     const { container } = render(<ChambersHero chambers={CHAMBERS} />);
     
-    // The primary badge says "PRIMARY" (or translations fallback/mocked)
+    // The primary badge says "Primary" (or translations fallback/mocked)
     // Check that we have a badge matching the primary chamber
-    const primaryBadge = screen.getByText("PRIMARY");
+    const primaryBadge = screen.getByText("Primary");
     expect(primaryBadge).toBeInTheDocument();
   });
 

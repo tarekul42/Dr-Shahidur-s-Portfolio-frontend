@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import type { Language } from "@/lib/translations";
 import { useLanguageStore } from "@/store/use-language-store";
 
 export function LanguageToggle() {
   const { language, setLanguage } = useLanguageStore();
-  const [mounted, setMounted] = useState(false);
+  const [mounted, setMounted] = React.useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem("language") as Language | null;

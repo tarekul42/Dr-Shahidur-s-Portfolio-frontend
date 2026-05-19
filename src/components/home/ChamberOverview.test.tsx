@@ -7,7 +7,7 @@ describe("ChamberOverview component", () => {
     render(<ChamberOverview />);
     
     // Renders title / badge
-    expect(screen.getByText("Schedule a Visit")).toBeInTheDocument();
+    expect(screen.getByText("Chamber Schedule")).toBeInTheDocument();
   });
 
   it("renders chamber card summaries for all 4 locations", () => {
@@ -23,7 +23,7 @@ describe("ChamberOverview component", () => {
     render(<ChamberOverview />);
     
     // Select primary designated chamber cards
-    const primaryBadge = screen.getByText("PRIMARY");
+    const primaryBadge = screen.getByText("Primary");
     expect(primaryBadge).toBeInTheDocument();
   });
 
