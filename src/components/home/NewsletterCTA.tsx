@@ -14,6 +14,7 @@ export function NewsletterCTA() {
     e.preventDefault();
     if (!email.trim()) return;
     setLoading(true);
+    // TODO: wire up to a real newsletter API endpoint (e.g. /api/newsletter/subscribe)
     await new Promise((r) => setTimeout(r, 900));
     setLoading(false);
     setStatus("success");

@@ -15,9 +15,10 @@ export function AboutHero({
   doctorName,
   doctorTitle,
   doctorSpecialty,
+  doctorImageUrl,
 }: AboutHeroProps) {
   const { t } = useTranslation();
-  const imageUrl = "/HELLO_DR_Sahid2.png";
+  const imageUrl = doctorImageUrl ?? "/HELLO_DR_Sahid2.png";
 
   return (
     <section className="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center pt-32 pb-20">
@@ -30,6 +31,7 @@ export function AboutHero({
             src={imageUrl}
             alt={doctorName}
             fill
+            sizes="(max-width: 1024px) 100vw, 50vw"
             className="object-cover"
             priority
           />

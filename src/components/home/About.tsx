@@ -18,9 +18,9 @@ interface AboutProps {
   doctorImageUrl?: string;
 }
 
-export const About = ({ doctorImageUrl: _doctorImageUrl }: AboutProps) => {
+export const About = ({ doctorImageUrl }: AboutProps) => {
   const { t } = useTranslation();
-  const imageUrl = "/HELLO_DR_Sahid2.png";
+  const imageUrl = doctorImageUrl ?? "/HELLO_DR_Sahid2.png";
 
   return (
     <AnimatedSection className="py-24 bg-brand-softbg dark:bg-brand-primary/5">
@@ -33,6 +33,7 @@ export const About = ({ doctorImageUrl: _doctorImageUrl }: AboutProps) => {
               src={imageUrl}
               alt="Dr. Sahidur Rahman Khan"
               fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover"
               priority
             />

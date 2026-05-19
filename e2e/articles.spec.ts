@@ -16,12 +16,11 @@ test.describe("Articles", () => {
     await page.goto("/articles");
     // Find first article link and click
     const articleLink = page.locator("a[href^='/articles/']").first();
-    if (await articleLink.isVisible()) {
-      await articleLink.click();
-      // Reading progress bar should exist in DOM
-      await expect(
-        page.locator("[class*='fixed top-0'][class*='h-0.5']"),
-      ).toBeAttached();
-    }
+    await expect(articleLink).toBeVisible();
+    await articleLink.click();
+    // Wait until we've navigated to a detail page
+    await page.waitForURL(/\/articles\/.+/);
+    // Reading progress bar should exist in DOM via stable testid
+    await expect(page.getByTestId("reading-progress")).toBeAttached();
   });
 });

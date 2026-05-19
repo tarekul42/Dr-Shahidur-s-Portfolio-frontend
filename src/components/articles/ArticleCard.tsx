@@ -31,6 +31,7 @@ export const ArticleCard = ({ article, idx = 0 }: ArticleCardProps) => {
             src={article.featuredImage.url}
             alt={article.title}
             fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
             loading="lazy"
             className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
           />

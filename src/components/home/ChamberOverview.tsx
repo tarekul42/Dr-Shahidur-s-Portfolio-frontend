@@ -34,7 +34,7 @@ export function ChamberOverview() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.05 }}
-                  className={`relative p-8 rounded-2xl border bg-card-light dark:bg-card-dark flex flex-col justify-between min-h-[320px] transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-brand-primary/5 hover:border-brand-primary group
+                  className={`relative p-8 rounded-2xl border bg-card-light dark:bg-card-dark flex flex-col justify-between min-h-80 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-brand-primary/5 hover:border-brand-primary group
                   ${
                     chamber.isPrimary
                       ? "border-brand-primary/40 ring-1 ring-brand-primary/5"
@@ -66,10 +66,10 @@ export function ChamberOverview() {
                         </svg>
                       </span>
                     </div>
-                    <h3 className="text-xl font-bold text-text-heading-light dark:text-text-heading-dark group-hover:text-brand-primary transition-colors line-clamp-2 min-h-[3.5rem] mb-2 leading-snug">
+                    <h3 className="text-xl font-bold text-text-heading-light dark:text-text-heading-dark group-hover:text-brand-primary transition-colors line-clamp-2 min-h-14 mb-2 leading-snug">
                       {hospital}
                     </h3>
-                    <p className="text-sm text-text-para-light dark:text-text-para-dark opacity-60 mb-6 line-clamp-2 min-h-[2.5rem]">
+                    <p className="text-sm text-text-para-light dark:text-text-para-dark opacity-60 mb-6 line-clamp-2 min-h-10">
                       {address}
                     </p>
                   </div>

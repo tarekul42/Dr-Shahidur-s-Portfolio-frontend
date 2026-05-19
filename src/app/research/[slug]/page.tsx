@@ -90,6 +90,7 @@ export default async function ResearchDetailPage({ params }: Props) {
                 alt={research.title}
                 fill
                 priority
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 90vw, 1200px"
                 className="object-cover"
               />
               <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/10 to-transparent" />

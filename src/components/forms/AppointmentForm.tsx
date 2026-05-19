@@ -328,7 +328,7 @@ function AppointmentFormContent() {
 
   if (submitted) {
     return (
-      <div className="min-h-[25rem] flex flex-col items-center justify-center space-y-8 text-center p-8">
+      <div className="min-h-100 flex flex-col items-center justify-center space-y-8 text-center p-8">
         <motion.div
           initial={{ scale: 0.5, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -468,7 +468,7 @@ function AppointmentFormContent() {
         </div>
       </div>
 
-      <div className="min-h-[25rem] flex flex-col">
+      <div className="min-h-100 flex flex-col">
         <AnimatePresence mode="wait">
           {/* Step 0: Location (New Dropdown & Animated details) */}
           {step === 0 && (
@@ -659,7 +659,7 @@ function AppointmentFormContent() {
                         duration: 0.3,
                         ease: [0.4, 0, 0.2, 1],
                       }}
-                      className="rounded-2xl border border-brand-primary/20 bg-brand-primary/[0.03] dark:bg-brand-primary/[0.06] p-5 space-y-4 text-left"
+                      className="rounded-2xl border border-brand-primary/20 bg-brand-primary/3 dark:bg-brand-primary/6 p-5 space-y-4 text-left"
                     >
                       {/* Chamber Name + Primary Badge */}
                       <div>

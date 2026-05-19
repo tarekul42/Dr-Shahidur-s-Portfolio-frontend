@@ -18,7 +18,7 @@ export const AnimatedSection = ({
     <motion.section
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-100px" }}
+      viewport={{ once: true, margin: "0px", amount: 0.1 }}
       transition={{
         duration: 0.8,
         delay,

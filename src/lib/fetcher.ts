@@ -17,8 +17,24 @@ export async function serverFetch<T>(
   if (!res.ok) throw new Error(`API error: ${res.status}`);
   const json = (await res.json()) as ApiResponse<unknown>;
 
+  if (json.meta && Array.isArray(json.data)) {
+    return {
+      docs: json.data,
+      totalDocs: json.meta.total,
+      limit: Number(json.meta.limit),
+      totalPages: json.meta.totalPage,
+      page: Number(json.meta.page),
+      pagingCounter: 1,
+      hasPrevPage: Number(json.meta.page) > 1,
+      hasNextPage: Number(json.meta.page) < json.meta.totalPage,
+      prevPage: Number(json.meta.page) > 1 ? Number(json.meta.page) - 1 : null,
+      nextPage:
+        Number(json.meta.page) < json.meta.totalPage
+          ? Number(json.meta.page) + 1
+          : null,
+    } as unknown as T;
+  }
+
   // Backend wraps all responses in { success, statusCode, message, data }
-  // For paginated endpoints, data IS the PaginatedData<T> object
-  // For non-paginated endpoints, data IS the resource itself
   return json.data as T;
 }

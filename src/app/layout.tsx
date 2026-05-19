@@ -68,6 +68,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       className={`${inter.variable} ${hindSiliguri.variable} h-full antialiased`}
       suppressHydrationWarning
     >
