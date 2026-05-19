@@ -12,7 +12,7 @@ import { getArticles } from "@/lib/api/articles";
 import { getTestimonials } from "@/lib/api/testimonials";
 
 export default async function Home() {
-  const [_appInfo, articles, testimonials] = await Promise.all([
+  const [appInfo, articles, testimonials] = await Promise.all([
     getAppInfo().catch(() => undefined),
     getArticles({ limit: 6, articleType: "MEDICAL" }).catch(() => undefined),
     getTestimonials().catch(() => undefined),
@@ -22,7 +22,7 @@ export default async function Home() {
     <div className="flex flex-col w-full">
       <Hero />
       <Specialties />
-      <About />
+      <About doctorImageUrl={appInfo?.doctorImage?.url} />
       <ChamberOverview />
 
       {articles?.docs?.length ? (

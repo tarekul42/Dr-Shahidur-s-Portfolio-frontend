@@ -43,6 +43,13 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
   <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 );
 
+function formatLocalDate(date: Date): string {
+  const yyyy = date.getFullYear();
+  const mm = String(date.getMonth() + 1).padStart(2, "0");
+  const dd = String(date.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+}
+
 describe("AppointmentForm", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -133,12 +140,12 @@ describe("AppointmentForm", () => {
     tomorrow.setDate(tomorrow.getDate() + 1);
     
     // Kalyanpur Dhaka (Ibn Sina) is open on Sat, Mon, Wed, Fri (1, 3, 5, 6).
-    // Ensure we select a date that matches availableDays to pass the validator
+    // Exclude Friday (5) because its schedule starts at 8:00 PM, whereas we need 6:00 PM slot.
     let testDate = tomorrow;
-    while (![1, 3, 5, 6].includes(testDate.getDay())) {
+    while (![1, 3, 6].includes(testDate.getDay())) {
       testDate.setDate(testDate.getDate() + 1);
     }
-    const dateStr = testDate.toISOString().slice(0, 10);
+    const dateStr = formatLocalDate(testDate);
 
     // Type date into the screen-reader-accessible (sr-only) input field
     await user.type(screen.getByLabelText("Preferred Date"), dateStr);
@@ -216,7 +223,7 @@ describe("AppointmentForm", () => {
     while (closedDate.getDay() === 4) {
       closedDate.setDate(closedDate.getDate() + 1);
     }
-    const closedDateStr = closedDate.toISOString().slice(0, 10);
+    const closedDateStr = formatLocalDate(closedDate);
 
     await user.type(screen.getByLabelText("Preferred Date"), closedDateStr);
     
@@ -248,11 +255,12 @@ describe("AppointmentForm", () => {
     tomorrow.setDate(tomorrow.getDate() + 1);
     
     // Dhaka (Ibn Sina) open day (Sat/Mon/Wed/Fri)
+    // Exclude Friday (5) because its schedule starts at 8:00 PM, whereas we need 6:00 PM slot.
     let testDate = tomorrow;
-    while (![1, 3, 5, 6].includes(testDate.getDay())) {
+    while (![1, 3, 6].includes(testDate.getDay())) {
       testDate.setDate(testDate.getDate() + 1);
     }
-    const dateStr = testDate.toISOString().slice(0, 10);
+    const dateStr = formatLocalDate(testDate);
     await user.type(screen.getByLabelText("Preferred Date"), dateStr);
 
     await waitFor(() => {

@@ -13,7 +13,7 @@ interface ChamberDetailListProps {
 
 export function ChamberDetailList({ chambers }: ChamberDetailListProps) {
   return (
-    <section className="max-w-6xl mx-auto w-full">
+    <section className="w-full">
       <div className="space-y-8">
         {chambers.map((chamber, idx) => (
           <ChamberDetailCard key={chamber.id} chamber={chamber} index={idx} />
@@ -45,10 +45,10 @@ function ChamberDetailCard({
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ delay: index * 0.05 }}
-        className={`p-8 md:p-10 rounded-2xl border bg-card-light dark:bg-card-dark transition-all duration-300
+        className={`relative p-8 md:p-10 rounded-2xl border bg-card-light dark:bg-card-dark transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-brand-primary/5 hover:border-brand-primary group
           ${
             chamber.isPrimary
-              ? "border-brand-primary/30 ring-1 ring-brand-primary/10 shadow-lg shadow-brand-primary/5"
+              ? "border-brand-primary/40 ring-1 ring-brand-primary/5"
               : "border-border-light dark:border-border-dark"
           }`}
       >
@@ -57,10 +57,10 @@ function ChamberDetailCard({
           <div>
             <div className="flex items-center gap-3 mb-2">
               {/* Location pin icon */}
-              <div className="w-10 h-10 bg-brand-primary/10 text-brand-primary rounded-xl flex items-center justify-center shrink-0">
+              <div className="w-12 h-12 bg-brand-softbg dark:bg-brand-primary/10 text-brand-primary rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-500">
                 <svg
-                  width="18"
-                  height="18"
+                  width="20"
+                  height="20"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -77,10 +77,10 @@ function ChamberDetailCard({
                 {hospital}
               </h3>
             </div>
-            <p className="text-sm text-text-para-light dark:text-text-para-dark opacity-80 ml-13">
+            <p className="text-sm text-text-para-light dark:text-text-para-dark opacity-80 ml-[60px]">
               {address}
             </p>
-            <p className="text-sm text-text-para-light dark:text-text-para-dark opacity-60 ml-13 mt-1">
+            <p className="text-sm text-text-para-light dark:text-text-para-dark opacity-60 ml-[60px] mt-1">
               {room}
             </p>
           </div>

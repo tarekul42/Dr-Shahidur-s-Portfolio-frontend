@@ -11,14 +11,14 @@ interface AboutHeroProps {
   doctorSpecialty: string;
   doctorImageUrl?: string;
 }
-
 export function AboutHero({
   doctorName,
   doctorTitle,
   doctorSpecialty,
-  doctorImageUrl,
 }: AboutHeroProps) {
   const { t } = useTranslation();
+  const imageUrl = "/HELLO_DR_Sahid2.png";
+
   return (
     <section className="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center pt-32 pb-20">
       {/* Photo column */}
@@ -26,19 +26,13 @@ export function AboutHero({
         <div className="absolute inset-0 bg-brand-primary rounded-2xl rotate-3 group-hover:rotate-6 transition-transform duration-500 -z-10 opacity-10" />
 
         <div className="relative aspect-4/5 bg-gray-200 dark:bg-gray-800 rounded-2xl overflow-hidden shadow-2xl">
-          {doctorImageUrl ? (
-            <Image
-              src={doctorImageUrl}
-              alt={doctorName}
-              fill
-              className="object-cover"
-              priority
-            />
-          ) : (
-            <div className="absolute inset-0 flex items-center justify-center text-text-para-light dark:text-text-para-dark font-bold text-xl opacity-30">
-              {doctorName.toUpperCase()}
-            </div>
-          )}
+          <Image
+            src={imageUrl}
+            alt={doctorName}
+            fill
+            className="object-cover"
+            priority
+          />
         </div>
 
         {/* Experience badge */}

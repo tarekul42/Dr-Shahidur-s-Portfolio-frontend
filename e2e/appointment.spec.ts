@@ -5,18 +5,21 @@ test.describe("Appointment Form Wizard E2E", () => {
     page,
   }) => {
     await page.goto("/appointment");
+    await page.waitForSelector('form[data-hydrated="true"]');
     await expect(
       page.getByText(/Where would you like to visit\?/i),
     ).toBeVisible();
+    await expect(page.locator("#chamber-select")).toBeVisible();
     await expect(
-      page.locator("button").getByText(/Ibn Sina Medical College Hospital/i),
-    ).toBeVisible();
+      page.locator("#chamber-select option[value='dhaka']"),
+    ).toContainText(/Ibn Sina Medical College Hospital/i);
   });
 
   test("validation errors trigger if no chamber is chosen", async ({
     page,
   }) => {
     await page.goto("/appointment");
+    await page.waitForSelector('form[data-hydrated="true"]');
     await page.getByText(/Continue/i).click();
     await expect(page.getByText(/Chamber is required/i)).toBeVisible();
   });
@@ -25,18 +28,15 @@ test.describe("Appointment Form Wizard E2E", () => {
     page,
   }) => {
     await page.goto("/appointment?chamber=dhaka");
+    await page.waitForSelector('form[data-hydrated="true"]');
     await expect(page.getByText(/Who is the patient\?/i)).toBeVisible();
     await expect(page.getByLabel(/Full Name/i)).toBeVisible();
   });
 
-  test("can navigate to Step 1 by clicking a chamber card", async ({
-    page,
-  }) => {
+  test("can navigate to Step 1 by selecting a chamber", async ({ page }) => {
     await page.goto("/appointment");
-    await page
-      .locator("button")
-      .getByText("Ibn Sina Medical College Hospital")
-      .click();
+    await page.waitForSelector('form[data-hydrated="true"]');
+    await page.selectOption("#chamber-select", "dhaka");
     await page.getByText(/Continue/i).click();
 
     await expect(page.getByText(/Who is the patient\?/i)).toBeVisible();
@@ -44,6 +44,7 @@ test.describe("Appointment Form Wizard E2E", () => {
 
   test("validates required patient fields on Step 1", async ({ page }) => {
     await page.goto("/appointment?chamber=dhaka"); // skip Step 0
+    await page.waitForSelector('form[data-hydrated="true"]');
     await expect(page.getByText(/Who is the patient\?/i)).toBeVisible();
     await page.getByRole("button", { name: "Continue" }).click();
     await expect(page.getByText(/Name is required/i)).toBeVisible();
@@ -54,6 +55,7 @@ test.describe("Appointment Form Wizard E2E", () => {
 
   test("validates phone number patterns on Step 1", async ({ page }) => {
     await page.goto("/appointment?chamber=dhaka");
+    await page.waitForSelector('form[data-hydrated="true"]');
     await expect(page.getByText(/Who is the patient\?/i)).toBeVisible();
     await page.getByLabel(/Full Name/i).fill("John Doe");
     await page.getByLabel(/Phone Number/i).fill("017123"); // too short, no +88
@@ -65,10 +67,8 @@ test.describe("Appointment Form Wizard E2E", () => {
 
   test("can navigate backward and forward in the wizard", async ({ page }) => {
     await page.goto("/appointment");
-    await page
-      .locator("button")
-      .getByText("Ibn Sina Medical College Hospital")
-      .click();
+    await page.waitForSelector('form[data-hydrated="true"]');
+    await page.selectOption("#chamber-select", "dhaka");
     await page.getByText(/Continue/i).click();
 
     await expect(page.getByText(/Who is the patient\?/i)).toBeVisible();

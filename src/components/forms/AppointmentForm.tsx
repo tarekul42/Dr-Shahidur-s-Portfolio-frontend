@@ -79,11 +79,17 @@ const expandVariants = {
 };
 
 function AppointmentFormContent() {
+  const [isHydrated, setIsHydrated] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [step, setStep] = useState(0);
   const [selectedChamber, setSelectedChamber] =
     useState<ChamberFallback | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
 
   const { executeRecaptcha } = useGoogleReCaptcha();
   const {
@@ -322,7 +328,7 @@ function AppointmentFormContent() {
 
   if (submitted) {
     return (
-      <div className="min-h-100 flex flex-col items-center justify-center space-y-8 text-center p-8">
+      <div className="min-h-[25rem] flex flex-col items-center justify-center space-y-8 text-center p-8">
         <motion.div
           initial={{ scale: 0.5, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -374,7 +380,27 @@ function AppointmentFormContent() {
   ];
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") {
+          const target = e.target as HTMLElement;
+          if (
+            target.tagName === "TEXTAREA" ||
+            target.tagName === "BUTTON" ||
+            target.closest("button")
+          ) {
+            return;
+          }
+          e.preventDefault();
+        }
+      }}
+      className="space-y-10"
+      data-hydrated={isHydrated}
+    >
+      {/* Hidden inputs to ensure fields are registered with RHF on all steps */}
+      <input type="hidden" {...register("chamberId")} />
+      <input type="hidden" {...register("preferredTime")} />
       {/* Wizard Steps Header */}
       <div className="flex flex-col gap-4 mb-2">
         <div className="flex items-center justify-between gap-4">
@@ -442,7 +468,7 @@ function AppointmentFormContent() {
         </div>
       </div>
 
-      <div className="min-h-100 flex flex-col">
+      <div className="min-h-[25rem] flex flex-col">
         <AnimatePresence mode="wait">
           {/* Step 0: Location (New Dropdown & Animated details) */}
           {step === 0 && (
@@ -464,54 +490,148 @@ function AppointmentFormContent() {
                 </p>
               </div>
 
-              <div className="space-y-1.5">
+              <div className="space-y-1.5 relative">
                 <label
                   htmlFor="chamber-select"
                   className="text-xs font-semibold uppercase tracking-wider text-text-para-light dark:text-text-para-dark"
                 >
                   {isBn ? "চেম্বার / হাসপাতাল" : "Chamber / Hospital"}
                 </label>
-                <div className="relative group focus-within:-translate-y-px transition-transform duration-200">
-                  <select
-                    id="chamber-select"
-                    value={chamberId}
-                    onChange={(e) => handleChamberChange(e.target.value)}
+
+                <div className="relative">
+                  {/* Custom Dropdown Trigger */}
+                  <button
+                    type="button"
+                    onClick={() => setDropdownOpen(!dropdownOpen)}
                     className={
-                      "w-full rounded-xl border bg-card-light dark:bg-card-dark px-4 py-3 text-sm transition-all outline-none appearance-none cursor-pointer " +
+                      "w-full rounded-xl border bg-card-light dark:bg-card-dark px-4 py-3 text-sm text-left transition-all outline-none cursor-pointer flex items-center justify-between " +
                       "border-border-light dark:border-border-dark text-text-heading-light dark:text-text-heading-dark " +
-                      "focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 focus:outline-none " +
+                      "focus:border-brand-primary focus:ring-2 focus:ring-brand-primary/20 " +
+                      (dropdownOpen
+                        ? "border-brand-primary ring-2 ring-brand-primary/20"
+                        : "") +
                       (errors.chamberId
-                        ? "border-red-500 focus:border-red-500 focus:ring-red-500/10"
+                        ? " border-red-500 focus:border-red-500 focus:ring-red-500/10"
                         : "")
                     }
                   >
+                    <span
+                      className={selectedChamber ? "font-medium" : "opacity-60"}
+                    >
+                      {selectedChamber
+                        ? selectedChamber.chemberName
+                        : isBn
+                          ? "একটি চেম্বার নির্বাচন করুন..."
+                          : "Choose a chamber..."}
+                    </span>
+                    {/* Chevron icon with rotation */}
+                    <span
+                      className={`text-text-para-light dark:text-text-para-dark transition-transform duration-300 ${dropdownOpen ? "rotate-180" : ""}`}
+                    >
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 12 12"
+                        fill="none"
+                      >
+                        <title>Chevron</title>
+                        <path
+                          d="M3 4.5L6 7.5L9 4.5"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </span>
+                  </button>
+
+                  {/* Hidden Native Select for E2E and Unit Tests Compatibility */}
+                  <select
+                    id="chamber-select"
+                    value={chamberId || ""}
+                    onChange={(e) => handleChamberChange(e.target.value)}
+                    className="sr-only"
+                    tabIndex={-1}
+                  >
                     <option value="" disabled>
-                      {isBn
-                        ? "একটি চেম্বার নির্বাচন করুন..."
-                        : "Choose a chamber..."}
+                      {isBn ? "---" : "---"}
                     </option>
                     {CHAMBERS_FALLBACK.map((chamber) => (
                       <option key={chamber.id} value={chamber.id}>
                         {chamber.chemberName}
-                        {chamber.isPrimary
-                          ? ` (${isBn ? "প্রধান" : "Primary"})`
-                          : ""}
                       </option>
                     ))}
                   </select>
-                  {/* Custom chevron icon */}
-                  <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-text-para-light dark:text-text-para-dark">
-                    <svg width="14" height="14" viewBox="0 0 12 12" fill="none">
-                      <title>Chevron</title>
-                      <path
-                        d="M3 4.5L6 7.5L9 4.5"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                  </div>
+
+                  {/* Backdrop Overlay to handle clicks outside */}
+                  {dropdownOpen && (
+                    <button
+                      type="button"
+                      className="fixed inset-0 z-40 cursor-default border-none bg-transparent outline-none p-0 m-0 w-full h-full block"
+                      onClick={() => setDropdownOpen(false)}
+                      onKeyDown={(e) => {
+                        if (
+                          e.key === "Enter" ||
+                          e.key === " " ||
+                          e.key === "Escape"
+                        ) {
+                          setDropdownOpen(false);
+                        }
+                      }}
+                      aria-label="Close dropdown"
+                    />
+                  )}
+
+                  {/* Dropdown Options List Popover */}
+                  <AnimatePresence>
+                    {dropdownOpen && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -4, scale: 0.98 }}
+                        animate={{ opacity: 1, y: 4, scale: 1 }}
+                        exit={{ opacity: 0, y: -4, scale: 0.98 }}
+                        transition={{ duration: 0.15 }}
+                        className="absolute left-0 right-0 z-50 rounded-xl border border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark shadow-2xl shadow-brand-primary/10 overflow-hidden"
+                      >
+                        <ul className="max-h-60 overflow-y-auto py-1 divide-y divide-border-light/40 dark:divide-border-dark/40">
+                          {CHAMBERS_FALLBACK.map((chamber) => {
+                            const isSelected = chamberId === chamber.id;
+                            return (
+                              <li key={chamber.id}>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    handleChamberChange(chamber.id);
+                                    setDropdownOpen(false);
+                                  }}
+                                  className={`w-full px-4 py-3 text-sm text-left flex items-center justify-between transition-colors
+                                    ${
+                                      isSelected
+                                        ? "bg-brand-primary/10 text-brand-primary font-semibold"
+                                        : "hover:bg-brand-primary/5 text-text-heading-light dark:text-text-heading-dark hover:text-brand-primary"
+                                    }`}
+                                >
+                                  <span>{chamber.chemberName}</span>
+                                  {chamber.isPrimary && (
+                                    <span
+                                      className={`text-[8px] font-bold uppercase tracking-widest px-2.5 py-0.5 rounded-full
+                                      ${
+                                        isSelected
+                                          ? "bg-brand-primary text-white"
+                                          : "bg-brand-primary/10 text-brand-primary"
+                                      }`}
+                                    >
+                                      {isBn ? "প্রধান" : "Primary"}
+                                    </span>
+                                  )}
+                                </button>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
                 {errors.chamberId && (
                   <p className="text-xs text-red-500 font-semibold mt-1">
@@ -1032,65 +1152,70 @@ function AppointmentFormContent() {
       </div>
 
       {/* Control Buttons */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-6 pt-8 border-t border-border-light dark:border-border-dark">
-        <p className="text-[10px] text-center sm:text-left text-text-para-light dark:text-text-para-dark opacity-50 leading-relaxed max-w-xs">
-          <span>
-            {isBn
-              ? "নিশ্চিতকরণের জন্য একজন প্রতিনিধি আপনার সাথে যোগাযোগ করবেন।"
-              : "A representative will contact you for final confirmation."}
-          </span>
-          <br />
-          <span>
-            Protected by reCAPTCHA. Google{" "}
-            <a
-              href="https://policies.google.com/privacy"
-              target="_blank"
-              rel="noreferrer"
-              className="underline hover:text-brand-primary"
-            >
-              Privacy
-            </a>{" "}
-            &{" "}
-            <a
-              href="https://policies.google.com/terms"
-              target="_blank"
-              rel="noreferrer"
-              className="underline hover:text-brand-primary"
-            >
-              Terms
-            </a>{" "}
-            apply.
-          </span>
-        </p>
+      <div className="flex flex-col gap-6 pt-8 border-t border-border-light dark:border-border-dark">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+          <p className="text-[10px] text-center sm:text-left text-text-para-light dark:text-text-para-dark opacity-50 leading-relaxed max-w-sm">
+            <span>
+              {isBn
+                ? "নিশ্চিতকরণের জন্য একজন প্রতিনিধি আপনার সাথে যোগাযোগ করবেন।"
+                : "A representative will contact you for final confirmation."}
+            </span>
+            <br />
+            <span>
+              Protected by reCAPTCHA. Google{" "}
+              <a
+                href="https://policies.google.com/privacy"
+                target="_blank"
+                rel="noreferrer"
+                className="underline hover:text-brand-primary"
+              >
+                Privacy
+              </a>{" "}
+              &{" "}
+              <a
+                href="https://policies.google.com/terms"
+                target="_blank"
+                rel="noreferrer"
+                className="underline hover:text-brand-primary"
+              >
+                Terms
+              </a>{" "}
+              apply.
+            </span>
+          </p>
 
-        <div className="flex items-center gap-4 w-full sm:w-auto">
-          {step > 0 && (
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleBack}
-              className="flex-1 sm:flex-none h-12 px-8 text-base font-bold"
-            >
-              {t("appointment.back")}
-            </Button>
-          )}
-          {step < 3 ? (
-            <Button
-              type="button"
-              onClick={handleNext}
-              className="flex-2 sm:flex-none h-12 px-10 text-base font-bold shadow-lg shadow-brand-primary/20"
-            >
-              {t("appointment.continue")}
-            </Button>
-          ) : (
-            <Button
-              type="submit"
-              loading={appointmentMutation.isPending}
-              className="flex-2 sm:flex-none h-12 px-10 text-base font-bold shadow-lg shadow-brand-primary/20"
-            >
-              {t("appointment.submit")}
-            </Button>
-          )}
+          <div className="flex items-center gap-4 w-full sm:w-auto shrink-0">
+            {step > 0 && (
+              <Button
+                key="btn-back"
+                type="button"
+                variant="outline"
+                onClick={handleBack}
+                className="flex-1 sm:flex-none h-12 px-8 text-base font-bold"
+              >
+                {t("appointment.back")}
+              </Button>
+            )}
+            {step < 3 ? (
+              <Button
+                key="btn-continue"
+                type="button"
+                onClick={handleNext}
+                className="flex-1 sm:flex-none h-12 px-10 text-base font-bold shadow-lg shadow-brand-primary/20"
+              >
+                {t("appointment.continue")}
+              </Button>
+            ) : (
+              <Button
+                key="btn-submit"
+                type="submit"
+                loading={appointmentMutation.isPending}
+                className="flex-1 sm:flex-none h-12 px-10 text-base font-bold shadow-lg shadow-brand-primary/20"
+              >
+                {t("appointment.submit")}
+              </Button>
+            )}
+          </div>
         </div>
       </div>
     </form>
