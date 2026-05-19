@@ -34,7 +34,9 @@ export default async function ResearchPage({
       search,
     });
   } catch (error) {
-    console.error("Failed to fetch research", error);
+    if (process.env.NODE_ENV !== "production") {
+      console.error("Failed to fetch research", error);
+    }
   }
 
   return (

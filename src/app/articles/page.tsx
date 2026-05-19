@@ -37,14 +37,18 @@ export default async function ArticlesPage({
       search,
     });
   } catch (error) {
-    console.error("Failed to fetch articles", error);
+    if (process.env.NODE_ENV !== "production") {
+      console.error("Failed to fetch articles", error);
+    }
   }
 
   let categories: ArticleCategory[] = [];
   try {
     categories = await getCategories();
   } catch (error) {
-    console.error("Failed to fetch categories", error);
+    if (process.env.NODE_ENV !== "production") {
+      console.error("Failed to fetch categories", error);
+    }
   }
 
   return (
