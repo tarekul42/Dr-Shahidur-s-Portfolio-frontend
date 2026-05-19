@@ -38,35 +38,28 @@ export async function getCategories(): Promise<ArticleCategory[]> {
   });
 }
 
-// Client-side version for filtered/paginated fetches
 export async function fetchArticlesClient(
   params: ArticleFilterParams,
 ): Promise<PaginatedData<Article>> {
-  const { data: response } = await api.get<ApiResponse<Article[]>>(
+  const { data: response } = await api.get<ApiResponse<PaginatedData<Article>>>(
     "/articles",
-    {
-      params,
-    },
+    { params },
   );
 
-  // Extract meta from the response (axios structure: response.data is the ApiResponse)
-  // Wait, ApiResponse has data and meta.
-  // axios.get returns { data: ApiResponse }
-  const { data, meta } = response;
-
-  if (meta) {
-    return {
-      docs: data,
-      totalDocs: meta.total,
-      limit: meta.limit,
-      totalPages: meta.totalPage,
-      page: meta.page,
-    };
+  // Backend returns PaginatedData directly in data field
+  if (
+    response.data &&
+    "docs" in response.data &&
+    Array.isArray(response.data.docs)
+  ) {
+    return response.data;
   }
 
+  // Fallback: if data is an array (shouldn't happen with current backend)
+  const plainData = response.data as unknown as Article[];
   return {
-    docs: data || [],
-    totalDocs: 0,
+    docs: Array.isArray(plainData) ? plainData : [],
+    totalDocs: Array.isArray(plainData) ? plainData.length : 0,
     limit: 10,
     totalPages: 0,
     page: 1,

@@ -1,4 +1,5 @@
 import { About } from "@/components/home/About";
+import { ChamberOverview } from "@/components/home/ChamberOverview";
 import { CTASection } from "@/components/home/CTASection";
 import { FeaturedArticles } from "@/components/home/FeaturedArticles";
 import { Hero } from "@/components/home/Hero";
@@ -11,7 +12,7 @@ import { getArticles } from "@/lib/api/articles";
 import { getTestimonials } from "@/lib/api/testimonials";
 
 export default async function Home() {
-  const [appInfo, articles, testimonials] = await Promise.all([
+  const [_appInfo, articles, testimonials] = await Promise.all([
     getAppInfo().catch(() => undefined),
     getArticles({ limit: 6, articleType: "MEDICAL" }).catch(() => undefined),
     getTestimonials().catch(() => undefined),
@@ -22,6 +23,7 @@ export default async function Home() {
       <Hero />
       <Specialties />
       <About />
+      <ChamberOverview />
 
       {articles?.docs?.length ? (
         <FeaturedArticles articles={articles.docs} />
@@ -31,7 +33,7 @@ export default async function Home() {
         <TestimonialsCarousel testimonials={testimonials.docs.slice(0, 5)} />
       ) : null}
 
-      <CTASection clinicHours={appInfo?.clinicHours} />
+      <CTASection />
       <TestimonialsCTA />
       <NewsletterCTA />
     </div>

@@ -28,26 +28,24 @@ export async function getResearchBySlug(slug: string): Promise<Research> {
 export async function fetchResearchClient(
   params: ResearchFilterParams,
 ): Promise<PaginatedData<Research>> {
-  const { data: response } = await api.get<ApiResponse<Research[]>>(
-    "/research",
-    { params },
-  );
+  const { data: response } = await api.get<
+    ApiResponse<PaginatedData<Research>>
+  >("/research", { params });
 
-  const { data, meta } = response;
-
-  if (meta) {
-    return {
-      docs: data,
-      totalDocs: meta.total,
-      limit: meta.limit,
-      totalPages: meta.totalPage,
-      page: meta.page,
-    };
+  // Backend returns PaginatedData directly in data field
+  if (
+    response.data &&
+    "docs" in response.data &&
+    Array.isArray(response.data.docs)
+  ) {
+    return response.data;
   }
 
+  // Fallback: if data is an array (shouldn't happen with current backend)
+  const plainData = response.data as unknown as Research[];
   return {
-    docs: data || [],
-    totalDocs: 0,
+    docs: Array.isArray(plainData) ? plainData : [],
+    totalDocs: Array.isArray(plainData) ? plainData.length : 0,
     limit: 10,
     totalPages: 0,
     page: 1,

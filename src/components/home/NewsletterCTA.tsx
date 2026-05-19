@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import { AnimatedSection } from "@/components/shared/AnimatedSection";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export function NewsletterCTA() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
   const [loading, setLoading] = useState(false);
+  const { t } = useTranslation();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,17 +40,15 @@ export function NewsletterCTA() {
               >
                 <path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5-8-5V6l8 5 8-5v2Z" />
               </svg>
-              Newsletter
+              {t("newsletter.badge")}
             </span>
 
             {/* Heading */}
             <h2 className="text-4xl md:text-5xl font-bold text-text-heading-light dark:text-text-heading-dark leading-tight mb-4">
-              Stay Ahead of{" "}
-              <span className="text-brand-primary">Your Health</span>
+              {t("newsletter.title")}
             </h2>
             <p className="text-text-para-light dark:text-text-para-dark text-lg leading-relaxed mb-10 max-w-xl mx-auto">
-              Get expert orthopedic insights, recovery tips, and new article
-              notifications delivered straight to your inbox — no spam, ever.
+              {t("newsletter.subtitle")}
             </p>
 
             {/* Form / Success */}
@@ -71,10 +71,10 @@ export function NewsletterCTA() {
                   </svg>
                 </div>
                 <p className="text-text-heading-light dark:text-text-heading-dark font-semibold text-lg">
-                  You&apos;re subscribed!
+                  {t("newsletter.subscribed")}
                 </p>
                 <p className="text-text-para-light dark:text-text-para-dark text-sm">
-                  We&apos;ll be in touch with the latest health insights.
+                  {t("newsletter.subscribedDesc")}
                 </p>
               </div>
             ) : (
@@ -96,7 +96,7 @@ export function NewsletterCTA() {
                   <input
                     type="email"
                     required
-                    placeholder="Enter your email address"
+                    placeholder={t("newsletter.placeholder")}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="w-full h-14 pl-11 pr-4 rounded-2xl bg-bg-light dark:bg-bg-dark border border-border-light dark:border-border-dark text-text-heading-light dark:text-text-heading-dark placeholder:text-text-para-light dark:placeholder:text-text-para-dark text-sm focus:outline-none focus:border-brand-primary transition-all"
@@ -121,11 +121,11 @@ export function NewsletterCTA() {
                       >
                         <path d="M21 12a9 9 0 1 1-6.219-8.56" />
                       </svg>
-                      Subscribing…
+                      {t("newsletter.subscribing")}
                     </>
                   ) : (
                     <>
-                      Subscribe
+                      {t("newsletter.subscribe")}
                       <svg
                         width="16"
                         height="16"
@@ -161,7 +161,7 @@ export function NewsletterCTA() {
                 >
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
                 </svg>
-                100% Private
+                {t("newsletter.private")}
               </span>
               <span className="w-px h-4 bg-border-light dark:bg-border-dark" />
               <span className="flex items-center gap-1.5">
@@ -179,7 +179,7 @@ export function NewsletterCTA() {
                   <circle cx="12" cy="12" r="10" />
                   <polyline points="12 6 12 12 16 14" />
                 </svg>
-                Weekly Digest
+                {t("newsletter.weekly")}
               </span>
               <span className="w-px h-4 bg-border-light dark:bg-border-dark" />
               <span className="flex items-center gap-1.5">
@@ -197,7 +197,7 @@ export function NewsletterCTA() {
                   <polyline points="9 11 12 14 22 4" />
                   <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
                 </svg>
-                Unsubscribe Anytime
+                {t("newsletter.unsubscribe")}
               </span>
             </div>
           </div>

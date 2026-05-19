@@ -3,8 +3,11 @@
 import { motion } from "framer-motion";
 import { AnimatedSection } from "@/components/shared/AnimatedSection";
 import { Button } from "@/components/ui/Button";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export const TestimonialsCTA = () => {
+  const { t } = useTranslation();
+
   return (
     <AnimatedSection className="py-24 relative overflow-hidden">
       {/* Visual Background */}
@@ -19,7 +22,7 @@ export const TestimonialsCTA = () => {
             viewport={{ once: true }}
             className="inline-block px-4 py-1 border border-white/30 text-white rounded-full text-[10px] font-bold tracking-[0.2em] uppercase"
           >
-            Patient Stories
+            {t("testimonialsCta.badge")}
           </motion.div>
 
           <motion.h2
@@ -29,8 +32,7 @@ export const TestimonialsCTA = () => {
             transition={{ delay: 0.1 }}
             className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight"
           >
-            Real Stories of Recovery <br className="hidden md:block" />
-            and Renewed Mobility
+            {t("testimonialsCta.title")}
           </motion.h2>
 
           <motion.p
@@ -40,9 +42,7 @@ export const TestimonialsCTA = () => {
             transition={{ delay: 0.2 }}
             className="text-xl text-white/80 max-w-2xl mx-auto leading-relaxed"
           >
-            Join thousands of patients who have reclaimed their active
-            lifestyles through personalized orthopedic care. Your journey to
-            wellness starts here.
+            {t("testimonialsCta.subtitle")}
           </motion.p>
 
           <motion.div
@@ -57,14 +57,14 @@ export const TestimonialsCTA = () => {
               className="bg-white text-brand-primary hover:bg-gray-100 h-16 px-10 text-lg shadow-2xl"
               href="/testimonials"
             >
-              Read Patient Testimonials
+              {t("testimonialsCta.read")}
             </Button>
             <Button
               variant="outline"
               className="border-white text-white hover:bg-white/10 h-16 px-10 text-lg"
               href="/appointment"
             >
-              Start Your Recovery
+              {t("testimonialsCta.start")}
             </Button>
           </motion.div>
         </div>

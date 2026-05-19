@@ -3,7 +3,8 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -12,11 +13,15 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import { Textarea } from "@/components/ui/Textarea";
+import { CHAMBERS } from "@/constants/chambers";
+import { useTranslation } from "@/hooks/useTranslation";
 import { createAppointment, getBookedSlots } from "@/lib/api/appointments";
+import { formatTimeSlot, isDateAvailableForChamber } from "@/lib/chamber-utils";
 import { extractHttpStatus } from "@/lib/utils";
 import { useAppointmentPrefill } from "@/store/use-appointment-prefill";
 
 const appointmentSchema = z.object({
+  chamberId: z.string().min(1, "Chamber is required"),
   name: z.string().min(2, "Name is required").trim(),
   phone: z
     .string()
@@ -37,11 +42,20 @@ const appointmentSchema = z.object({
 
 type AppointmentFormData = z.infer<typeof appointmentSchema>;
 
-export const AppointmentForm = () => {
+function AppointmentFormContent() {
   const [submitted, setSubmitted] = useState(false);
   const [step, setStep] = useState(0);
   const { executeRecaptcha } = useGoogleReCaptcha();
-  const { message: prefillMessage, clearPrefill } = useAppointmentPrefill();
+  const {
+    message: prefillMessage,
+    chamberId: prefillChamberId,
+    clearPrefill,
+  } = useAppointmentPrefill();
+  const { t, language } = useTranslation();
+  const isBn = language === "bn";
+  const searchParams = useSearchParams();
+  const chamberParam = searchParams.get("chamber");
+
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   const minDate = tomorrow.toISOString().slice(0, 10);
@@ -52,26 +66,62 @@ export const AppointmentForm = () => {
     reset,
     watch,
     trigger,
+    setValue,
+    setError,
+    clearErrors,
     formState: { errors },
   } = useForm<AppointmentFormData>({
     resolver: zodResolver(appointmentSchema),
     defaultValues: {
+      chamberId: "",
       preferredTime: "",
       message: prefillMessage ?? "",
     },
   });
 
+  const selectedChamberId = watch("chamberId");
+  const preferredDate = watch("preferredDate");
+  const activeChamber = CHAMBERS.find((c) => c.id === selectedChamberId);
+
+  // Scan URL query parameter or store prefill for chamber selection
+  useEffect(() => {
+    const targetChamberId = chamberParam || prefillChamberId;
+    if (targetChamberId && CHAMBERS.some((c) => c.id === targetChamberId)) {
+      setValue("chamberId", targetChamberId);
+      setStep(1); // Auto-skip Step 0
+    }
+  }, [chamberParam, prefillChamberId, setValue]);
+
+  // Clear prefills on unmount
   useEffect(() => {
     return () => clearPrefill();
   }, [clearPrefill]);
 
-  const preferredDate = watch("preferredDate");
+  // Dynamic day-of-week validation
+  useEffect(() => {
+    if (preferredDate && activeChamber) {
+      if (!isDateAvailableForChamber(preferredDate, activeChamber)) {
+        setError("preferredDate", {
+          type: "custom",
+          message: isBn
+            ? "নির্বাচিত চেম্বারটি এই বারে খোলা নেই"
+            : "The selected chamber is not open on this day of the week",
+        });
+      } else {
+        clearErrors("preferredDate");
+      }
+    }
+  }, [preferredDate, activeChamber, setError, clearErrors, isBn]);
 
   const handleNext = async () => {
-    const fields =
-      step === 0
-        ? (["name", "email", "phone"] as const)
-        : (["preferredDate", "preferredTime"] as const);
+    let fields: Array<keyof AppointmentFormData> = [];
+    if (step === 0) {
+      fields = ["chamberId"];
+    } else if (step === 1) {
+      fields = ["name", "email", "phone"];
+    } else if (step === 2) {
+      fields = ["preferredDate", "preferredTime"];
+    }
 
     const isValid = await trigger(fields);
     if (isValid) {
@@ -96,9 +146,11 @@ export const AppointmentForm = () => {
     retry: false,
     onSuccess: () => {
       toast.success(
-        "Appointment request submitted! We will contact you soon to confirm.",
+        isBn
+          ? "অ্যাপয়েন্টমেন্টের আবেদন জমা হয়েছে! নিশ্চিতকরণের জন্য আমরা শীঘ্রই যোগাযোগ করব।"
+          : "Appointment request submitted! We will contact you soon to confirm.",
       );
-      reset({ preferredTime: "", message: "" });
+      reset({ chamberId: "", preferredTime: "", message: "" });
       setStep(0);
       setSubmitted(true);
     },
@@ -106,18 +158,37 @@ export const AppointmentForm = () => {
       const status = extractHttpStatus(error);
       if (status === 429) {
         toast.error(
-          "You've submitted too many requests. Please wait and try again.",
+          isBn
+            ? "আপনি খুব বেশি আবেদন জমা দিয়েছেন। অনুগ্রহ করে কিছুক্ষণ অপেক্ষা করে আবার চেষ্টা করুন।"
+            : "You've submitted too many requests. Please wait and try again.",
         );
       } else {
-        toast.error("Failed to submit request. Please try again later.");
+        toast.error(
+          isBn
+            ? "আবেদন জমা দিতে ব্যর্থ হয়েছে। অনুগ্রহ করে পরে আবার চেষ্টা করুন।"
+            : "Failed to submit request. Please try again later.",
+        );
       }
     },
   });
 
   const onSubmit = async (data: AppointmentFormData) => {
-    // Submission Guard: If not on the last step, just move to next step
-    if (step < 2) {
+    if (step < 3) {
       handleNext();
+      return;
+    }
+
+    // Double-check date constraint on submit
+    if (
+      activeChamber &&
+      !isDateAvailableForChamber(data.preferredDate, activeChamber)
+    ) {
+      setError("preferredDate", {
+        type: "custom",
+        message: isBn
+          ? "নির্বাচিত চেম্বারটি এই বারে খোলা নেই"
+          : "The selected chamber is not open on this day of the week",
+      });
       return;
     }
 
@@ -137,11 +208,22 @@ export const AppointmentForm = () => {
       );
     }
 
+    // Append selected chamber details to outgoing message
+    const chamberName = activeChamber
+      ? isBn
+        ? activeChamber.hospitalBn
+        : activeChamber.hospitalEn
+      : "";
+    const chamberText = chamberName ? `[Chamber: ${chamberName}]` : "";
+    const finalMessage = data.message
+      ? `${chamberText}\n\n${data.message}`
+      : chamberText;
+
     appointmentMutation.mutate({
       name: data.name,
       phone: data.phone,
       email: data.email || undefined,
-      message: data.message,
+      message: finalMessage,
       preferredDate: data.preferredDate,
       preferredTime: data.preferredTime,
       recaptchaToken: token,
@@ -175,11 +257,10 @@ export const AppointmentForm = () => {
 
         <div className="space-y-3">
           <h3 className="text-3xl font-bold text-text-heading-light dark:text-text-heading-dark">
-            Request Received
+            {t("appointment.received")}
           </h3>
           <p className="text-text-para-light dark:text-text-para-dark max-w-sm mx-auto leading-relaxed">
-            Thank you for reaching out. We’ve received your request and our team
-            will contact you shortly to finalize your appointment.
+            {t("appointment.receivedDesc")}
           </p>
         </div>
 
@@ -189,17 +270,36 @@ export const AppointmentForm = () => {
           variant="outline"
           className="px-8 h-12"
         >
-          Book Another Appointment
+          {t("appointment.bookAnother")}
         </Button>
       </div>
     );
   }
 
+  // Map 24h active slots dynamically
+  const timeOptions = activeChamber
+    ? activeChamber.timeSlots.map((slot24) => {
+        const slot12 = formatTimeSlot(slot24);
+        const isBooked = bookedSlots.includes(slot12);
+        return {
+          value: slot12,
+          label: isBooked ? `${slot12} (${isBn ? "বুকড" : "Booked"})` : slot12,
+          disabled: isBooked,
+        };
+      })
+    : [];
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-10">
+      {/* Wizard Steps Header */}
       <div className="flex flex-col gap-4 mb-2">
         <div className="flex items-center justify-between gap-4">
-          {["Personal Info", "Date & Time", "Notes"].map((label, index) => {
+          {[
+            t("appointment.step0"),
+            t("appointment.step1"),
+            t("appointment.step2"),
+            t("appointment.step3"),
+          ].map((label, index) => {
             const isActive = index <= step;
             const isCurrent = index === step;
             return (
@@ -217,7 +317,7 @@ export const AppointmentForm = () => {
                           : "")
                       }
                     >
-                      {index + 1}
+                      {index}
                     </div>
                     <div className="flex-1 hidden md:block">
                       <div
@@ -249,6 +349,7 @@ export const AppointmentForm = () => {
 
       <div className="min-h-100 flex flex-col">
         <AnimatePresence mode="wait">
+          {/* Step 0: Chamber Selection */}
           {step === 0 && (
             <motion.div
               key="step0"
@@ -260,42 +361,137 @@ export const AppointmentForm = () => {
                 stiffness: 260,
                 damping: 25,
               }}
-              className="space-y-8 flex-1 flex flex-col justify-center"
+              className="space-y-6 flex-1 flex flex-col justify-center"
             >
               <div className="space-y-2">
                 <h4 className="text-xl font-bold text-text-heading-light dark:text-text-heading-dark">
-                  Who is the patient?
+                  {t("appointment.step0.heading")}
                 </h4>
                 <p className="text-sm text-text-para-light dark:text-text-para-dark opacity-60">
-                  Please provide the basic details so we can reach out to you.
+                  {t("appointment.step0.sub")}
                 </p>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <Input
-                  label="Patient Name"
-                  placeholder="John Doe"
-                  error={errors.name?.message}
-                  {...register("name")}
-                />
-                <Input
-                  label="Email Address"
-                  type="email"
-                  placeholder="john@example.com"
-                  error={errors.email?.message}
-                  {...register("email")}
-                />
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {CHAMBERS.map((chamber) => {
+                  const hospital = isBn
+                    ? chamber.hospitalBn
+                    : chamber.hospitalEn;
+                  const address = isBn ? chamber.addressBn : chamber.addressEn;
+                  const isSelected = selectedChamberId === chamber.id;
+
+                  return (
+                    <button
+                      key={chamber.id}
+                      type="button"
+                      onClick={() => {
+                        setValue("chamberId", chamber.id);
+                        clearErrors("chamberId");
+                      }}
+                      className={`p-5 rounded-2xl border text-left transition-all duration-300 flex flex-col justify-between group relative h-full
+                        ${
+                          isSelected
+                            ? "border-brand-primary bg-brand-softbg dark:bg-brand-primary/10 shadow-md shadow-brand-primary/5 ring-2 ring-brand-primary/20"
+                            : "border-border-light dark:border-border-dark bg-transparent hover:border-brand-primary/50 hover:bg-bg-light-soft dark:hover:bg-bg-dark-soft"
+                        }`}
+                    >
+                      {/* Selection Checkmark Dot */}
+                      <div
+                        className={`absolute top-4 right-4 w-5 h-5 rounded-full border flex items-center justify-center transition-all duration-300
+                        ${
+                          isSelected
+                            ? "border-brand-primary bg-brand-primary text-white"
+                            : "border-border-light dark:border-border-dark"
+                        }`}
+                      >
+                        {isSelected && (
+                          <svg
+                            aria-hidden="true"
+                            width="10"
+                            height="10"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="3"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <polyline points="20 6 9 17 4 12" />
+                          </svg>
+                        )}
+                      </div>
+
+                      <div className="pr-6">
+                        <div className="flex items-center gap-2 mb-2">
+                          <span
+                            className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded
+                            ${
+                              chamber.isPrimary
+                                ? "bg-brand-primary text-white"
+                                : "bg-border-light dark:bg-border-dark text-text-para-light dark:text-text-para-dark"
+                            }`}
+                          >
+                            {chamber.isPrimary
+                              ? t("chambers.primary")
+                              : isBn
+                                ? "সহযোগী চেম্বার"
+                                : "Affiliated"}
+                          </span>
+                        </div>
+                        <h5 className="font-bold text-sm text-text-heading-light dark:text-text-heading-dark group-hover:text-brand-primary transition-colors line-clamp-1 mb-1">
+                          {hospital}
+                        </h5>
+                        <p className="text-xs text-text-para-light dark:text-text-para-dark opacity-70 line-clamp-1">
+                          {address}
+                        </p>
+                      </div>
+
+                      <div className="border-t border-border-light/60 dark:border-border-dark/60 pt-3 mt-4 w-full">
+                        <div className="flex items-center gap-1.5 text-xs text-text-para-light dark:text-text-para-dark opacity-80">
+                          <svg
+                            aria-hidden="true"
+                            width="12"
+                            height="12"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            className="text-brand-primary shrink-0"
+                          >
+                            <rect
+                              x="3"
+                              y="4"
+                              width="18"
+                              height="18"
+                              rx="2"
+                              ry="2"
+                            />
+                            <line x1="16" y1="2" x2="16" y2="6" />
+                            <line x1="8" y1="2" x2="8" y2="6" />
+                          </svg>
+                          <span className="font-semibold text-text-heading-light dark:text-text-heading-dark">
+                            {isBn ? "দিনসমূহ:" : "Days:"}
+                          </span>
+                          <span className="truncate">
+                            {chamber.schedule
+                              .map((s) => (isBn ? s.daysBn : s.daysEn))
+                              .join(" | ")}
+                          </span>
+                        </div>
+                      </div>
+                    </button>
+                  );
+                })}
               </div>
-              <Input
-                label="Phone Number"
-                type="tel"
-                placeholder="+8801XXXXXXXXX"
-                helperText="Format: +8801XXXXXXXXX"
-                error={errors.phone?.message}
-                {...register("phone")}
-              />
+              {errors.chamberId && (
+                <p className="text-xs text-red-500 font-semibold mt-1">
+                  {errors.chamberId.message}
+                </p>
+              )}
             </motion.div>
           )}
 
+          {/* Step 1: Patient Info */}
           {step === 1 && (
             <motion.div
               key="step1"
@@ -311,96 +507,84 @@ export const AppointmentForm = () => {
             >
               <div className="space-y-2">
                 <h4 className="text-xl font-bold text-text-heading-light dark:text-text-heading-dark">
-                  Preferred Schedule
+                  {t("appointment.step1.heading")}
                 </h4>
                 <p className="text-sm text-text-para-light dark:text-text-para-dark opacity-60">
-                  Select a date and time that fits your schedule best.
+                  {t("appointment.step1.sub")}
                 </p>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <Input
-                  label="Preferred Date"
-                  type="date"
-                  min={minDate}
-                  error={errors.preferredDate?.message}
-                  {...register("preferredDate")}
+                  label={t("appointment.name")}
+                  placeholder={t("appointment.namePlaceholder")}
+                  error={errors.name?.message}
+                  {...register("name")}
                 />
+                <Input
+                  label={t("appointment.email")}
+                  type="email"
+                  placeholder={t("appointment.emailPlaceholder")}
+                  error={errors.email?.message}
+                  {...register("email")}
+                />
+              </div>
+              <Input
+                label={t("appointment.phone")}
+                type="tel"
+                placeholder={t("appointment.phonePlaceholder")}
+                helperText="Format: +8801XXXXXXXXX"
+                error={errors.phone?.message}
+                {...register("phone")}
+              />
+            </motion.div>
+          )}
+
+          {/* Step 2: Date & Time Selection */}
+          {step === 2 && (
+            <motion.div
+              key="step2"
+              initial={{ x: 20, opacity: 0 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: -20, opacity: 0 }}
+              transition={{
+                type: "spring",
+                stiffness: 260,
+                damping: 25,
+              }}
+              className="space-y-8 flex-1 flex flex-col justify-center"
+            >
+              <div className="space-y-2">
+                <h4 className="text-xl font-bold text-text-heading-light dark:text-text-heading-dark">
+                  {t("appointment.step2.heading")}
+                </h4>
+                <p className="text-sm text-text-para-light dark:text-text-para-dark opacity-60">
+                  {t("appointment.step2.sub")}
+                </p>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                  <Input
+                    label={t("appointment.date")}
+                    type="date"
+                    min={minDate}
+                    error={errors.preferredDate?.message}
+                    {...register("preferredDate")}
+                  />
+                  {activeChamber && (
+                    <p className="mt-2 text-xs text-brand-primary font-semibold">
+                      {isBn
+                        ? `চেম্বার শুধুমাত্র ${activeChamber.schedule.map((s) => s.daysBn).join(" ও ")} বারে খোলা থাকে`
+                        : `Chamber is open on ${activeChamber.schedule.map((s) => s.daysEn).join(" & ")} only`}
+                    </p>
+                  )}
+                </div>
                 <Select
-                  label="Preferred Time Slot"
-                  options={[
-                    {
-                      value: "10:00 AM",
-                      label: `10:00 AM${bookedSlots.includes("10:00 AM") ? " (Booked)" : ""}`,
-                      disabled: bookedSlots.includes("10:00 AM"),
-                    },
-                    {
-                      value: "10:30 AM",
-                      label: `10:30 AM${bookedSlots.includes("10:30 AM") ? " (Booked)" : ""}`,
-                      disabled: bookedSlots.includes("10:30 AM"),
-                    },
-                    {
-                      value: "11:00 AM",
-                      label: `11:00 AM${bookedSlots.includes("11:00 AM") ? " (Booked)" : ""}`,
-                      disabled: bookedSlots.includes("11:00 AM"),
-                    },
-                    {
-                      value: "11:30 AM",
-                      label: `11:30 AM${bookedSlots.includes("11:30 AM") ? " (Booked)" : ""}`,
-                      disabled: bookedSlots.includes("11:30 AM"),
-                    },
-                    {
-                      value: "12:00 PM",
-                      label: `12:00 PM${bookedSlots.includes("12:00 PM") ? " (Booked)" : ""}`,
-                      disabled: bookedSlots.includes("12:00 PM"),
-                    },
-                    {
-                      value: "04:00 PM",
-                      label: `04:00 PM${bookedSlots.includes("04:00 PM") ? " (Booked)" : ""}`,
-                      disabled: bookedSlots.includes("04:00 PM"),
-                    },
-                    {
-                      value: "04:30 PM",
-                      label: `04:30 PM${bookedSlots.includes("04:30 PM") ? " (Booked)" : ""}`,
-                      disabled: bookedSlots.includes("04:30 PM"),
-                    },
-                    {
-                      value: "05:00 PM",
-                      label: `05:00 PM${bookedSlots.includes("05:00 PM") ? " (Booked)" : ""}`,
-                      disabled: bookedSlots.includes("05:00 PM"),
-                    },
-                    {
-                      value: "05:30 PM",
-                      label: `05:30 PM${bookedSlots.includes("05:30 PM") ? " (Booked)" : ""}`,
-                      disabled: bookedSlots.includes("05:30 PM"),
-                    },
-                    {
-                      value: "06:00 PM",
-                      label: `06:00 PM${bookedSlots.includes("06:00 PM") ? " (Booked)" : ""}`,
-                      disabled: bookedSlots.includes("06:00 PM"),
-                    },
-                    {
-                      value: "06:30 PM",
-                      label: `06:30 PM${bookedSlots.includes("06:30 PM") ? " (Booked)" : ""}`,
-                      disabled: bookedSlots.includes("06:30 PM"),
-                    },
-                    {
-                      value: "07:00 PM",
-                      label: `07:00 PM${bookedSlots.includes("07:00 PM") ? " (Booked)" : ""}`,
-                      disabled: bookedSlots.includes("07:00 PM"),
-                    },
-                    {
-                      value: "07:30 PM",
-                      label: `07:30 PM${bookedSlots.includes("07:30 PM") ? " (Booked)" : ""}`,
-                      disabled: bookedSlots.includes("07:30 PM"),
-                    },
-                    {
-                      value: "08:00 PM",
-                      label: `08:00 PM${bookedSlots.includes("08:00 PM") ? " (Booked)" : ""}`,
-                      disabled: bookedSlots.includes("08:00 PM"),
-                    },
-                  ]}
+                  label={t("appointment.time")}
+                  options={timeOptions}
+                  placeholder={isBn ? "সময় নির্বাচন করুন" : "Select a time"}
                   error={errors.preferredTime?.message}
                   {...register("preferredTime")}
+                  disabled={!preferredDate || timeOptions.length === 0}
                 />
               </div>
               {bookedSlots.length > 0 ? (
@@ -421,17 +605,19 @@ export const AppointmentForm = () => {
                     <line x1="12" y1="8" x2="12.01" y2="8" />
                   </svg>
                   <span>
-                    {bookedSlots.length} slot(s) already booked for this date.
-                    Please pick an available one.
+                    {isBn
+                      ? `এই তারিখে ইতোমধ্যে ${bookedSlots.length} টি অ্যাপয়েন্টমেন্ট বুক করা হয়েছে। অনুগ্রহ করে একটি ফাকা সময় বেছে নিন।`
+                      : `${bookedSlots.length} slot(s) already booked for this date. Please pick an available one.`}
                   </span>
                 </div>
               ) : null}
             </motion.div>
           )}
 
-          {step === 2 && (
+          {/* Step 3: Concern Notes */}
+          {step === 3 && (
             <motion.div
-              key="step2"
+              key="step3"
               initial={{ x: 20, opacity: 0 }}
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: -20, opacity: 0 }}
@@ -444,15 +630,15 @@ export const AppointmentForm = () => {
             >
               <div className="space-y-2">
                 <h4 className="text-xl font-bold text-text-heading-light dark:text-text-heading-dark">
-                  Anything else?
+                  {t("appointment.step3.heading")}
                 </h4>
                 <p className="text-sm text-text-para-light dark:text-text-para-dark opacity-60">
-                  (Optional) Help us understand your concerns before the visit.
+                  {t("appointment.step3.sub")}
                 </p>
               </div>
               <Textarea
-                label="Message"
-                placeholder="Briefly describe your orthopedic concern..."
+                label={t("appointment.concern")}
+                placeholder={t("appointment.concernPlaceholder")}
                 error={errors.message?.message}
                 maxLength={500}
                 className="min-h-40"
@@ -463,9 +649,14 @@ export const AppointmentForm = () => {
         </AnimatePresence>
       </div>
 
+      {/* Control Buttons */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-6 pt-8 border-t border-border-light dark:border-border-dark">
         <p className="text-[10px] text-center sm:text-left text-text-para-light dark:text-text-para-dark opacity-50 leading-relaxed max-w-xs">
-          <span>A representative will contact you for final confirmation.</span>
+          <span>
+            {isBn
+              ? "নিশ্চিতকরণের জন্য একজন প্রতিনিধি আপনার সাথে যোগাযোগ করবেন।"
+              : "A representative will contact you for final confirmation."}
+          </span>
           <br />
           <span>
             Protected by reCAPTCHA. Google{" "}
@@ -498,16 +689,16 @@ export const AppointmentForm = () => {
               onClick={handleBack}
               className="flex-1 sm:flex-none h-12 px-8 text-base font-bold"
             >
-              Back
+              {t("appointment.back")}
             </Button>
           )}
-          {step < 2 ? (
+          {step < 3 ? (
             <Button
               type="button"
               onClick={handleNext}
               className="flex-2 sm:flex-none h-12 px-10 text-base font-bold shadow-lg shadow-brand-primary/20"
             >
-              Continue
+              {t("appointment.continue")}
             </Button>
           ) : (
             <Button
@@ -515,11 +706,25 @@ export const AppointmentForm = () => {
               loading={appointmentMutation.isPending}
               className="flex-2 sm:flex-none h-12 px-10 text-base font-bold shadow-lg shadow-brand-primary/20"
             >
-              Submit Request
+              {t("appointment.submit")}
             </Button>
           )}
         </div>
       </div>
     </form>
+  );
+}
+
+export const AppointmentForm = () => {
+  return (
+    <Suspense
+      fallback={
+        <div className="h-96 flex items-center justify-center text-sm opacity-60">
+          Loading appointment form...
+        </div>
+      }
+    >
+      <AppointmentFormContent />
+    </Suspense>
   );
 };

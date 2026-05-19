@@ -1,5 +1,6 @@
 export const FALLBACKS = {
-  doctorName: "Dr. Sahidur Rahman Khan",
-  specialty: "Orthopedic Surgeon",
-  phone: "+880 1234-56789",
+  doctorName: "Dr. Md. Sahidur Rahman Khan",
+  specialty:
+    "Ilizarov, Spine, Arthroplasty, Arthroscopy, Plastic Reconstructive & Orthopedic Trauma Surgeon",
+  phone: "+880 1799-002233",
 } as const;

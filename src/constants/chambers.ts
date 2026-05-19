@@ -1,0 +1,172 @@
+export interface ChamberSchedule {
+  daysEn: string;
+  daysBn: string;
+  timeEn: string;
+  timeBn: string;
+}
+
+export interface Chamber {
+  id: string;
+  isPrimary: boolean;
+  hospitalEn: string;
+  hospitalBn: string;
+  addressEn: string;
+  addressBn: string;
+  roomEn: string;
+  roomBn: string;
+  schedule: ChamberSchedule[];
+  serialPhone: string[];
+  appName?: string;
+  appUrl?: string;
+  assistantEn: string;
+  assistantBn: string;
+  mapUrl: string;
+  /** ISO day-of-week numbers for date picker filtering (0=Sun, 1=Mon, ..., 6=Sat) */
+  availableDays: number[];
+  /** Time slots for appointment form, in 24h "HH:mm" format */
+  timeSlots: string[];
+}
+
+export const CHAMBERS: Chamber[] = [
+  {
+    id: "dhaka",
+    isPrimary: true,
+    hospitalEn: "Ibn Sina Medical College Hospital",
+    hospitalBn: "ইবনে সিনা মেডিকেল কলেজ হাসপাতাল",
+    addressEn: "1/1-B, Kalyanpur, Dhaka",
+    addressBn: "১/১-বি, কল্যাণপুর, ঢাকা",
+    roomEn: "Room 205 (2nd Floor, Lift 1), Hospital Building",
+    roomBn: "কক্ষ নং ২০৫ (২য় তলা, লিফটের ১), হাসপাতাল ভবন",
+    schedule: [
+      {
+        daysEn: "Sat, Mon, Wed",
+        daysBn: "শনি, সোম, বুধ",
+        timeEn: "6:00 PM – 9:00 PM",
+        timeBn: "বিকেল ৬ঃ০০টা – রাত ৯ঃ০০টা",
+      },
+      {
+        daysEn: "Friday",
+        daysBn: "শুক্রবার",
+        timeEn: "8:00 PM – 9:00 PM",
+        timeBn: "রাত ৮ঃ০০টা – ৯ঃ০০টা",
+      },
+    ],
+    serialPhone: ["+8809610009616", "01703725590"],
+    appName: "Ibn Sina Doctor Appointment",
+    appUrl:
+      "https://play.google.com/store/search?q=Ibn+Sina+Doctor+Appointment",
+    assistantEn: "01777079696 (Farzana)",
+    assistantBn: "০১৭৭৭০৭৯৬৯৬ (ফারজানা)",
+    mapUrl:
+      "https://maps.google.com/?q=Ibn+Sina+Medical+College+Hospital+Kalyanpur+Dhaka",
+    availableDays: [1, 3, 5, 6], // Mon=1, Wed=3, Fri=5, Sat=6
+    timeSlots: ["18:00", "18:30", "19:00", "19:30", "20:00", "20:30", "21:00"],
+  },
+  {
+    id: "jhitka",
+    isPrimary: false,
+    hospitalEn: "Payra Hospital Limited",
+    hospitalBn: "পায়রা হসপিটাল লিমিটেড",
+    addressEn: "Jhitkabazar, Harirampur, Manikganj",
+    addressBn: "ঝিটকাবাজার, হরিরামপুর, মানিকগঞ্জ",
+    roomEn: "Room 103",
+    roomBn: "কক্ষ নং ১০৩",
+    schedule: [
+      {
+        daysEn: "Thursday",
+        daysBn: "বৃহস্পতিবার",
+        timeEn: "4:00 PM – 8:00 PM",
+        timeBn: "বিকাল ৪টা থেকে রাত ৮টা",
+      },
+    ],
+    serialPhone: ["01778455552"],
+    appName: undefined,
+    appUrl: undefined,
+    assistantEn: "01619220033 (Mishu)",
+    assistantBn: "০১৬১৯২২০০৩৩ (মিশু)",
+    mapUrl:
+      "https://maps.google.com/?q=Payra+Hospital+Jhitkabazar+Harirampur+Manikganj",
+    availableDays: [4], // Thu=4
+    timeSlots: [
+      "16:00",
+      "16:30",
+      "17:00",
+      "17:30",
+      "18:00",
+      "18:30",
+      "19:00",
+      "19:30",
+      "20:00",
+    ],
+  },
+  {
+    id: "manikganj",
+    isPrimary: false,
+    hospitalEn: "Islami Bank Community Hospital, Manikganj",
+    hospitalBn: "ইসলামি ব্যাংক কমিউনিটি হাসপাতাল, মানিকগঞ্জ",
+    addressEn: "Joyra Road, Bus Stand, Manikganj",
+    addressBn: "জয়রা রোড, বাসস্ট্যান্ড, মানিকগঞ্জ",
+    roomEn: "Room 107 (Ground Floor)",
+    roomBn: "কক্ষ নং ১০৭ (নীচ তলা)",
+    schedule: [
+      {
+        daysEn: "Friday",
+        daysBn: "শুক্রবার",
+        timeEn: "10:00 AM – 5:00 PM",
+        timeBn: "সকাল ১০টা থেকে বিকাল ৫টা পর্যন্ত",
+      },
+    ],
+    serialPhone: ["01711608502"],
+    appName: undefined,
+    appUrl: undefined,
+    assistantEn: "01777688659 (Rakib), 01619220033 (Mishu)",
+    assistantBn: "০১৭৭৭৬৮৮৬৫৯ (রাকিব), ০১৬১৯২২০০৩৩ (মিশু)",
+    mapUrl:
+      "https://maps.google.com/?q=Islami+Bank+Community+Hospital+Manikganj",
+    availableDays: [5], // Fri=5
+    timeSlots: [
+      "10:00",
+      "10:30",
+      "11:00",
+      "11:30",
+      "12:00",
+      "12:30",
+      "13:00",
+      "13:30",
+      "14:00",
+      "14:30",
+      "15:00",
+      "15:30",
+      "16:00",
+      "16:30",
+      "17:00",
+    ],
+  },
+  {
+    id: "singair",
+    isPrimary: false,
+    hospitalEn: "Singair City Hospital & Diagnostic Center",
+    hospitalBn: "সিংগাইর সিটি হাসপিটাল এন্ড ডায়াগনস্টিক সেন্টার",
+    addressEn: "Singair, Manikganj",
+    addressBn: "সিংগাইর, মানিকগঞ্জ",
+    roomEn: "Room 207 (2nd Floor)",
+    roomBn: "কক্ষ নং ২০৭ (২য় তলা)",
+    schedule: [
+      {
+        daysEn: "Saturday",
+        daysBn: "শনিবার",
+        timeEn: "3:00 PM – 5:00 PM",
+        timeBn: "দুপুর ৩টা থেকে ৫টা",
+      },
+    ],
+    serialPhone: ["01868783819"],
+    appName: undefined,
+    appUrl: undefined,
+    assistantEn: "01777688659 (Rakib)",
+    assistantBn: "০১৭৭৭৬৮৮৬৫৯ (রাকিব)",
+    mapUrl:
+      "https://maps.google.com/?q=Singair+City+Hospital+Singair+Manikganj",
+    availableDays: [6], // Sat=6
+    timeSlots: ["15:00", "15:30", "16:00", "16:30", "17:00"],
+  },
+];

@@ -11,10 +11,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
 import { FALLBACKS } from "@/constants/fallbacks";
 import { FOOTER_LINKS } from "@/constants/navigation";
+import { useTranslation } from "@/hooks/useTranslation";
 import type { AppInfo } from "@/types/app-info";
 
 export const Footer = ({ appInfo }: { appInfo?: AppInfo }) => {
   const currentYear = new Date().getFullYear();
+  const { t, language } = useTranslation();
 
   return (
     <footer className="bg-bg-light dark:bg-footer-bg text-text-para-light dark:text-footer-text pt-20 pb-10 border-t border-border-light dark:border-transparent">
@@ -100,23 +102,41 @@ export const Footer = ({ appInfo }: { appInfo?: AppInfo }) => {
           {/* Newsletter / Contact Hint */}
           <div className="space-y-6">
             <h4 className="text-text-heading-light dark:text-white font-bold uppercase tracking-widest text-xs">
-              Contact
+              {t("footer.contact")}
             </h4>
-            <p className="text-sm opacity-80">
-              {appInfo?.address
-                ? appInfo.address
-                : "For urgent orthopedic inquiries or emergency appointments, please contact the clinic directly."}
-            </p>
+            <div className="space-y-2">
+              <p className="text-[10px] font-bold text-brand-primary uppercase tracking-wider">
+                {language === "bn" ? "প্রধান চেম্বার" : "Primary Chamber"}
+              </p>
+              <p className="text-sm font-semibold text-text-heading-light dark:text-white leading-tight">
+                {language === "bn"
+                  ? "ইবনে সিনা মেডিকেল কলেজ হাসপাতাল"
+                  : "Ibn Sina Medical College Hospital"}
+              </p>
+              <p className="text-xs opacity-75">
+                {language === "bn"
+                  ? "১/১-বি, কল্যাণপুর, ঢাকা"
+                  : "1/1-B, Kalyanpur, Dhaka"}
+              </p>
+            </div>
             <div className="p-4 rounded-xl bg-gray-100 dark:bg-white/5 border border-border-light dark:border-white/10 space-y-2">
               <span className="block text-[10px] text-brand-primary font-bold uppercase tracking-wider">
-                Phone
+                {language === "bn" ? "চেম্বার সহকারী" : "Chamber Assistant"}
               </span>
               <a
-                href={`tel:${(appInfo?.phone ?? FALLBACKS.phone).replace(/\D/g, "")}`}
-                className="text-lg font-bold text-text-heading-light dark:text-white hover:text-brand-primary dark:hover:text-brand-primary transition-colors"
+                href="tel:01777079696"
+                className="text-base font-bold text-text-heading-light dark:text-white hover:text-brand-primary dark:hover:text-brand-primary transition-colors block"
               >
-                {appInfo?.phone ?? FALLBACKS.phone}
+                01777-079696 (Farzana)
               </a>
+              <Link
+                href="/chambers"
+                className="text-[10px] underline hover:text-brand-primary text-text-para-light dark:text-footer-text transition-colors block font-semibold"
+              >
+                {language === "bn"
+                  ? "সকল চেম্বার ও সময়সূচী দেখুন"
+                  : "View all chambers & schedules"}
+              </Link>
             </div>
           </div>
         </div>
@@ -124,21 +144,20 @@ export const Footer = ({ appInfo }: { appInfo?: AppInfo }) => {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-border-light dark:border-white/5 flex flex-col md:flex-row items-center justify-between gap-6 text-[10px] font-medium uppercase tracking-[0.2em]">
           <p>
-            © {currentYear} {FALLBACKS.doctorName.toUpperCase()}. ALL RIGHTS
-            RESERVED.
+            © {currentYear} {t("footer.rights")}
           </p>
           <div className="flex items-center gap-8">
             <Link
               href="/terms"
               className="hover:text-brand-primary dark:hover:text-white transition-colors"
             >
-              Terms of Use
+              {t("footer.terms")}
             </Link>
             <Link
               href="/privacy"
               className="hover:text-brand-primary dark:hover:text-white transition-colors"
             >
-              Privacy Policy
+              {t("footer.privacy")}
             </Link>
             <span className="text-border-dark dark:text-white/20 hidden md:block">
               |
