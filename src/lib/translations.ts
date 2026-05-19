@@ -20,7 +20,10 @@ export const translations: Record<string, TranslationEntry> = {
     en: "Select a date and time that fits your schedule best.",
     bn: "আপনার জন্য সুবিধাজনক তারিখ ও সময় বেছে নিন।",
   },
-  "appointment.step3.heading": { en: "Anything else?", bn: "আর কিছু জানাতে চান?" },
+  "appointment.step3.heading": {
+    en: "Anything else?",
+    bn: "আর কিছু জানাতে চান?",
+  },
   "appointment.step3.sub": {
     en: "(Optional) Help us understand your concerns before the visit.",
     bn: "(ঐচ্ছিক) ভিজিটের আগে আপনার সমস্যা সম্পর্কে জানান।",
@@ -45,7 +48,10 @@ export const translations: Record<string, TranslationEntry> = {
   "nav.research": { en: "Research", bn: "গবেষণা" },
   "nav.testimonials": { en: "Testimonials", bn: "রোগীর অভিজ্ঞতা" },
   "nav.contact": { en: "Contact", bn: "যোগাযোগ" },
-  "nav.bookAppointment": { en: "Book Appointment", bn: "অ্যাপয়েন্টমেন্ট বুক করুন" },
+  "nav.bookAppointment": {
+    en: "Book Appointment",
+    bn: "অ্যাপয়েন্টমেন্ট বুক করুন",
+  },
 
   // ═══════════════════════════════════════════════════════
   // HERO SECTION
@@ -127,7 +133,10 @@ export const translations: Record<string, TranslationEntry> = {
     bn: "জন্মগত ও আঘাতজনিত হাত-পা বিকৃতির চিকিৎসা ও অপারেশন।",
   },
 
-  "specialties.trauma.title": { en: "Orthopedic Trauma", bn: "অর্থোপেডিক ট্রমা" },
+  "specialties.trauma.title": {
+    en: "Orthopedic Trauma",
+    bn: "অর্থোপেডিক ট্রমা",
+  },
   "specialties.trauma.desc": {
     en: "Expert management of complex fractures, open fractures, non-union fractures, and failed surgery cases.",
     bn: "জটিল ভাঙ্গা, ওপেন ফ্রাকচার, পুরাতন ভঙ্গা ও ফেইলড অপারেশনের সর্বাধুনিক চিকিৎসা।",
@@ -160,7 +169,10 @@ export const translations: Record<string, TranslationEntry> = {
     en: "Ilizarov Fellow (RISC RTO, Russia)",
     bn: "ইলিজারভ ফেলো (RISC RTO, রাশিয়া)",
   },
-  "about.cta": { en: "Learn More About My Journey", bn: "আমার যাত্রা সম্পর্কে জানুন" },
+  "about.cta": {
+    en: "Learn More About My Journey",
+    bn: "আমার যাত্রা সম্পর্কে জানুন",
+  },
   "about.patients": { en: "Happy Patients", bn: "সন্তুষ্ট রোগী" },
   "about.trustedCare": { en: "Trusted Care", bn: "বিশ্বস্ত সেবা" },
 
@@ -252,16 +264,28 @@ export const translations: Record<string, TranslationEntry> = {
   "aboutPage.qual.tag.degree": { en: "Degree", bn: "ডিগ্রী" },
   "aboutPage.qual.tag.postgraduate": { en: "Postgraduate", bn: "স্নাতকোত্তর" },
   "aboutPage.qual.tag.diploma": { en: "Diploma", bn: "ডিপ্লোমা" },
-  "aboutPage.qual.tag.civilService": { en: "Civil Service", bn: "সিভিল সার্ভিস" },
+  "aboutPage.qual.tag.civilService": {
+    en: "Civil Service",
+    bn: "সিভিল সার্ভিস",
+  },
   "aboutPage.qual.tag.fellowship": { en: "Fellowship", bn: "ফেলোশিপ" },
 
-  "aboutPage.stats.years": { en: "Degrees & Training", bn: "ডিগ্রী ও প্রশিক্ষণ" },
-  "aboutPage.stats.countries": { en: "Countries Trained", bn: "প্রশিক্ষণের দেশ" },
+  "aboutPage.stats.years": {
+    en: "Degrees & Training",
+    bn: "ডিগ্রী ও প্রশিক্ষণ",
+  },
+  "aboutPage.stats.countries": {
+    en: "Countries Trained",
+    bn: "প্রশিক্ষণের দেশ",
+  },
   "aboutPage.stats.specialties": {
     en: "Clinical Specialties",
     bn: "ক্লিনিকাল বিশেষজ্ঞতা",
   },
-  "aboutPage.stats.chambers": { en: "Chamber Locations", bn: "চেম্বারের অবস্থান" },
+  "aboutPage.stats.chambers": {
+    en: "Chamber Locations",
+    bn: "চেম্বারের অবস্থান",
+  },
 
   // ═══════════════════════════════════════════════════════
   // CTA SECTION
@@ -345,7 +369,10 @@ export const translations: Record<string, TranslationEntry> = {
   // TESTIMONIALS CAROUSEL
   // ═══════════════════════════════════════════════════════
   "testimonials.badge": { en: "What Patients Say", bn: "রোগীরা যা বলেন" },
-  "testimonials.title": { en: "Trusted by Patients", bn: "রোগীদের বিশ্বাসভাজন" },
+  "testimonials.title": {
+    en: "Trusted by Patients",
+    bn: "রোগীদের বিশ্বাসভাজন",
+  },
 
   // ═══════════════════════════════════════════════════════
   // FOOTER
@@ -414,7 +441,10 @@ export const translations: Record<string, TranslationEntry> = {
     en: "Describe your condition or concern",
     bn: "আপনার সমস্যা বা উদ্বেগ বর্ণনা করুন",
   },
-  "appointment.submit": { en: "Book Appointment", bn: "অ্যাপয়েন্টমেন্ট বুক করুন" },
+  "appointment.submit": {
+    en: "Book Appointment",
+    bn: "অ্যাপয়েন্টমেন্ট বুক করুন",
+  },
 
   // ═══════════════════════════════════════════════════════
   // CONTACT FORM
@@ -462,7 +492,10 @@ export const translations: Record<string, TranslationEntry> = {
     bn: "কিছু একটা সমস্যা হয়েছে",
   },
   "shared.backToTop": { en: "Back to top", bn: "উপরে ফিরুন" },
-  "shared.skipToContent": { en: "Skip to main content", bn: "মূল বিষয়বস্তুতে যান" },
+  "shared.skipToContent": {
+    en: "Skip to main content",
+    bn: "মূল বিষয়বস্তুতে যান",
+  },
   // Missing nav keys used by Header & Breadcrumbs
   "nav.about": { en: "About", bn: "সম্পর্কে" },
   "nav.appointment": { en: "Appointment", bn: "অ্যাপয়েন্টমেন্ট" },
@@ -591,7 +624,10 @@ export const translations: Record<string, TranslationEntry> = {
     en: "Still Have Questions?",
     bn: "এখনও প্রশ্ন আছে?",
   },
-  "chambers.sendMessage": { en: "Send Us a Message", bn: "আমাদের বার্তা পাঠান" },
+  "chambers.sendMessage": {
+    en: "Send Us a Message",
+    bn: "আমাদের বার্তা পাঠান",
+  },
   "chambers.messageDesc": {
     en: "For general inquiries or if you need guidance before booking, fill out the form and our team will get back to you. For urgent cases, use the emergency numbers below.",
     bn: "সাধারণ জিজ্ঞাসা বা বুকিংয়ের আগে নির্দেশনার জন্য ফর্মটি পূরণ করুন এবং আমাদের দল আপনার সাথে যোগাযোগ করবে। জরুরি প্রয়োজনে নীচের নম্বরগুলিতে যোগাযোগ করুন।",

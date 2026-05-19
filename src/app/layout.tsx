@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Hind_Siliguri, Inter } from "next/font/google";
 import "./globals.css";
 
 import { Toaster } from "sonner";
@@ -13,6 +13,13 @@ import type { AppInfo } from "@/types/app-info";
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
+});
+
+const hindSiliguri = Hind_Siliguri({
+  subsets: ["bengali"],
+  variable: "--font-bengali",
   display: "swap",
   weight: ["400", "500", "600", "700"],
 });
@@ -61,7 +68,7 @@ export default async function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} h-full antialiased`}
+      className={`${inter.variable} ${hindSiliguri.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <head>

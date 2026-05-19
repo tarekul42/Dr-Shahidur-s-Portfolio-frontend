@@ -12,7 +12,7 @@ describe("ChambersContact component", () => {
     render(<ChambersContact />);
     
     // Checks that the emergency hotlines are shown
-    expect(screen.getByText("+880 1777-079696")).toBeInTheDocument();
+    expect(screen.getAllByText("+880 1777-079696")[0]).toBeInTheDocument();
     expect(screen.getByText("+880 1711-608502")).toBeInTheDocument();
   });
 

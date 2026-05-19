@@ -1,12 +1,11 @@
 import { describe, expect, it } from "vitest";
 import {
+  formatTimeSlot,
+  getAvailableDayNames,
   getChamberById,
   getPrimaryChamber,
-  formatTimeSlot,
   isDateAvailableForChamber,
-  getAvailableDayNames,
 } from "./chamber-utils";
-import { CHAMBERS } from "@/constants/chambers";
 
 describe("chamber-utils", () => {
   it("getChamberById returns the matching chamber or undefined", () => {
@@ -30,7 +29,7 @@ describe("chamber-utils", () => {
     // AM slots
     expect(formatTimeSlot("10:00")).toBe("10:00 AM");
     expect(formatTimeSlot("11:30")).toBe("11:30 AM");
-    
+
     // PM slots
     expect(formatTimeSlot("12:00")).toBe("12:00 PM");
     expect(formatTimeSlot("15:30")).toBe("3:30 PM");

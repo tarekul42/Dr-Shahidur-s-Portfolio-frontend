@@ -1,7 +1,7 @@
-import { beforeEach, describe, expect, it } from "vitest";
-import { renderHook, act } from "@testing-library/react";
-import { useTranslation } from "./useTranslation";
 import { useLanguageStore } from "@/store/use-language-store";
+import { act, renderHook } from "@testing-library/react";
+import { beforeEach, describe, expect, it } from "vitest";
+import { useTranslation } from "./useTranslation";
 
 describe("useTranslation hook", () => {
   beforeEach(() => {
@@ -32,7 +32,7 @@ describe("useTranslation hook", () => {
 
   it("interpolates variables inside brackets dynamically", () => {
     const { result } = renderHook(() => useTranslation());
-    
+
     // We can test variable replacement if we have a key in translations that uses {var}.
     // If not, we can rely on how `result.replace` handles custom strings in t() or test a known i18n entry.
     // Let's check a standard one or test how fallback key behaves with variables.

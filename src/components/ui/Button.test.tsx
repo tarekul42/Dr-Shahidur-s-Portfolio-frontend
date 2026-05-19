@@ -5,7 +5,9 @@ import { Button } from "./Button";
 describe("Button", () => {
   it("renders as a button by default", () => {
     render(<Button>Click me</Button>);
-    expect(screen.getByRole("button", { name: "Click me" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Click me" }),
+    ).toBeInTheDocument();
   });
 
   it("renders as a link when href is provided", () => {

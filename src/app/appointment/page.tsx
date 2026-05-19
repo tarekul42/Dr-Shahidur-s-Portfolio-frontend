@@ -23,7 +23,7 @@ export default function AppointmentPage() {
 
         <div className="bg-white dark:bg-card-dark rounded-3xl shadow-2xl overflow-hidden border border-border-light dark:border-border-dark">
           <div className="grid grid-cols-1 lg:grid-cols-5">
-            <div className="lg:col-span-2 bg-brand-primary p-8 md:p-12 text-white flex flex-col justify-between">
+            <div className="lg:col-span-2 bg-brand-primary h-full p-8 md:p-12 text-white flex flex-col justify-between">
               <div className="space-y-8">
                 <div className="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center">
                   <svg

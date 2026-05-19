@@ -10,6 +10,7 @@ export interface Appointment {
   message?: string;
   preferredDate: string;
   preferredTime: string;
+  chamberId?: string;
   status: AppointmentStatus;
   ipAddress: string;
   location: GeoLocation;
@@ -24,5 +25,6 @@ export interface AppointmentCreatePayload {
   message?: string;
   preferredDate: string;
   preferredTime: string;
+  chamberId?: string;
   recaptchaToken?: string;
 }

@@ -1,10 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AppointmentForm } from "./AppointmentForm";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createAppointment, getBookedSlots } from "@/lib/api/appointments";
-import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 // Set up mock search params
 let mockSearchParamVal: string | null = null;
@@ -12,6 +11,15 @@ vi.mock("next/navigation", () => ({
   useSearchParams: () => ({
     get: (key: string) => (key === "chamber" ? mockSearchParamVal : null),
   }),
+}));
+
+// Mock framer-motion to bypass layout animations during test execution
+vi.mock("framer-motion", () => ({
+  motion: {
+    div: ({ children, className, ...props }: any) => <div className={className} {...props}>{children}</div>,
+    span: ({ children, className, ...props }: any) => <span className={className} {...props}>{children}</span>,
+  },
+  AnimatePresence: ({ children }: any) => <>{children}</>,
 }));
 
 // Mock the API
@@ -35,6 +43,13 @@ const wrapper = ({ children }: { children: React.ReactNode }) => (
   <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
 );
 
+function formatLocalDate(date: Date): string {
+  const yyyy = date.getFullYear();
+  const mm = String(date.getMonth() + 1).padStart(2, "0");
+  const dd = String(date.getDate()).padStart(2, "0");
+  return `${yyyy}-${mm}-${dd}`;
+}
+
 describe("AppointmentForm", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -44,11 +59,9 @@ describe("AppointmentForm", () => {
 
   it("renders step 0 (chamber selection) initially", () => {
     render(<AppointmentForm />, { wrapper });
-    expect(screen.getByText("Which chamber would you like to visit?")).toBeInTheDocument();
-    expect(screen.getByText("Ibn Sina Medical College Hospital")).toBeInTheDocument();
-    expect(screen.getByText("Payra Hospital Limited")).toBeInTheDocument();
-    expect(screen.getByText("Islami Bank Community Hospital, Manikganj")).toBeInTheDocument();
-    expect(screen.getByText("Singair City Hospital & Diagnostic Center")).toBeInTheDocument();
+    expect(screen.getByText("Where would you like to visit?")).toBeInTheDocument();
+    expect(screen.getByLabelText(/Chamber \/ Hospital/i)).toBeInTheDocument();
+    expect(screen.getByText("Choose a chamber...")).toBeInTheDocument();
   });
 
   it("shows validation error on Step 0 if no chamber selected", async () => {
@@ -68,7 +81,7 @@ describe("AppointmentForm", () => {
 
     await waitFor(() => {
       expect(screen.getByText("Who is the patient?")).toBeInTheDocument();
-      expect(screen.getByLabelText("Patient Name")).toBeInTheDocument();
+      expect(screen.getByLabelText("Full Name")).toBeInTheDocument();
     });
   });
 
@@ -76,8 +89,8 @@ describe("AppointmentForm", () => {
     const user = userEvent.setup();
     render(<AppointmentForm />, { wrapper });
 
-    // Select the first chamber (Ibn Sina)
-    await user.click(screen.getByText("Ibn Sina Medical College Hospital"));
+    // Select the first chamber (Ibn Sina, id is "dhaka") using the dropdown label
+    await user.selectOptions(screen.getByLabelText(/Chamber \/ Hospital/i), "dhaka");
     await user.click(screen.getByRole("button", { name: /continue/i }));
 
     await waitFor(() => {
@@ -98,7 +111,7 @@ describe("AppointmentForm", () => {
     });
 
     // Try incorrect phone number format
-    await user.type(screen.getByLabelText("Patient Name"), "Test Patient");
+    await user.type(screen.getByLabelText("Full Name"), "Test Patient");
     await user.type(screen.getByLabelText("Phone Number"), "017123456"); // too short, no +880
     await user.click(screen.getByRole("button", { name: /continue/i }));
 
@@ -113,7 +126,7 @@ describe("AppointmentForm", () => {
     render(<AppointmentForm />, { wrapper });
 
     // Step 1: Patient Info
-    await user.type(screen.getByLabelText("Patient Name"), "John Doe");
+    await user.type(screen.getByLabelText("Full Name"), "John Doe");
     await user.type(screen.getByLabelText("Email Address"), "john@example.com");
     await user.type(screen.getByLabelText("Phone Number"), "+8801712345678");
     await user.click(screen.getByRole("button", { name: /continue/i }));
@@ -126,18 +139,22 @@ describe("AppointmentForm", () => {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
     
-    // Kalyanpur Dhaka is open on Sat, Mon, Wed, Fri (1, 3, 5, 6).
-    // Ensure we select a date that matches availableDays to pass the validator
+    // Kalyanpur Dhaka (Ibn Sina) is open on Sat, Mon, Wed, Fri (1, 3, 5, 6).
+    // Exclude Friday (5) because its schedule starts at 8:00 PM, whereas we need 6:00 PM slot.
     let testDate = tomorrow;
-    while (![1, 3, 5, 6].includes(testDate.getDay())) {
+    while (![1, 3, 6].includes(testDate.getDay())) {
       testDate.setDate(testDate.getDate() + 1);
     }
-    const dateStr = testDate.toISOString().slice(0, 10);
+    const dateStr = formatLocalDate(testDate);
 
+    // Type date into the screen-reader-accessible (sr-only) input field
     await user.type(screen.getByLabelText("Preferred Date"), dateStr);
     
-    // Select time slot
-    await user.selectOptions(screen.getByLabelText("Preferred Time Slot"), "6:00 PM");
+    // Select the time slot button labeled "6:00 PM"
+    await waitFor(() => {
+      expect(screen.getByRole("button", { name: /^6:00 PM/i })).toBeInTheDocument();
+    });
+    await user.click(screen.getByRole("button", { name: /^6:00 PM/i }));
     await user.click(screen.getByRole("button", { name: /continue/i }));
 
     // Step 3: Concern Notes
@@ -146,7 +163,7 @@ describe("AppointmentForm", () => {
     });
 
     await user.type(screen.getByLabelText("Primary Concern"), "Severe knee pain");
-    await user.click(screen.getByRole("button", { name: /submit request/i }));
+    await user.click(screen.getByRole("button", { name: /book appointment/i }));
 
     await waitFor(() => {
       expect(createAppointment).toHaveBeenCalledOnce();
@@ -168,7 +185,7 @@ describe("AppointmentForm", () => {
     render(<AppointmentForm />, { wrapper });
 
     // Step 0 -> select chamber -> Step 1
-    await user.click(screen.getByText("Ibn Sina Medical College Hospital"));
+    await user.selectOptions(screen.getByLabelText(/Chamber \/ Hospital/i), "dhaka");
     await user.click(screen.getByRole("button", { name: /continue/i }));
 
     await waitFor(() => {
@@ -179,7 +196,7 @@ describe("AppointmentForm", () => {
     await user.click(screen.getByRole("button", { name: /back/i }));
 
     await waitFor(() => {
-      expect(screen.getByText("Which chamber would you like to visit?")).toBeInTheDocument();
+      expect(screen.getByText("Where would you like to visit?")).toBeInTheDocument();
     });
   });
 
@@ -189,7 +206,7 @@ describe("AppointmentForm", () => {
     render(<AppointmentForm />, { wrapper });
 
     // Step 1: fill info
-    await user.type(screen.getByLabelText("Patient Name"), "John Doe");
+    await user.type(screen.getByLabelText("Full Name"), "John Doe");
     await user.type(screen.getByLabelText("Phone Number"), "+8801712345678");
     await user.click(screen.getByRole("button", { name: /continue/i }));
 
@@ -206,7 +223,7 @@ describe("AppointmentForm", () => {
     while (closedDate.getDay() === 4) {
       closedDate.setDate(closedDate.getDate() + 1);
     }
-    const closedDateStr = closedDate.toISOString().slice(0, 10);
+    const closedDateStr = formatLocalDate(closedDate);
 
     await user.type(screen.getByLabelText("Preferred Date"), closedDateStr);
     
@@ -225,7 +242,7 @@ describe("AppointmentForm", () => {
     render(<AppointmentForm />, { wrapper });
 
     // Step 1
-    await user.type(screen.getByLabelText("Patient Name"), "John Doe");
+    await user.type(screen.getByLabelText("Full Name"), "John Doe");
     await user.type(screen.getByLabelText("Phone Number"), "+8801712345678");
     await user.click(screen.getByRole("button", { name: /continue/i }));
 
@@ -236,7 +253,14 @@ describe("AppointmentForm", () => {
 
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
-    const dateStr = tomorrow.toISOString().slice(0, 10);
+    
+    // Dhaka (Ibn Sina) open day (Sat/Mon/Wed/Fri)
+    // Exclude Friday (5) because its schedule starts at 8:00 PM, whereas we need 6:00 PM slot.
+    let testDate = tomorrow;
+    while (![1, 3, 6].includes(testDate.getDay())) {
+      testDate.setDate(testDate.getDate() + 1);
+    }
+    const dateStr = formatLocalDate(testDate);
     await user.type(screen.getByLabelText("Preferred Date"), dateStr);
 
     await waitFor(() => {

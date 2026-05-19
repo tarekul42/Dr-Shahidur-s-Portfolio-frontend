@@ -170,3 +170,141 @@ export const CHAMBERS: Chamber[] = [
     timeSlots: ["15:00", "15:30", "16:00", "16:30", "17:00"],
   },
 ];
+
+export interface ChamberFallback {
+  id: string;
+  chemberName: string;
+  map: string;
+  activeDates: Array<{
+    activeDay: string;
+    startTime: string;
+    endTime: string;
+  }>;
+  address: string;
+  addressBn: string;
+  phone: string;
+  assistantName: string;
+  assistantNameBn: string;
+  room: string;
+  isPrimary: boolean;
+  roomBn?: string;
+}
+
+export const CHAMBERS_FALLBACK: ChamberFallback[] = [
+  {
+    id: "dhaka",
+    chemberName: "Ibn Sina Medical College Hospital",
+    map: "https://maps.google.com/?q=Ibn+Sina+Medical+College+Hospital+Kalyanpur+Dhaka",
+    activeDates: [
+      { activeDay: "SATURDAY", startTime: "18:00", endTime: "21:00" },
+      { activeDay: "MONDAY", startTime: "18:00", endTime: "21:00" },
+      { activeDay: "WEDNESDAY", startTime: "18:00", endTime: "21:00" },
+      { activeDay: "FRIDAY", startTime: "20:00", endTime: "21:00" },
+    ],
+    address: "1/1-B, Kalyanpur, Dhaka",
+    addressBn: "১/১-বি, কল্যাণপুর, ঢাকা",
+    phone: "+8809610009616",
+    assistantName: "01777079696 (Farzana)",
+    assistantNameBn: "০১৭৭৭০৭৯৬৯৬ (ফারজানা)",
+    room: "Room 205 (2nd Floor, Lift 1), Hospital Building",
+    roomBn: "কক্ষ নং ২০৫ (২য় তলা, লিফটের ১), হাসপাতাল ভবন",
+    isPrimary: true,
+  },
+  {
+    id: "jhitka",
+    chemberName: "Payra Hospital Limited",
+    map: "https://maps.google.com/?q=Payra+Hospital+Jhitkabazar+Harirampur+Manikganj",
+    activeDates: [
+      { activeDay: "THURSDAY", startTime: "16:00", endTime: "20:00" },
+    ],
+    address: "Jhitkabazar, Harirampur, Manikganj",
+    addressBn: "ঝিটকাবাজার, হরিরামপুর, মানিকগঞ্জ",
+    phone: "01778455552",
+    assistantName: "01619220033 (Mishu)",
+    assistantNameBn: "০১৬১৯২২০০৩৩ (মিশু)",
+    room: "Room 103",
+    roomBn: "কক্ষ নং ১০৩",
+    isPrimary: false,
+  },
+  {
+    id: "manikganj",
+    chemberName: "Islami Bank Community Hospital, Manikganj",
+    map: "https://maps.google.com/?q=Islami+Bank+Community+Hospital+Manikganj",
+    activeDates: [
+      { activeDay: "FRIDAY", startTime: "10:00", endTime: "17:00" },
+    ],
+    address: "Joyra Road, Bus Stand, Manikganj",
+    addressBn: "জয়রা রোড, বাসস্ট্যান্ড, মানিকগঞ্জ",
+    phone: "01711608502",
+    assistantName: "01777688659 (Rakib), 01619220033 (Mishu)",
+    assistantNameBn: "০১৭৭৭৬৮৮৬৫৯ (রাকিব), ০১৬১৯২২০০৩৩ (মিশু)",
+    room: "Room 107 (Ground Floor)",
+    roomBn: "কক্ষ নং ১০৭ (নীচ তলা)",
+    isPrimary: false,
+  },
+  {
+    id: "singair",
+    chemberName: "Singair City Hospital & Diagnostic Center",
+    map: "https://maps.google.com/?q=Singair+City+Hospital+Singair+Manikganj",
+    activeDates: [
+      { activeDay: "SATURDAY", startTime: "15:00", endTime: "17:00" },
+    ],
+    address: "Singair, Manikganj",
+    addressBn: "সিংগাইর, মানিকগঞ্জ",
+    phone: "01868783819",
+    assistantName: "01777688659 (Rakib)",
+    assistantNameBn: "০১৭৭৭৬৮৮৬৫৯ (রাকিব)",
+    room: "Room 207 (2nd Floor)",
+    roomBn: "কক্ষ নং ২০৭ (২য় তলা)",
+    isPrimary: false,
+  },
+];
+
+import type { ChamberEnrichment } from "@/types/chamber";
+
+export const CHAMBER_ENRICHMENT: Record<string, ChamberEnrichment> = {
+  dhaka: {
+    chamberId: "dhaka",
+    address: "1/1-B, Kalyanpur, Dhaka",
+    addressBn: "১/১-বি, কল্যাণপুর, ঢাকা",
+    phone: "+8809610009616",
+    assistantName: "01777079696 (Farzana)",
+    assistantNameBn: "০১৭৭৭০৭৯৬৯৬ (ফারজানা)",
+    room: "Room 205 (2nd Floor, Lift 1), Hospital Building",
+    roomBn: "কক্ষ নং ২০৫ (২য় তলা, লিফটের ১), হাসপাতাল ভবন",
+    isPrimary: true,
+  },
+  jhitka: {
+    chamberId: "jhitka",
+    address: "Jhitkabazar, Harirampur, Manikganj",
+    addressBn: "ঝিটকাবাজার, হরিরামপুর, মানিকগঞ্জ",
+    phone: "01778455552",
+    assistantName: "01619220033 (Mishu)",
+    assistantNameBn: "০১৬১৯২২০০৩৩ (মিশু)",
+    room: "Room 103",
+    roomBn: "কক্ষ নং ১০৩",
+    isPrimary: false,
+  },
+  manikganj: {
+    chamberId: "manikganj",
+    address: "Joyra Road, Bus Stand, Manikganj",
+    addressBn: "জয়রা রোড, বাসস্ট্যান্ড, মানিকগঞ্জ",
+    phone: "01711608502",
+    assistantName: "01777688659 (Rakib), 01619220033 (Mishu)",
+    assistantNameBn: "০১৭৭৭৬৮৮৬৫৯ (রাকিব), ০১৬১৯২২০০৩৩ (মিশু)",
+    room: "Room 107 (Ground Floor)",
+    roomBn: "কক্ষ নং ১০৭ (নীচ তলা)",
+    isPrimary: false,
+  },
+  singair: {
+    chamberId: "singair",
+    address: "Singair, Manikganj",
+    addressBn: "সিংগাইর, মানিকগঞ্জ",
+    phone: "01868783819",
+    assistantName: "01777688659 (Rakib)",
+    assistantNameBn: "০১৭৭৭৬৮৮৬৫৯ (রাকিব)",
+    room: "Room 207 (2nd Floor)",
+    roomBn: "কক্ষ নং ২০৭ (২য় তলা)",
+    isPrimary: false,
+  },
+};

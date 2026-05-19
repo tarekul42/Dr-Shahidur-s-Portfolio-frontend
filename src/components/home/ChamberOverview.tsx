@@ -1,9 +1,9 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Link from "next/link";
 import { AnimatedSection } from "@/components/shared/AnimatedSection";
 import { SectionHeading } from "@/components/shared/SectionHeading";
+import { Button } from "@/components/ui/Button";
 import { CHAMBERS } from "@/constants/chambers";
 import { useTranslation } from "@/hooks/useTranslation";
 
@@ -22,7 +22,7 @@ export function ChamberOverview() {
             centered
           />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
             {CHAMBERS.map((chamber, index) => {
               const hospital = isBn ? chamber.hospitalBn : chamber.hospitalEn;
               const address = isBn ? chamber.addressBn : chamber.addressEn;
@@ -34,19 +34,26 @@ export function ChamberOverview() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.05 }}
-                  className={`p-6 rounded-2xl border bg-card-light dark:bg-card-dark flex flex-col justify-between transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5 group
+                  className={`relative p-8 rounded-2xl border bg-card-light dark:bg-card-dark flex flex-col justify-between min-h-[320px] transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-brand-primary/5 hover:border-brand-primary group
                   ${
                     chamber.isPrimary
-                      ? "border-brand-primary/30 shadow-md shadow-brand-primary/5"
+                      ? "border-brand-primary/40 ring-1 ring-brand-primary/5"
                       : "border-border-light dark:border-border-dark"
                   }`}
                 >
                   <div>
-                    <div className="flex items-start justify-between gap-2 mb-3">
-                      <span className="w-8 h-8 rounded-lg bg-brand-primary/10 text-brand-primary flex items-center justify-center shrink-0">
+                    {/* Primary Badge */}
+                    {chamber.isPrimary && (
+                      <span className="absolute -top-3 left-6 px-3 py-1 bg-brand-primary text-white text-[9px] font-bold uppercase tracking-widest rounded-full shadow-lg shadow-brand-primary/20">
+                        {t("chambers.primary")}
+                      </span>
+                    )}
+
+                    <div className="flex items-start justify-between gap-2 mb-5">
+                      <span className="w-12 h-12 rounded-xl bg-brand-softbg dark:bg-brand-primary/10 text-brand-primary flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-500">
                         <svg
-                          width="14"
-                          height="14"
+                          width="20"
+                          height="20"
                           viewBox="0 0 24 24"
                           fill="none"
                           stroke="currentColor"
@@ -58,63 +65,62 @@ export function ChamberOverview() {
                           <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
                         </svg>
                       </span>
-                      {chamber.isPrimary && (
-                        <span className="px-2 py-0.5 bg-brand-primary text-white text-[8px] font-bold uppercase tracking-wider rounded-md">
-                          {t("chambers.primary")}
-                        </span>
-                      )}
                     </div>
-                    <h3 className="text-base font-bold text-text-heading-light dark:text-text-heading-dark group-hover:text-brand-primary transition-colors line-clamp-2 min-h-[3rem] mb-1">
+                    <h3 className="text-xl font-bold text-text-heading-light dark:text-text-heading-dark group-hover:text-brand-primary transition-colors line-clamp-2 min-h-[3.5rem] mb-2 leading-snug">
                       {hospital}
                     </h3>
-                    <p className="text-xs text-text-para-light dark:text-text-para-dark opacity-60 mb-4 truncate">
+                    <p className="text-sm text-text-para-light dark:text-text-para-dark opacity-60 mb-6 line-clamp-2 min-h-[2.5rem]">
                       {address}
                     </p>
                   </div>
 
-                  <div className="border-t border-border-light/60 dark:border-border-dark/60 pt-4 mt-auto">
-                    <div className="flex flex-col gap-1.5">
+                  <div className="border-t border-border-light/60 dark:border-border-dark/60 pt-5 mt-auto">
+                    <div className="flex flex-col gap-2.5">
                       {chamber.schedule.slice(0, 1).map((s) => {
                         const days = isBn ? s.daysBn : s.daysEn;
                         const time = isBn ? s.timeBn : s.timeEn;
                         return (
                           <div
                             key={`${s.daysEn}-${s.timeEn}`}
-                            className="flex items-center gap-1.5 text-xs"
+                            className="flex items-center gap-3 p-3 rounded-xl bg-brand-primary/5 border border-brand-primary/10 text-xs"
                           >
-                            {/* Mini Calendar Icon */}
-                            <svg
-                              width="10"
-                              height="10"
-                              viewBox="0 0 24 24"
-                              fill="none"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              className="text-brand-primary shrink-0"
-                            >
-                              <title>Calendar Icon</title>
-                              <rect
-                                x="3"
-                                y="4"
-                                width="18"
-                                height="18"
-                                rx="2"
-                                ry="2"
-                              />
-                              <line x1="16" y1="2" x2="16" y2="6" />
-                              <line x1="8" y1="2" x2="8" y2="6" />
-                            </svg>
-                            <span className="font-bold text-text-heading-light dark:text-text-heading-dark">
-                              {days}:
-                            </span>
-                            <span className="text-text-para-light dark:text-text-para-dark opacity-80">
-                              {time}
-                            </span>
+                            {/* Mini Calendar Icon Box */}
+                            <div className="w-6 h-6 rounded-lg bg-brand-primary/10 text-brand-primary flex items-center justify-center shrink-0">
+                              <svg
+                                width="12"
+                                height="12"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2.5"
+                                className="shrink-0"
+                              >
+                                <title>Calendar Icon</title>
+                                <rect
+                                  x="3"
+                                  y="4"
+                                  width="18"
+                                  height="18"
+                                  rx="2"
+                                  ry="2"
+                                />
+                                <line x1="16" y1="2" x2="16" y2="6" />
+                                <line x1="8" y1="2" x2="8" y2="6" />
+                              </svg>
+                            </div>
+                            <div className="flex flex-col">
+                              <span className="font-bold text-text-heading-light dark:text-text-heading-dark leading-tight">
+                                {days}
+                              </span>
+                              <span className="text-[10px] text-text-para-light dark:text-text-para-dark opacity-80 mt-0.5">
+                                {time}
+                              </span>
+                            </div>
                           </div>
                         );
                       })}
                       {chamber.schedule.length > 1 && (
-                        <span className="text-[10px] text-brand-primary font-bold self-start mt-0.5">
+                        <span className="text-[10px] text-brand-primary font-bold self-start mt-0.5 ml-2">
                           {isBn
                             ? `+${chamber.schedule.length - 1} টি অন্য সময়সূচী`
                             : `+${chamber.schedule.length - 1} more schedule`}
@@ -129,9 +135,10 @@ export function ChamberOverview() {
 
           {/* View All CTA */}
           <div className="flex justify-center">
-            <Link
+            <Button
               href="/chambers"
-              className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-brand-primary text-white text-sm font-bold shadow-lg shadow-brand-primary/20 hover:bg-brand-primary-hover hover:-translate-y-0.5 transition-all duration-300"
+              size="lg"
+              className="shadow-lg shadow-brand-primary/20 hover:scale-[1.02] transition-all duration-300"
             >
               {isBn
                 ? "সকল চেম্বার ও সময়সূচী দেখুন"
@@ -145,13 +152,13 @@ export function ChamberOverview() {
                 strokeWidth="2.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="group-hover:translate-x-1 transition-transform"
+                className="ml-2 group-hover:translate-x-1 transition-transform"
               >
                 <title>Arrow Right</title>
                 <line x1="5" y1="12" x2="19" y2="12" />
                 <polyline points="12 5 19 12 12 19" />
               </svg>
-            </Link>
+            </Button>
           </div>
         </div>
       </AnimatedSection>

@@ -53,3 +53,5 @@ test-results/
 package-lock.json
 biome.json
 .vscode/
+
+test_failures.log

@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 // Mock axios globally
 vi.mock("@/lib/axios", () => ({
@@ -15,10 +15,10 @@ vi.mock("@/lib/fetcher", () => ({
 import { api } from "@/lib/axios";
 import { serverFetch } from "@/lib/fetcher";
 import {
-  getArticles,
-  getArticleBySlug,
-  getCategories,
   fetchArticlesClient,
+  getArticleBySlug,
+  getArticles,
+  getCategories,
 } from "./articles";
 
 const mockedApi = vi.mocked(api);
@@ -31,14 +31,24 @@ describe("Articles API Service", () => {
 
   describe("getArticles (Server-Side)", () => {
     it("calls serverFetch with proper query string and config", async () => {
-      const mockResult = { docs: [], totalDocs: 0, limit: 10, totalPages: 0, page: 1 };
+      const mockResult = {
+        docs: [],
+        totalDocs: 0,
+        limit: 10,
+        totalPages: 0,
+        page: 1,
+      };
       mockedServerFetch.mockResolvedValueOnce(mockResult);
 
-      const result = await getArticles({ page: 2, limit: 5, category: "orthopedics" });
-      
+      const result = await getArticles({
+        page: 2,
+        limit: 5,
+        category: "orthopedics",
+      });
+
       expect(mockedServerFetch).toHaveBeenCalledWith(
         "/articles?page=2&limit=5&category=orthopedics",
-        expect.objectContaining({ revalidate: 300, tags: ["articles"] })
+        expect.objectContaining({ revalidate: 300, tags: ["articles"] }),
       );
       expect(result).toEqual(mockResult);
     });
@@ -46,14 +56,21 @@ describe("Articles API Service", () => {
 
   describe("getArticleBySlug (Server-Side)", () => {
     it("calls serverFetch with slug path", async () => {
-      const mockArticle = { _id: "1", title: "Knee Surgery", slug: "knee-surgery" };
+      const mockArticle = {
+        _id: "1",
+        title: "Knee Surgery",
+        slug: "knee-surgery",
+      };
       mockedServerFetch.mockResolvedValueOnce(mockArticle);
 
       const result = await getArticleBySlug("knee-surgery");
 
       expect(mockedServerFetch).toHaveBeenCalledWith(
         "/articles/knee-surgery",
-        expect.objectContaining({ revalidate: 600, tags: ["article", "knee-surgery"] })
+        expect.objectContaining({
+          revalidate: 600,
+          tags: ["article", "knee-surgery"],
+        }),
       );
       expect(result).toEqual(mockArticle);
     });
@@ -67,7 +84,7 @@ describe("Articles API Service", () => {
 
       expect(mockedServerFetch).toHaveBeenCalledWith(
         "/articles/categories",
-        expect.objectContaining({ revalidate: 300, tags: ["categories"] })
+        expect.objectContaining({ revalidate: 300, tags: ["categories"] }),
       );
       expect(result).toEqual(["Knee", "Hip"]);
     });
@@ -94,7 +111,9 @@ describe("Articles API Service", () => {
 
       const result = await fetchArticlesClient({ page: 1 });
       expect(result).toEqual(paginatedData);
-      expect(mockedApi.get).toHaveBeenCalledWith("/articles", { params: { page: 1 } });
+      expect(mockedApi.get).toHaveBeenCalledWith("/articles", {
+        params: { page: 1 },
+      });
     });
 
     it("falls back to plain array formatting if docs does not exist", async () => {

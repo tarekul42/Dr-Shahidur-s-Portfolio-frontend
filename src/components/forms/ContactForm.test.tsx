@@ -73,7 +73,10 @@ describe("ContactForm", () => {
     render(<ContactForm />, { wrapper });
 
     await user.type(screen.getByLabelText(/Full Name/i), "John Doe");
-    fireEvent.change(screen.getByLabelText(/Email Address/i), "pietenium0@gmail.com");
+    fireEvent.change(
+      screen.getByLabelText(/Email Address/i),
+      "pietenium0@gmail.com",
+    );
     await user.type(screen.getByLabelText(/Subject/i), "Medical question");
     await user.type(
       screen.getByLabelText(/Your Message/i),
@@ -130,15 +133,20 @@ describe("ContactForm", () => {
   });
 
   it("handles 429 rate limit error", async () => {
-    vi.mocked(submitContact).mockRejectedValueOnce({ response: { status: 429 } });
+    vi.mocked(submitContact).mockRejectedValueOnce({
+      response: { status: 429 },
+    });
     const user = userEvent.setup();
     render(<ContactForm />, { wrapper });
 
     await user.type(screen.getByLabelText(/Full Name/i), "John Doe");
     await user.type(screen.getByLabelText(/Email Address/i), "test@test.com");
     await user.type(screen.getByLabelText(/Subject/i), "Medical question");
-    await user.type(screen.getByLabelText(/Your Message/i), "I have a question about knee pain treatment");
-    
+    await user.type(
+      screen.getByLabelText(/Your Message/i),
+      "I have a question about knee pain treatment",
+    );
+
     await user.click(screen.getByRole("button", { name: /send message/i }));
 
     await waitFor(() => {
@@ -154,8 +162,11 @@ describe("ContactForm", () => {
     await user.type(screen.getByLabelText(/Full Name/i), "John Doe");
     await user.type(screen.getByLabelText(/Email Address/i), "test@test.com");
     await user.type(screen.getByLabelText(/Subject/i), "Medical question");
-    await user.type(screen.getByLabelText(/Your Message/i), "I have a question about knee pain treatment");
-    
+    await user.type(
+      screen.getByLabelText(/Your Message/i),
+      "I have a question about knee pain treatment",
+    );
+
     await user.click(screen.getByRole("button", { name: /send message/i }));
 
     await waitFor(() => {
@@ -166,7 +177,9 @@ describe("ContactForm", () => {
   it("handles missing or failing recaptcha", async () => {
     // Override recaptcha mock for this test to throw error
     vi.mocked(useGoogleReCaptcha).mockReturnValue({
-      executeRecaptcha: vi.fn().mockRejectedValue(new Error("Recaptcha failed")),
+      executeRecaptcha: vi
+        .fn()
+        .mockRejectedValue(new Error("Recaptcha failed")),
     } as any);
 
     const user = userEvent.setup();
@@ -175,8 +188,11 @@ describe("ContactForm", () => {
     await user.type(screen.getByLabelText(/Full Name/i), "John Doe");
     await user.type(screen.getByLabelText(/Email Address/i), "test@test.com");
     await user.type(screen.getByLabelText(/Subject/i), "Medical question");
-    await user.type(screen.getByLabelText(/Your Message/i), "I have a question about knee pain treatment");
-    
+    await user.type(
+      screen.getByLabelText(/Your Message/i),
+      "I have a question about knee pain treatment",
+    );
+
     await user.click(screen.getByRole("button", { name: /send message/i }));
 
     await waitFor(() => {
@@ -203,8 +219,11 @@ describe("ContactForm", () => {
     await user.type(screen.getByLabelText(/Full Name/i), "John Doe");
     await user.type(screen.getByLabelText(/Email Address/i), "test@test.com");
     await user.type(screen.getByLabelText(/Subject/i), "Medical question");
-    await user.type(screen.getByLabelText(/Your Message/i), "I have a question about knee pain treatment");
-    
+    await user.type(
+      screen.getByLabelText(/Your Message/i),
+      "I have a question about knee pain treatment",
+    );
+
     await user.click(screen.getByRole("button", { name: /send message/i }));
 
     await waitFor(() => {

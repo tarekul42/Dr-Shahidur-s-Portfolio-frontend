@@ -6,7 +6,11 @@ import { ShareButtons } from "./ShareButtons";
 vi.stubEnv("NEXT_PUBLIC_SITE_URL", "https://drshahid.com");
 
 describe("ShareButtons", () => {
-  const props = { title: "Knee Replacement Guide", slug: "knee-replacement", basePath: "articles" };
+  const props = {
+    title: "Knee Replacement Guide",
+    slug: "knee-replacement",
+    basePath: "articles",
+  };
 
   it("renders all 5 share buttons", () => {
     render(<ShareButtons {...props} />);
@@ -21,7 +25,9 @@ describe("ShareButtons", () => {
     render(<ShareButtons {...props} />);
     const link = screen.getByLabelText("Share on Facebook").closest("a");
     expect(link?.href).toContain("facebook.com/sharer/sharer.php");
-    expect(link?.href).toContain(encodeURIComponent("https://drshahid.com/articles/knee-replacement"));
+    expect(link?.href).toContain(
+      encodeURIComponent("https://drshahid.com/articles/knee-replacement"),
+    );
   });
 
   it("generates correct X share URL with encoded title", () => {
@@ -42,7 +48,7 @@ describe("ShareButtons", () => {
     Object.assign(navigator, { share: mockShare });
 
     render(<ShareButtons {...props} />);
-    
+
     // The native share button has aria-label="Share" (the first one)
     const nativeShareButton = screen.getByLabelText("Share");
     nativeShareButton.click();

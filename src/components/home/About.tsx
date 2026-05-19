@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { AnimatedSection } from "@/components/shared/AnimatedSection";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { Button } from "@/components/ui/Button";
@@ -13,8 +14,13 @@ const QUAL_KEYS = [
   "about.qual.fellowship",
 ];
 
-export const About = () => {
+interface AboutProps {
+  doctorImageUrl?: string;
+}
+
+export const About = ({ doctorImageUrl: _doctorImageUrl }: AboutProps) => {
   const { t } = useTranslation();
+  const imageUrl = "/HELLO_DR_Sahid2.png";
 
   return (
     <AnimatedSection className="py-24 bg-brand-softbg dark:bg-brand-primary/5">
@@ -23,9 +29,13 @@ export const About = () => {
         <div className="relative group">
           <div className="absolute inset-0 bg-brand-primary rounded-2xl rotate-3 group-hover:rotate-6 transition-transform duration-500 -z-10 opacity-10" />
           <div className="relative aspect-4/5 bg-gray-200 dark:bg-gray-800 rounded-2xl overflow-hidden shadow-2xl">
-            <div className="absolute inset-0 flex items-center justify-center text-text-para-light dark:text-text-para-dark font-bold text-xl opacity-30">
-              DR. SAHIDUR RAHMAN KHAN
-            </div>
+            <Image
+              src={imageUrl}
+              alt="Dr. Sahidur Rahman Khan"
+              fill
+              className="object-cover"
+              priority
+            />
           </div>
         </div>
 

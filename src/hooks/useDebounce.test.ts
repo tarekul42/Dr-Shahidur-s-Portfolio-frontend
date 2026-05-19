@@ -1,5 +1,5 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { act, renderHook } from "@testing-library/react";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { useDebounce } from "./useDebounce";
 
 describe("useDebounce", () => {
@@ -19,7 +19,7 @@ describe("useDebounce", () => {
   it("updates value after delay", () => {
     const { result, rerender } = renderHook(
       ({ value, delay }) => useDebounce(value, delay),
-      { initialProps: { value: "hello", delay: 500 } }
+      { initialProps: { value: "hello", delay: 500 } },
     );
 
     rerender({ value: "world", delay: 500 });
@@ -34,7 +34,7 @@ describe("useDebounce", () => {
   it("resets timer if value changes before delay expires", () => {
     const { result, rerender } = renderHook(
       ({ value, delay }) => useDebounce(value, delay),
-      { initialProps: { value: "a", delay: 500 } }
+      { initialProps: { value: "a", delay: 500 } },
     );
 
     rerender({ value: "b", delay: 500 });

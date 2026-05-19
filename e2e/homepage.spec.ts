@@ -4,7 +4,7 @@ test.describe("Homepage", () => {
   test("loads and shows hero section", async ({ page }) => {
     await page.goto("/");
     await expect(
-      page.getByRole("heading", { name: /Precision Care for Your/i, level: 1 }),
+      page.getByRole("heading", { name: /Advanced Surgery/i, level: 1 }),
     ).toBeVisible();
     await expect(
       page.getByRole("link", { name: /Book Consultation/i }),
