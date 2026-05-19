@@ -5,7 +5,7 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import { Spinner } from "./Spinner";
 
-  interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "outline" | "ghost" | "white";
   size?: "sm" | "md" | "lg";
   loading?: boolean;
@@ -41,6 +41,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         "border border-brand-primary text-brand-primary hover:bg-brand-softbg dark:hover:bg-brand-primary/10",
       ghost:
         "text-text-para-light dark:text-text-para-dark hover:bg-gray-100 dark:hover:bg-gray-800",
+      white: "bg-white text-gray-900 hover:bg-gray-100",
     };
 
     const sizes = {
