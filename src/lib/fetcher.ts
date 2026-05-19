@@ -12,22 +12,13 @@ export async function serverFetch<T>(
       revalidate: options?.revalidate,
       tags: options?.tags,
     },
+    signal: AbortSignal.timeout(5000),
   });
   if (!res.ok) throw new Error(`API error: ${res.status}`);
   const json = (await res.json()) as ApiResponse<unknown>;
 
-  // If the backend returns meta, we map it to the frontend's PaginatedData structure
-  if (json.meta) {
-    const paginated = {
-      docs: json.data as unknown[],
-      totalDocs: json.meta.total,
-      limit: json.meta.limit,
-      totalPages: json.meta.totalPage,
-      page: json.meta.page,
-    };
-    return paginated as unknown as T;
-  }
-
-  // Cast the simple data response to the expected return type T
+  // Backend wraps all responses in { success, statusCode, message, data }
+  // For paginated endpoints, data IS the PaginatedData<T> object
+  // For non-paginated endpoints, data IS the resource itself
   return json.data as T;
 }
