@@ -11,8 +11,26 @@ vi.mock("@/lib/api/appointments", () => ({
     phone: "+8801712345678",
     preferredDate: "2026-06-06",
     preferredTime: "6:00 PM",
-    chemberId: "dhaka",
+    chamberId: "dhaka",
   }),
+  getBookedSlots: vi.fn().mockResolvedValue([]),
+}));
+
+// Mock framer-motion
+vi.mock("framer-motion", () => ({
+  motion: {
+    div: ({ children, className, ...props }: any) => (
+      <div className={className} {...props}>
+        {children}
+      </div>
+    ),
+    span: ({ children, className, ...props }: any) => (
+      <span className={className} {...props}>
+        {children}
+      </span>
+    ),
+  },
+  AnimatePresence: ({ children }: any) => <>{children}</>,
 }));
 
 vi.mock("react-google-recaptcha-v3", () => ({
@@ -43,10 +61,12 @@ describe("AppointmentForm Integration - Full 4-Step Flow", () => {
 
     // Step 0: Select Chamber
     await waitFor(() => {
-      expect(screen.getByText("Ibn Sina Medical College Hospital")).toBeInTheDocument();
+      expect(screen.getByLabelText(/Chamber \/ Hospital/i)).toBeInTheDocument();
     });
-    const chamberCard = screen.getByText("Ibn Sina Medical College Hospital");
-    await user.click(chamberCard);
+    await user.selectOptions(
+      screen.getByLabelText(/Chamber \/ Hospital/i),
+      "dhaka",
+    );
 
     const continueButton = screen.getByRole("button", { name: /continue/i });
     await user.click(continueButton);
@@ -59,19 +79,24 @@ describe("AppointmentForm Integration - Full 4-Step Flow", () => {
 
     // Step 2: Preferred Schedule
     expect(screen.getByText("Preferred Schedule")).toBeInTheDocument();
-    // In our test, let's select a valid date (Step 2 requires future date in available chamber days)
     // 2026-05-25 is a Monday (available day for Dhaka)
     const dateInput = screen.getByLabelText(/Preferred Date/i);
     await user.type(dateInput, "2026-05-25");
-    
-    // Select time slot
-    const timeSelect = screen.getByLabelText(/Preferred Time/i);
-    await user.selectOptions(timeSelect, "6:00 PM");
+
+    // Select time slot button
+    await waitFor(() => {
+      expect(
+        screen.getByRole("button", { name: /^6:00 PM/i }),
+      ).toBeInTheDocument();
+    });
+    await user.click(screen.getByRole("button", { name: /^6:00 PM/i }));
     await user.click(screen.getByRole("button", { name: /continue/i }));
 
     // Step 3: Notes & Submit
     expect(screen.getByText("Anything else?")).toBeInTheDocument();
-    const submitButton = screen.getByRole("button", { name: /book appointment/i });
+    const submitButton = screen.getByRole("button", {
+      name: /book appointment/i,
+    });
     await user.click(submitButton);
 
     // Verification

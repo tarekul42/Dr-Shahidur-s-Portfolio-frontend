@@ -10,7 +10,7 @@ describe("translations", () => {
         missing.push(`${key} (not an object)`);
         continue;
       }
-      
+
       const entry = value as Record<string, string>;
       if (!("en" in entry) || !entry.en) {
         missing.push(`${key}.en`);

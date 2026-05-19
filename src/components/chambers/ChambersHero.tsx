@@ -54,7 +54,7 @@ function ChamberQuickCard({
         )}
 
         {/* Hospital Name */}
-        <h3 className="text-lg font-bold text-text-heading-light dark:text-text-heading-dark mb-1 group-hover:text-brand-primary transition-colors line-clamp-2 min-h-[3.5rem]">
+        <h3 className="text-lg font-bold text-text-heading-light dark:text-text-heading-dark mb-1 group-hover:text-brand-primary transition-colors line-clamp-2 min-h-14">
           {hospital}
         </h3>
 
@@ -64,7 +64,7 @@ function ChamberQuickCard({
         </p>
 
         {/* Schedule Lines */}
-        <div className="space-y-2 mb-6 min-h-[4rem]">
+        <div className="space-y-2 mb-6 min-h-16">
           {chamber.schedule.map((s) => {
             const days = isBn ? s.daysBn : s.daysEn;
             const time = isBn ? s.timeBn : s.timeEn;

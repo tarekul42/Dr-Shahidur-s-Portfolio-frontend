@@ -17,7 +17,10 @@ describe("Breadcrumbs", () => {
   it("renders intermediate links correctly", () => {
     render(<Breadcrumbs />);
     expect(screen.getByText("Articles")).toBeInTheDocument();
-    expect(screen.getByText("Articles").closest("a")).toHaveAttribute("href", "/articles");
+    expect(screen.getByText("Articles").closest("a")).toHaveAttribute(
+      "href",
+      "/articles",
+    );
   });
 
   it("renders current page without link", () => {

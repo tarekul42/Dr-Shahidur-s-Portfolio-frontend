@@ -16,7 +16,9 @@ describe("CookieConsent", () => {
   it("shows banner when consent not given", () => {
     render(<CookieConsent />);
     expect(screen.getByText(/analytics cookies/i)).toBeInTheDocument();
-    expect(screen.getByRole("button", { name: /accept cookies/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: /accept cookies/i }),
+    ).toBeInTheDocument();
   });
 
   it("hides banner when consent already accepted in localStorage", () => {

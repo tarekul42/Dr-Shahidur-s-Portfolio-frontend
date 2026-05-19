@@ -77,10 +77,10 @@ function ChamberDetailCard({
                 {hospital}
               </h3>
             </div>
-            <p className="text-sm text-text-para-light dark:text-text-para-dark opacity-80 ml-[52px]">
+            <p className="text-sm text-text-para-light dark:text-text-para-dark opacity-80 ml-13">
               {address}
             </p>
-            <p className="text-sm text-text-para-light dark:text-text-para-dark opacity-60 ml-[52px] mt-1">
+            <p className="text-sm text-text-para-light dark:text-text-para-dark opacity-60 ml-13 mt-1">
               {room}
             </p>
           </div>

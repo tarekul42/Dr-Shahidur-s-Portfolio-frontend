@@ -34,7 +34,7 @@ describe("LanguageToggle component", () => {
   it("indicates the current active language with appropriate highlight state", async () => {
     render(<LanguageToggle />);
     const button = await screen.findByRole("button", { name: /switch to/i });
-    
+
     // Default is "en" -> ARIA label says "Switch to Bengali"
     expect(button).toHaveAttribute("aria-label", "Switch to Bengali");
   });
@@ -42,7 +42,7 @@ describe("LanguageToggle component", () => {
   it("toggles the global store language when clicked", async () => {
     render(<LanguageToggle />);
     const button = await screen.findByRole("button", { name: /switch to/i });
-    
+
     fireEvent.click(button);
     expect(useLanguageStore.getState().language).toBe("bn");
 
