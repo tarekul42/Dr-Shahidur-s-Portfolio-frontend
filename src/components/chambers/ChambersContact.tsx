@@ -74,7 +74,7 @@ export function ChambersContact() {
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ y: -3 }}
-              className="p-6 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 flex items-center gap-4 transition-all duration-300 group block"
+              className="p-6 rounded-2xl border border-emerald-500/20 bg-emerald-500/5 flex items-center gap-4 transition-all duration-300 group"
             >
               <div className="w-10 h-10 bg-emerald-500/10 text-emerald-500 rounded-xl flex items-center justify-center shrink-0">
                 <svg
