@@ -4,8 +4,7 @@ import { ArticlesClient } from "@/components/articles/ArticlesClient";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { getArticles, getCategories } from "@/lib/api/articles";
-import type { PaginatedData } from "@/types/api";
-import type { Article, ArticleCategory, ArticleType } from "@/types/article";
+import type { ArticleCategory, ArticleType } from "@/types/article";
 
 export const metadata: Metadata = {
   title: "Articles & Insights",
@@ -26,30 +25,16 @@ export default async function ArticlesPage({
   const { page: pageParam, category, articleType, search } = await searchParams;
   const page = Number(pageParam) || 1;
 
-  let data: PaginatedData<Article> | undefined;
-  try {
-    data = await getArticles({
+  const [data, categories] = await Promise.all([
+    getArticles({
       page,
       category,
       limit: 12,
-      // type cast to keep strict typing in page
       articleType: articleType as ArticleType | undefined,
       search,
-    });
-  } catch (error) {
-    if (process.env.NODE_ENV !== "production") {
-      console.error("Failed to fetch articles", error);
-    }
-  }
-
-  let categories: ArticleCategory[] = [];
-  try {
-    categories = await getCategories();
-  } catch (error) {
-    if (process.env.NODE_ENV !== "production") {
-      console.error("Failed to fetch categories", error);
-    }
-  }
+    }).catch(() => undefined),
+    getCategories().catch(() => [] as ArticleCategory[]),
+  ]);
 
   return (
     <div className="container mx-auto px-6 py-12">

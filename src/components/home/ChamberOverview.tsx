@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { AnimatedSection } from "@/components/shared/AnimatedSection";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { Button } from "@/components/ui/Button";
@@ -28,18 +27,15 @@ export function ChamberOverview() {
               const address = isBn ? chamber.addressBn : chamber.addressEn;
 
               return (
-                <motion.div
+                <div
                   key={chamber.id}
-                  initial={{ opacity: 0, y: 15 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.05 }}
-                  className={`relative p-8 rounded-2xl border bg-card-light dark:bg-card-dark flex flex-col justify-between min-h-80 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-brand-primary/5 hover:border-brand-primary group
+                  className={`relative p-8 rounded-2xl border bg-card-light dark:bg-card-dark flex flex-col justify-between min-h-80 transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-brand-primary/5 hover:border-brand-primary group animate-slide-up
                   ${
                     chamber.isPrimary
                       ? "border-brand-primary/40 ring-1 ring-brand-primary/5"
                       : "border-border-light dark:border-border-dark"
                   }`}
+                  style={{ animationDelay: `${index * 0.05}s`, animationFillMode: "both" }}
                 >
                   <div>
                     {/* Primary Badge */}
@@ -128,7 +124,7 @@ export function ChamberOverview() {
                       )}
                     </div>
                   </div>
-                </motion.div>
+                </div>
               );
             })}
           </div>

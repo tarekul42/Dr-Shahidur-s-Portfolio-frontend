@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/Badge";
@@ -14,25 +11,23 @@ interface ArticleCardProps {
 
 export const ArticleCard = ({ article, idx = 0 }: ArticleCardProps) => {
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: idx * 0.1 }}
-      className="group bg-card-light dark:bg-card-dark rounded-2xl border border-border-light dark:border-border-dark overflow-hidden hover:shadow-2xl transition-all duration-500"
+    <div
+      className="group bg-card-light dark:bg-card-dark rounded-2xl border border-border-light dark:border-border-dark overflow-hidden hover:shadow-2xl transition-all duration-500 animate-slide-up"
+      style={{ animationDelay: `${idx * 0.07}s`, animationFillMode: "both" }}
     >
       <Link
         href={`/articles/${article.slug}`}
         className="block relative aspect-video overflow-hidden"
       >
-        <div className="absolute inset-0 bg-gray-200 dark:bg-gray-800 animate-pulse" />
+        <div className="absolute inset-0 bg-gray-200 dark:bg-gray-800" />
         {article.featuredImage && (
           <Image
             src={article.featuredImage.url}
             alt={article.title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            loading="lazy"
+            loading={idx < 3 ? "eager" : "lazy"}
+            priority={idx < 3}
             className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
           />
         )}
@@ -91,6 +86,6 @@ export const ArticleCard = ({ article, idx = 0 }: ArticleCardProps) => {
           </span>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };

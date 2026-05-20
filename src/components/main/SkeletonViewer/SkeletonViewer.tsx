@@ -124,8 +124,8 @@ function createLights(scene: Scene): void {
   keyLight.position.set(3, 8, 4);
   keyLight.castShadow = true;
   keyLight.receiveShadow = true;
-  keyLight.shadow.mapSize.width = 2048;
-  keyLight.shadow.mapSize.height = 2048;
+  keyLight.shadow.mapSize.width = 1024;
+  keyLight.shadow.mapSize.height = 1024;
   keyLight.shadow.camera.near = 0.5;
   keyLight.shadow.camera.far = 50;
   keyLight.shadow.camera.left = -5;
@@ -282,7 +282,7 @@ function createCornerMarkers() {
 
 function createGridParticles() {
   const geometry = new BufferGeometry();
-  const count = 200;
+  const count = 100;
   const positions = new Float32Array(count * 3);
 
   for (let i = 0; i < count * 3; i += 3) {
@@ -686,6 +686,9 @@ export function SkeletonViewer({
     // ── Render loop with auto-rotate ───────────────────────────────────────────
     const tick = () => {
       rafRef.current = requestAnimationFrame(tick);
+
+      // Pause rendering when tab is not visible to save CPU/GPU
+      if (document.hidden) return;
 
       // Subtle grid animation
       if (gridGroup) {

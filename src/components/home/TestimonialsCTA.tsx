@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { AnimatedSection } from "@/components/shared/AnimatedSection";
 import { Button } from "@/components/ui/Button";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -16,41 +15,30 @@ export const TestimonialsCTA = () => {
 
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto text-center space-y-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="inline-block px-4 py-1 border border-white/30 text-white rounded-full text-[10px] font-bold tracking-[0.2em] uppercase"
+          <div
+            className="inline-block px-4 py-1 border border-white/30 text-white rounded-full text-[10px] font-bold tracking-[0.2em] uppercase animate-fade-in"
+            style={{ animationFillMode: "both" }}
           >
             {t("testimonialsCta.badge")}
-          </motion.div>
+          </div>
 
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight"
+          <h2
+            className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight animate-slide-up"
+            style={{ animationDelay: "0.1s", animationFillMode: "both" }}
           >
             {t("testimonialsCta.title")}
-          </motion.h2>
+          </h2>
 
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className="text-xl text-white/80 max-w-2xl mx-auto leading-relaxed"
+          <p
+            className="text-xl text-white/80 max-w-2xl mx-auto leading-relaxed animate-slide-up"
+            style={{ animationDelay: "0.2s", animationFillMode: "both" }}
           >
             {t("testimonialsCta.subtitle")}
-          </motion.p>
+          </p>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-6"
+          <div
+            className="flex flex-col sm:flex-row items-center justify-center gap-6 animate-slide-up"
+            style={{ animationDelay: "0.3s", animationFillMode: "both" }}
           >
             <Button
               variant="ghost"
@@ -66,7 +54,7 @@ export const TestimonialsCTA = () => {
             >
               {t("testimonialsCta.start")}
             </Button>
-          </motion.div>
+          </div>
         </div>
       </div>
     </AnimatedSection>

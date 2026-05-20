@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ChambersPageContent } from "@/components/chambers/ChambersPageContent";
+import { RecaptchaProvider } from "@/providers/RecaptchaProvider";
 
 export const metadata: Metadata = {
   title: "Chambers & Schedule | Dr. Sahidur Rahman Khan",
@@ -8,5 +9,9 @@ export const metadata: Metadata = {
 };
 
 export default function ChambersPage() {
-  return <ChambersPageContent />;
+  return (
+    <RecaptchaProvider>
+      <ChambersPageContent />
+    </RecaptchaProvider>
+  );
 }

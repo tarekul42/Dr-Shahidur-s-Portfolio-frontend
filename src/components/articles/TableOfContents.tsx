@@ -40,7 +40,7 @@ export const TableOfContents = ({ html }: { html: string }) => {
   if (headings.length < 3) return null;
 
   return (
-    <nav className="sticky top-24 hidden lg:block">
+    <nav className="sticky top-24 hidden lg:block" aria-label="Table of contents">
       <div className="rounded-2xl border border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark p-6">
         <h4 className="text-xs font-bold uppercase tracking-widest text-brand-primary mb-4">
           On this page

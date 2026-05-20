@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import { VideoTestimonial } from "@/components/testimonials/VideoTestimonial";
@@ -27,12 +26,9 @@ export const TestimonialCard = ({
   }, [expanded, canExpand, testimonial.content]);
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: idx * 0.1 }}
-      className="group bg-white dark:bg-card-dark rounded-4xl border border-border-light/50 dark:border-border-dark p-10 shadow-2xl shadow-brand-primary/5 relative flex flex-col h-full hover:border-brand-primary/30 transition-all duration-500"
+    <div
+      className="group bg-white dark:bg-card-dark rounded-4xl border border-border-light/50 dark:border-border-dark p-10 shadow-2xl shadow-brand-primary/5 relative flex flex-col h-full hover:border-brand-primary/30 transition-all duration-500 animate-slide-up"
+      style={{ animationDelay: `${idx * 0.1}s`, animationFillMode: "both" }}
     >
       {/* Refined Quote Icon */}
       <div className="absolute top-10 right-10 text-brand-primary/10 group-hover:text-brand-primary/20 transition-colors duration-500">
@@ -120,6 +116,6 @@ export const TestimonialCard = ({
           title={testimonial.name}
         />
       )}
-    </motion.div>
+    </div>
   );
 };

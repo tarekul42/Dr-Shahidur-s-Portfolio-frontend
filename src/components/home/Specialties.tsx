@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { AnimatedSection } from "@/components/shared/AnimatedSection";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -142,13 +141,10 @@ export const Specialties = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {SPECIALTY_KEYS.map((item, idx) => (
-            <motion.div
+            <div
               key={item.titleKey}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.1 }}
-              className="group p-8 rounded-2xl bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark hover:border-brand-primary transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-primary/5"
+              className="group p-8 rounded-2xl bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark hover:border-brand-primary transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-primary/5 animate-slide-up"
+              style={{ animationDelay: `${idx * 0.07}s`, animationFillMode: "both" }}
             >
               <div className="w-14 h-14 bg-brand-softbg dark:bg-brand-primary/10 rounded-xl flex items-center justify-center text-brand-primary mb-6 group-hover:scale-110 transition-transform duration-500">
                 {item.icon}
@@ -159,7 +155,7 @@ export const Specialties = () => {
               <p className="text-sm text-text-para-light dark:text-text-para-dark leading-relaxed">
                 {t(item.descKey)}
               </p>
-            </motion.div>
+            </div>
           ))}
         </div>
       </div>

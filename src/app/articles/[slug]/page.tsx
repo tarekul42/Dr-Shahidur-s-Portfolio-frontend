@@ -88,7 +88,7 @@ export default async function ArticleDetailPage({ params }: Props) {
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-text-heading-light dark:text-text-heading-dark leading-tight">
               {article.title}
             </h1>
-            <div className="flex flex-wrap items-center gap-4 text-sm font-semibold text-text-para-light dark:text-text-para-dark opacity-60">
+            <div className="flex flex-wrap items-center gap-4 text-sm font-semibold text-text-para-light dark:text-text-para-dark opacity-80">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-full bg-brand-primary flex items-center justify-center text-white text-xs font-bold">
                   S

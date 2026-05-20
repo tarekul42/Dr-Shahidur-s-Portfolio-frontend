@@ -1,7 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
@@ -19,42 +19,44 @@ const SkeletonViewer = dynamic(
   },
 );
 
+// Defer 3D viewer loading to avoid blocking main thread during initial render
+function useDeferredLoad(delayMs = 3000): boolean {
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    if ("requestIdleCallback" in window) {
+      const id = requestIdleCallback(() => setReady(true), { timeout: delayMs });
+      return () => cancelIdleCallback(id);
+    }
+    const id = setTimeout(() => setReady(true), delayMs);
+    return () => clearTimeout(id);
+  }, [delayMs]);
+  return ready;
+}
+
 export const Hero = () => {
   const { resolvedTheme } = useTheme();
   const isDesktop = useMediaQuery("(min-width: 1024px)");
   const { t } = useTranslation();
+  const viewer3dReady = useDeferredLoad(3000);
 
   return (
-    /**
-     * Layout intent:
-     *  Left  half  → text content, centred vertically
-     *  Right half  → teal "stage" panel that is itself the grid cell.
-     *                The 3D card sits inside with uniform 32px padding on
-     *                every edge, so the gap is always equal.
-     * The grid min-height drives the stage height, eliminating the
-     * "panel taller than card → unequal top/bottom gaps" problem.
-     */
     <section className="relative overflow-hidden">
       {/* Subtle left-side glow */}
       <div className="absolute top-1/3 left-0 w-72 h-72 bg-brand-primary/10 rounded-full blur-[120px] -z-10 pointer-events-none" />
 
       <div className="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 min-h-[92vh]">
         {/* ── Left: text content ──────────────────────────────────── */}
-        <motion.div
-          initial={{ opacity: 0, x: -40 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col justify-center gap-8 py-24 lg:py-0 lg:pr-10"
+        <div
+          className="flex flex-col justify-center gap-8 py-24 lg:py-0 lg:pr-10 animate-slide-in-left"
+          style={{ animationDuration: "0.8s" }}
         >
           <div className="space-y-5">
-            <motion.span
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="inline-block px-4 py-1.5 bg-brand-primary/10 text-brand-primary rounded-full text-xs font-bold tracking-widest uppercase"
+            <span
+              className="inline-block px-4 py-1.5 bg-brand-primary/10 text-brand-primary rounded-full text-xs font-bold tracking-widest uppercase animate-fade-in"
+              style={{ animationDelay: "0.2s", animationFillMode: "both" }}
             >
               {t("hero.badge")}
-            </motion.span>
+            </span>
 
             <h1 className="text-5xl md:text-6xl lg:text-[4.5rem] font-bold text-text-heading-light dark:text-text-heading-dark leading-[1.08]">
               {t("hero.title1")}
@@ -105,25 +107,21 @@ export const Hero = () => {
               </span>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* ── Right: teal stage + dark 3D card ────────────────────── */}
         {isDesktop && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.25 }}
-            /**
-             * This column IS the teal panel.
-             * rounded-l-[80px] gives the signature left-rounded shape.
-             * p-8 gives equal 32px gap on every edge of the inner card.
-             * -mx-6 + pr-0 lets it bleed to the right viewport edge.
-             */
-            className="hidden lg:flex items-center justify-center bg-brand-softbg dark:bg-brand-primary/5 rounded-l-[80px] p-8 relative overflow-hidden"
+          <div
+            className="hidden lg:flex items-center justify-center bg-brand-softbg dark:bg-brand-primary/5 rounded-l-[80px] p-8 relative overflow-hidden animate-scale-in"
+            style={{ animationDuration: "1s", animationDelay: "0.25s", animationFillMode: "both" }}
           >
             {/* Dark 3D medical viewer card */}
             <div className="relative w-full max-w-125 aspect-4/5 max-h-[80vh] rounded-4xl overflow-hidden bg-bg-light dark:bg-bg-dark shadow-[0_24px_80px_-12px_rgba(0,0,0,0.25),0_0_0_1px_rgba(47,160,132,0.15)] mx-auto">
-              <SkeletonViewer showDebug={false} theme={resolvedTheme} />
+              {viewer3dReady ? (
+                <SkeletonViewer showDebug={false} theme={resolvedTheme} />
+              ) : (
+                <Skeleton variant="image" className="h-full w-full" />
+              )}
 
               {/* Rotate & Explore pill — inside the card */}
               <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-2 px-5 py-2 bg-black/50 backdrop-blur-md rounded-full border border-white/10 text-white text-[10px] uppercase tracking-[0.2em] font-bold pointer-events-none whitespace-nowrap z-20">
@@ -158,7 +156,7 @@ export const Hero = () => {
             </div>
             {/* Bottom gradient fade — blends panel into the next section */}
             <div className="absolute bottom-0 left-0 right-0 h-24 bg-linear-to-t from-bg-light dark:from-bg-dark to-transparent pointer-events-none rounded-bl-[80px]" />
-          </motion.div>
+          </div>
         )}
       </div>
     </section>

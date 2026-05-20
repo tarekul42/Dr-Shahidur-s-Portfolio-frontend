@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
 import type { ArticleCategory, ArticleType } from "@/types/article";
@@ -30,6 +29,8 @@ export function ArticleFilters({
   onArticleTypeChange: (v: ArticleType | "") => void;
   onClearAll: () => void;
 }) {
+  const activeIndex = TYPE_TABS.findIndex((t) => t.value === articleType);
+
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-end">
@@ -59,6 +60,14 @@ export function ArticleFilters({
       </div>
 
       <div className="relative inline-flex rounded-full border border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark p-1">
+        {/* Sliding pill background */}
+        <div
+          className="absolute top-1 bottom-1 rounded-full bg-brand-primary transition-all duration-300 ease-out"
+          style={{
+            left: `calc(${(activeIndex >= 0 ? activeIndex : 0) * (100 / TYPE_TABS.length)}% + 4px)`,
+            width: `calc(${100 / TYPE_TABS.length}% - 8px)`,
+          }}
+        />
         {TYPE_TABS.map((t) => {
           const active = t.value === articleType;
           return (
@@ -67,21 +76,14 @@ export function ArticleFilters({
               type="button"
               onClick={() => onArticleTypeChange(t.value)}
               className={[
-                "relative px-5 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-colors",
+                "relative px-5 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-colors z-10",
                 active
                   ? "text-white"
                   : "text-text-para-light dark:text-text-para-dark",
               ].join(" ")}
               aria-pressed={active}
             >
-              {active && (
-                <motion.div
-                  layoutId="articleTypeTab"
-                  className="absolute inset-0 rounded-full bg-brand-primary"
-                  transition={{ type: "spring", stiffness: 420, damping: 35 }}
-                />
-              )}
-              <span className="relative z-10">{t.label}</span>
+              {t.label}
             </button>
           );
         })}

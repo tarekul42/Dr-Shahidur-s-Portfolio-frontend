@@ -1,6 +1,5 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -81,7 +80,7 @@ export const Header = ({ appInfo }: { appInfo?: AppInfo }) => {
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden lg:flex items-center gap-8">
+        <nav className="hidden lg:flex items-center gap-8" aria-label="Main navigation">
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
@@ -208,59 +207,43 @@ export const Header = ({ appInfo }: { appInfo?: AppInfo }) => {
         </div>
       </div>
 
-      {/* Mobile Drawer */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            id="mobile-menu"
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: "auto" }}
-            exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-white dark:bg-bg-dark border-t border-border-light dark:border-border-dark overflow-hidden"
-          >
-            <div
-              ref={menuRef}
-              className="container mx-auto px-6 py-8 flex flex-col gap-6"
-            >
-              <div className="flex items-center justify-between py-2 mb-4 border-b border-border-light dark:border-border-dark">
-                <span className="text-sm font-semibold text-text-para-light dark:text-text-para-dark">
-                  Language / ভাষা
-                </span>
-                <LanguageToggle />
-              </div>
-              {NAV_LINKS.map((link, i) => (
-                <motion.div
-                  key={link.href}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: i * 0.05 }}
-                >
-                  <Link
-                    href={link.href}
-                    className={cn(
-                      "text-lg font-bold transition-colors block w-full",
-                      pathname === link.href
-                        ? "text-brand-primary"
-                        : "text-text-para-light dark:text-text-para-dark",
-                    )}
-                  >
-                    {t(navLabelKeys[link.href] ?? link.label)}
-                  </Link>
-                </motion.div>
-              ))}
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: NAV_LINKS.length * 0.05 }}
-              >
-                <Button href="/appointment" className="w-full mt-4">
-                  {t("nav.bookAppointment")}
-                </Button>
-              </motion.div>
-            </div>
-          </motion.div>
+      {/* Mobile Drawer — CSS transition instead of framer-motion AnimatePresence */}
+      <div
+        id="mobile-menu"
+        className={cn(
+          "lg:hidden bg-white dark:bg-bg-dark border-t border-border-light dark:border-border-dark overflow-hidden transition-all duration-300 ease-out",
+          isMobileMenuOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0",
         )}
-      </AnimatePresence>
+      >
+        <div
+          ref={menuRef}
+          className="container mx-auto px-6 py-8 flex flex-col gap-6"
+        >
+          <div className="flex items-center justify-between py-2 mb-4 border-b border-border-light dark:border-border-dark">
+            <span className="text-sm font-semibold text-text-para-light dark:text-text-para-dark">
+              Language / ভাষা
+            </span>
+            <LanguageToggle />
+          </div>
+          {NAV_LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className={cn(
+                "text-lg font-bold transition-colors block w-full",
+                pathname === link.href
+                  ? "text-brand-primary"
+                  : "text-text-para-light dark:text-text-para-dark",
+              )}
+            >
+              {t(navLabelKeys[link.href] ?? link.label)}
+            </Link>
+          ))}
+          <Button href="/appointment" className="w-full mt-4">
+            {t("nav.bookAppointment")}
+          </Button>
+        </div>
+      </div>
     </header>
   );
 };

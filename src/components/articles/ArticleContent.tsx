@@ -11,7 +11,7 @@ interface ArticleContentProps {
 }
 
 export const ArticleContent = ({ html, className }: ArticleContentProps) => {
-  const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
+  const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const cleanHtml = DOMPurify.sanitize(html, {
@@ -60,7 +60,7 @@ export const ArticleContent = ({ html, className }: ArticleContentProps) => {
 
     const handleClick = (e: Event) => {
       const target = e.target as HTMLImageElement;
-      setLightboxSrc(target.src);
+      setLightbox({ src: target.src, alt: target.alt || "Article illustration" });
     };
 
     images.forEach((img) => {
@@ -93,12 +93,12 @@ export const ArticleContent = ({ html, className }: ArticleContentProps) => {
       />
 
       <AnimatePresence>
-        {lightboxSrc && (
+        {lightbox && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={() => setLightboxSrc(null)}
+            onClick={() => setLightbox(null)}
             className="fixed inset-0 z-100 flex items-center justify-center bg-black/80 p-4 cursor-zoom-out"
           >
             {/* biome-ignore lint/performance/noImgElement: Lightbox uses standard img tag */}
@@ -106,14 +106,14 @@ export const ArticleContent = ({ html, className }: ArticleContentProps) => {
               initial={{ scale: 0.95 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0.95 }}
-              src={lightboxSrc}
-              alt="Lightbox"
+              src={lightbox.src}
+              alt={lightbox.alt}
               className="max-w-full max-h-[90vh] rounded-lg shadow-2xl cursor-default"
               onClick={(e) => e.stopPropagation()}
             />
             <button
               className="absolute top-6 right-6 text-white bg-black/50 hover:bg-black/80 rounded-full w-10 h-10 flex items-center justify-center transition-colors"
-              onClick={() => setLightboxSrc(null)}
+              onClick={() => setLightbox(null)}
               type="button"
             >
               <svg

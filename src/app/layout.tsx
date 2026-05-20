@@ -2,12 +2,26 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 import { Toaster } from "sonner";
+import { Inter, Hind_Siliguri } from "next/font/google";
 import { AppShell } from "@/components/layout/AppShell";
 import { getAppInfo } from "@/lib/api/app-info";
 import { QueryProvider } from "@/providers/QueryProvider";
-import { RecaptchaProvider } from "@/providers/RecaptchaProvider";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import type { AppInfo } from "@/types/app-info";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+  weight: ["400", "600", "700"],
+});
+
+const hindSiliguri = Hind_Siliguri({
+  subsets: ["bengali"],
+  variable: "--font-bengali",
+  display: "swap",
+  weight: ["400", "600", "700"],
+});
 
 export async function generateMetadata(): Promise<Metadata> {
   try {
@@ -62,6 +76,7 @@ export default async function RootLayout({
           rel="preconnect"
           href={process.env.NEXT_PUBLIC_PAYLOAD_URL || "http://127.0.0.1:5000"}
         />
+        <link rel="preconnect" href="https://ik.imagekit.io" />
         <script
           // biome-ignore lint/security/noDangerouslySetInnerHtml: inline theme bootstrapping script is safe and required for FOUC prevention
           dangerouslySetInnerHTML={{
@@ -83,19 +98,17 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body className="min-h-full flex flex-col bg-bg-light dark:bg-bg-dark text-text-heading-light dark:text-text-heading-dark">
+      <body className={`${inter.variable} ${hindSiliguri.variable} min-h-full flex flex-col bg-bg-light dark:bg-bg-dark text-text-heading-light dark:text-text-heading-dark`}>
         <ThemeProvider>
           <QueryProvider>
-            <RecaptchaProvider>
-              <AppShell appInfo={appInfo}>{children}</AppShell>
-              <Toaster
-                position="top-right"
-                richColors
-                toastOptions={{
-                  style: { fontFamily: "var(--font-inter)" },
-                }}
-              />
-            </RecaptchaProvider>
+            <AppShell appInfo={appInfo}>{children}</AppShell>
+            <Toaster
+              position="top-right"
+              richColors
+              toastOptions={{
+                style: { fontFamily: "var(--font-inter)" },
+              }}
+            />
           </QueryProvider>
         </ThemeProvider>
       </body>
