@@ -15,7 +15,9 @@ test.describe("Articles", () => {
   test("article detail page shows reading progress bar", async ({ page }) => {
     await page.goto("/articles");
     // Find first article link and click
-    const articleLink = page.getByRole("link", { name: "Read Article" }).first();
+    const articleLink = page
+      .getByRole("link", { name: "Read Article" })
+      .first();
     await expect(articleLink).toBeVisible();
     await articleLink.click();
     // Wait until we've navigated to a detail page
