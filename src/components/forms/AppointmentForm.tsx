@@ -17,6 +17,7 @@ import { Textarea } from "@/components/ui/Textarea";
 import { CHAMBERS_FALLBACK, type ChamberFallback } from "@/constants/chambers";
 import { useTranslation } from "@/hooks/useTranslation";
 import { createAppointment, getBookedSlots } from "@/lib/api/appointments";
+import { api } from "@/lib/axios";
 import {
   formatTimeDisplay,
   generateTimeSlots,
@@ -76,6 +77,43 @@ const expandVariants = {
       ease: [0.4, 0, 0.2, 1] as [number, number, number, number],
     },
   },
+};
+
+interface DbChamber {
+  _id: string;
+  chemberName: string;
+}
+
+const mapChamberIdToDbId = (fallbackId: string, chambers: DbChamber[]) => {
+  if (!fallbackId) return undefined;
+
+  const normalizedId = fallbackId.toLowerCase();
+  const found = chambers.find((c) => {
+    const name = c.chemberName.toLowerCase();
+    if (normalizedId === "dhaka") {
+      return name.includes("ibn sina");
+    }
+    if (normalizedId === "singair") {
+      return name.includes("singair") || name.includes("সিটি");
+    }
+    if (normalizedId === "manikganj") {
+      return (
+        name.includes("manikganj") ||
+        name.includes("ইসলামী") ||
+        name.includes("islam")
+      );
+    }
+    if (normalizedId === "jhitka") {
+      return (
+        name.includes("jhitka") ||
+        name.includes("পায়রা") ||
+        name.includes("payra")
+      );
+    }
+    return false;
+  });
+
+  return found ? found._id : undefined;
 };
 
 function AppointmentFormContent() {
@@ -234,6 +272,20 @@ function AppointmentFormContent() {
     staleTime: 1000 * 60,
   });
 
+  const { data: dbChambers = [] } = useQuery<DbChamber[]>({
+    queryKey: ["chambers-list"],
+    queryFn: async () => {
+      try {
+        const { data } = await api.get("/chambers");
+        return data.data || [];
+      } catch (err) {
+        console.error("Error fetching chambers:", err);
+        return [];
+      }
+    },
+    staleTime: 1000 * 60 * 10,
+  });
+
   const timeSlotOptions = useMemo(() => {
     if (!selectedChamber || !selectedDate) return [];
     return generateTimeSlots(selectedChamber.activeDates, selectedDate);
@@ -314,6 +366,9 @@ function AppointmentFormContent() {
       ? `${chamberText}\n\n${data.message}`
       : chamberText;
 
+    const dbChamberId =
+      mapChamberIdToDbId(data.chamberId, dbChambers) || data.chamberId;
+
     appointmentMutation.mutate({
       name: data.name,
       phone: data.phone,
@@ -321,7 +376,7 @@ function AppointmentFormContent() {
       message: finalMessage,
       preferredDate: data.preferredDate,
       preferredTime: data.preferredTime,
-      chamberId: data.chamberId,
+      chamberId: dbChamberId,
       recaptchaToken: token,
     });
   };
