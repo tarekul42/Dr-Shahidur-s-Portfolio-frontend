@@ -79,9 +79,14 @@ const expandVariants = {
   },
 };
 
-const mapChamberIdToDbId = (fallbackId: string, chambers: any[]) => {
+interface DbChamber {
+  _id: string;
+  chemberName: string;
+}
+
+const mapChamberIdToDbId = (fallbackId: string, chambers: DbChamber[]) => {
   if (!fallbackId) return undefined;
-  
+
   const normalizedId = fallbackId.toLowerCase();
   const found = chambers.find((c) => {
     const name = c.chemberName.toLowerCase();
@@ -92,10 +97,18 @@ const mapChamberIdToDbId = (fallbackId: string, chambers: any[]) => {
       return name.includes("singair") || name.includes("সিটি");
     }
     if (normalizedId === "manikganj") {
-      return name.includes("manikganj") || name.includes("ইসলামী") || name.includes("islam");
+      return (
+        name.includes("manikganj") ||
+        name.includes("ইসলামী") ||
+        name.includes("islam")
+      );
     }
     if (normalizedId === "jhitka") {
-      return name.includes("jhitka") || name.includes("পায়রা") || name.includes("payra");
+      return (
+        name.includes("jhitka") ||
+        name.includes("পায়রা") ||
+        name.includes("payra")
+      );
     }
     return false;
   });
@@ -259,7 +272,7 @@ function AppointmentFormContent() {
     staleTime: 1000 * 60,
   });
 
-  const { data: dbChambers = [] } = useQuery<any[]>({
+  const { data: dbChambers = [] } = useQuery<DbChamber[]>({
     queryKey: ["chambers-list"],
     queryFn: async () => {
       try {
@@ -353,7 +366,8 @@ function AppointmentFormContent() {
       ? `${chamberText}\n\n${data.message}`
       : chamberText;
 
-    const dbChamberId = mapChamberIdToDbId(data.chamberId, dbChambers) || data.chamberId;
+    const dbChamberId =
+      mapChamberIdToDbId(data.chamberId, dbChambers) || data.chamberId;
 
     appointmentMutation.mutate({
       name: data.name,
