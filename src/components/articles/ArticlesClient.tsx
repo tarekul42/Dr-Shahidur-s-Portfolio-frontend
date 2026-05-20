@@ -153,7 +153,7 @@ export function ArticlesClient({
             )}
           >
             {data.docs.map((article, idx) => (
-              <ArticleCard key={article._id} article={article} idx={idx} />
+              <ArticleCard key={article._id} article={article} idx={idx} isPriority={idx < 3} />
             ))}
           </div>
 

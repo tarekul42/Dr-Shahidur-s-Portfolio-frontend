@@ -1,43 +1,23 @@
 "use client";
 
-import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import Image from "next/image";
+import { lazy, Suspense, useState } from "react";
+
 import { Button } from "@/components/ui/Button";
-import { Skeleton } from "@/components/ui/Skeleton";
-import { useMediaQuery } from "@/hooks/useMediaQuery";
 import { useTranslation } from "@/hooks/useTranslation";
 import { useTheme } from "@/providers/ThemeProvider";
 
-const SkeletonViewer = dynamic(
-  () =>
-    import("@/components/main/SkeletonViewer/SkeletonViewer").then(
-      (mod) => mod.SkeletonViewer,
-    ),
-  {
-    ssr: false,
-    loading: () => <Skeleton variant="image" className="h-full w-full" />,
-  },
+// Only start downloading Three.js when user clicks "Explore 3D"
+const SkeletonViewer = lazy(() =>
+  import("@/components/main/SkeletonViewer/SkeletonViewer").then(
+    (mod) => ({ default: mod.SkeletonViewer }),
+  ),
 );
-
-// Defer 3D viewer loading to avoid blocking main thread during initial render
-function useDeferredLoad(delayMs = 3000): boolean {
-  const [ready, setReady] = useState(false);
-  useEffect(() => {
-    if ("requestIdleCallback" in window) {
-      const id = requestIdleCallback(() => setReady(true), { timeout: delayMs });
-      return () => cancelIdleCallback(id);
-    }
-    const id = setTimeout(() => setReady(true), delayMs);
-    return () => clearTimeout(id);
-  }, [delayMs]);
-  return ready;
-}
 
 export const Hero = () => {
   const { resolvedTheme } = useTheme();
-  const isDesktop = useMediaQuery("(min-width: 1024px)");
   const { t } = useTranslation();
-  const viewer3dReady = useDeferredLoad(3000);
+  const [isInteractive, setIsInteractive] = useState(false);
 
   return (
     <section className="relative overflow-hidden">
@@ -47,13 +27,11 @@ export const Hero = () => {
       <div className="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 min-h-[92vh]">
         {/* ── Left: text content ──────────────────────────────────── */}
         <div
-          className="flex flex-col justify-center gap-8 py-24 lg:py-0 lg:pr-10 animate-slide-in-left"
-          style={{ animationDuration: "0.8s" }}
+          className="flex flex-col justify-center gap-8 py-24 lg:py-0 lg:pr-10"
         >
           <div className="space-y-5">
             <span
-              className="inline-block px-4 py-1.5 bg-brand-primary/10 text-brand-primary rounded-full text-xs font-bold tracking-widest uppercase animate-fade-in"
-              style={{ animationDelay: "0.2s", animationFillMode: "both" }}
+              className="inline-block px-4 py-1.5 bg-brand-primary/10 text-brand-primary rounded-full text-xs font-bold tracking-widest uppercase"
             >
               {t("hero.badge")}
             </span>
@@ -109,21 +87,61 @@ export const Hero = () => {
           </div>
         </div>
 
-        {/* ── Right: teal stage + dark 3D card ────────────────────── */}
-        {isDesktop && (
-          <div
-            className="hidden lg:flex items-center justify-center bg-brand-softbg dark:bg-brand-primary/5 rounded-l-[80px] p-8 relative overflow-hidden animate-scale-in"
-            style={{ animationDuration: "1s", animationDelay: "0.25s", animationFillMode: "both" }}
-          >
-            {/* Dark 3D medical viewer card */}
-            <div className="relative w-full max-w-125 aspect-4/5 max-h-[80vh] rounded-4xl overflow-hidden bg-bg-light dark:bg-bg-dark shadow-[0_24px_80px_-12px_rgba(0,0,0,0.25),0_0_0_1px_rgba(47,160,132,0.15)] mx-auto">
-              {viewer3dReady ? (
+        {/* ── Right: teal stage + 3D card (CSS-only visibility, no JS gating) ── */}
+        <div
+          className="hidden lg:flex items-center justify-center bg-brand-softbg dark:bg-brand-primary/5 rounded-l-[80px] p-8 relative overflow-hidden"
+        >
+          {/* Dark 3D medical viewer card */}
+          <div className="relative w-full max-w-125 aspect-4/5 max-h-[80vh] rounded-4xl overflow-hidden bg-bg-light dark:bg-bg-dark shadow-[0_24px_80px_-12px_rgba(0,0,0,0.25),0_0_0_1px_rgba(47,160,132,0.15)] mx-auto">
+            {isInteractive ? (
+              <Suspense fallback={<div className="h-full w-full animate-pulse bg-gray-200 dark:bg-gray-800 rounded-4xl" />}>
                 <SkeletonViewer showDebug={false} theme={resolvedTheme} />
-              ) : (
-                <Skeleton variant="image" className="h-full w-full" />
-              )}
+              </Suspense>
+            ) : (
+              <>
+                {/* Static high-quality placeholder — zero JS cost */}
+                <Image
+                  src="/skeleton_placeholder.png"
+                  alt="Interactive 3D skeleton model preview"
+                  fill
+                  sizes="(max-width: 1024px) 0px, 500px"
+                  className="object-cover"
+                />
 
-              {/* Rotate & Explore pill — inside the card */}
+                {/* Premium "Explore 3D" overlay button */}
+                <button
+                  type="button"
+                  onClick={() => setIsInteractive(true)}
+                  className="absolute inset-0 w-full h-full flex flex-col items-center justify-end pb-20 bg-gradient-to-t from-black/40 via-transparent to-transparent hover:from-black/50 transition-all duration-500 group z-10 cursor-pointer"
+                  aria-label="Activate interactive 3D skeleton viewer"
+                >
+                  <div className="px-6 py-3 bg-white/10 backdrop-blur-xl rounded-2xl border border-white/20 text-white font-bold text-sm tracking-wide shadow-2xl group-hover:scale-105 group-hover:bg-white/20 transition-all duration-300 flex items-center gap-3">
+                    <span className="relative flex h-2.5 w-2.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-primary opacity-75" />
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-primary" />
+                    </span>
+                    Explore Interactive 3D
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="group-hover:translate-x-0.5 transition-transform"
+                      aria-hidden="true"
+                    >
+                      <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                  </div>
+                </button>
+              </>
+            )}
+
+            {/* Rotate & Explore pill — visible only in interactive mode */}
+            {isInteractive && (
               <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex items-center gap-2 px-5 py-2 bg-black/50 backdrop-blur-md rounded-full border border-white/10 text-white text-[10px] uppercase tracking-[0.2em] font-bold pointer-events-none whitespace-nowrap z-20">
                 <svg
                   width="11"
@@ -153,11 +171,11 @@ export const Hero = () => {
                   <path d="M9 18l6-6-6-6" />
                 </svg>
               </div>
-            </div>
-            {/* Bottom gradient fade — blends panel into the next section */}
-            <div className="absolute bottom-0 left-0 right-0 h-24 bg-linear-to-t from-bg-light dark:from-bg-dark to-transparent pointer-events-none rounded-bl-[80px]" />
+            )}
           </div>
-        )}
+          {/* Bottom gradient fade — blends panel into the next section */}
+          <div className="absolute bottom-0 left-0 right-0 h-24 bg-linear-to-t from-bg-light dark:from-bg-dark to-transparent pointer-events-none rounded-bl-[80px]" />
+        </div>
       </div>
     </section>
   );

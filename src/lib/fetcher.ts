@@ -52,7 +52,7 @@ export async function serverFetch<T>(
   const controller = new AbortController();
   const timeoutId = setTimeout(() => {
     controller.abort();
-  }, 1500); // 1.5 seconds hard timeout
+  }, 5000); // 5 seconds hard timeout
 
   try {
     const res = await fetch(`${API_BASE}${endpoint}`, {
@@ -65,7 +65,11 @@ export async function serverFetch<T>(
     clearTimeout(timeoutId);
 
     if (!res.ok) throw new Error(`API error: ${res.status}`);
-    const json = (await res.json()) as ApiResponse<unknown>;
+    const rawText = await res.text();
+    if (!rawText || rawText.trim() === "") {
+      throw new Error(`API returned an empty response body (Status: ${res.status})`);
+    }
+    const json = JSON.parse(rawText) as ApiResponse<unknown>;
 
     if (json.meta && Array.isArray(json.data)) {
       return {
@@ -93,7 +97,7 @@ export async function serverFetch<T>(
     }
     try {
       return getFallbackData<T>(endpoint);
-    } catch (fallbackError) {
+    } catch {
       // Re-throw if no fallback is defined (e.g. detail pages)
       throw error;
     }

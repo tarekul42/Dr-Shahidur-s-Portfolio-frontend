@@ -1,6 +1,5 @@
 "use client";
 
-import DOMPurify from "dompurify";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
@@ -13,44 +12,23 @@ interface ArticleContentProps {
 export const ArticleContent = ({ html, className }: ArticleContentProps) => {
   const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [cleanHtml, setCleanHtml] = useState(html);
 
-  const cleanHtml = DOMPurify.sanitize(html, {
-    ALLOWED_TAGS: [
-      "h1",
-      "h2",
-      "h3",
-      "p",
-      "a",
-      "img",
-      "blockquote",
-      "pre",
-      "code",
-      "ul",
-      "ol",
-      "li",
-      "strong",
-      "em",
-      "table",
-      "thead",
-      "tbody",
-      "tr",
-      "td",
-      "th",
-      "br",
-      "hr",
-      "iframe",
-    ],
-    ALLOWED_ATTR: [
-      "href",
-      "src",
-      "alt",
-      "class",
-      "target",
-      "rel",
-      "frameborder",
-      "allowfullscreen",
-    ],
-  });
+  useEffect(() => {
+    import("isomorphic-dompurify").then((module) => {
+      const DOMPurify = module.default;
+      setCleanHtml(
+        DOMPurify.sanitize(html, {
+          ALLOWED_TAGS: [
+            "h1", "h2", "h3", "p", "a", "img", "blockquote", "pre", "code", "ul", "ol", "li", "strong", "em", "table", "thead", "tbody", "tr", "td", "th", "br", "hr", "iframe",
+          ],
+          ALLOWED_ATTR: [
+            "href", "src", "alt", "class", "target", "rel", "frameborder", "allowfullscreen",
+          ],
+        })
+      );
+    });
+  }, [html]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: Re-run when HTML prop changes
   useEffect(() => {

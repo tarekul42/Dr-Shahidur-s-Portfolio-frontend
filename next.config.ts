@@ -1,21 +1,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  reactCompiler: true,
   poweredByHeader: false,
+  serverExternalPackages: ["isomorphic-dompurify", "dompurify", "jsdom"],
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "ik.imagekit.io" },
       { protocol: "https", hostname: "res.cloudinary.com" },
     ],
   },
-  experimental: {
-    optimizePackageImports: [
-      "three",
-      "framer-motion",
-      "date-fns",
-    ],
-  },
+
   async headers() {
     return [
       {

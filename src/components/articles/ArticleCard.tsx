@@ -7,9 +7,10 @@ import type { Article } from "@/types/article";
 interface ArticleCardProps {
   article: Article;
   idx?: number;
+  isPriority?: boolean;
 }
 
-export const ArticleCard = ({ article, idx = 0 }: ArticleCardProps) => {
+export const ArticleCard = ({ article, idx = 0, isPriority = false }: ArticleCardProps) => {
   return (
     <div
       className="group bg-card-light dark:bg-card-dark rounded-2xl border border-border-light dark:border-border-dark overflow-hidden hover:shadow-2xl transition-all duration-500 animate-slide-up"
@@ -26,8 +27,8 @@ export const ArticleCard = ({ article, idx = 0 }: ArticleCardProps) => {
             alt={article.title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            loading={idx < 3 ? "eager" : "lazy"}
-            priority={idx < 3}
+            loading={isPriority ? "eager" : "lazy"}
+            priority={isPriority}
             className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
           />
         )}

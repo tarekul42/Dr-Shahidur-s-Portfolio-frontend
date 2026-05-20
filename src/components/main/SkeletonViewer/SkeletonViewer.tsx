@@ -565,7 +565,7 @@ export function SkeletonViewer({
 
     // ── Load GLB ─────────────────────────────────────────────────────────────
     const dracoLoader = new DRACOLoader();
-    dracoLoader.setDecoderPath("https://www.gstatic.com/draco/v1/decoders/");
+    dracoLoader.setDecoderPath("/draco/");
 
     const loader = new GLTFLoader();
     loader.setDRACOLoader(dracoLoader);
