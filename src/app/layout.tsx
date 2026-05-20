@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Hind_Siliguri, Inter } from "next/font/google";
 import "./globals.css";
 
 import { Toaster } from "sonner";
@@ -9,20 +8,6 @@ import { QueryProvider } from "@/providers/QueryProvider";
 import { RecaptchaProvider } from "@/providers/RecaptchaProvider";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import type { AppInfo } from "@/types/app-info";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-  weight: ["400", "500", "600", "700"],
-});
-
-const hindSiliguri = Hind_Siliguri({
-  subsets: ["bengali"],
-  variable: "--font-bengali",
-  display: "swap",
-  weight: ["400", "500", "600", "700"],
-});
 
 export async function generateMetadata(): Promise<Metadata> {
   try {
@@ -69,7 +54,7 @@ export default async function RootLayout({
     <html
       lang="en"
       data-scroll-behavior="smooth"
-      className={`${inter.variable} ${hindSiliguri.variable} h-full antialiased`}
+      className="h-full antialiased"
       suppressHydrationWarning
     >
       <head>

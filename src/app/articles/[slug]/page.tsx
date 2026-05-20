@@ -17,6 +17,22 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
+export const dynamicParams = true;
+
+export async function generateStaticParams() {
+  try {
+    const response = await getArticles({ limit: 100 });
+    return response.docs.map((article) => ({
+      slug: article.slug,
+    }));
+  } catch (error) {
+    if (process.env.NODE_ENV !== "production") {
+      console.error("Failed to generate static params for articles", error);
+    }
+    return [];
+  }
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   try {

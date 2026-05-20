@@ -18,7 +18,7 @@ export function AboutHero({
   doctorImageUrl,
 }: AboutHeroProps) {
   const { t } = useTranslation();
-  const imageUrl = doctorImageUrl ?? "/HELLO_DR_Sahid2.png";
+  const imageUrl = doctorImageUrl ?? "/HELLO_DR_Sahid2.webp";
 
   return (
     <section className="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center pt-32 pb-20">

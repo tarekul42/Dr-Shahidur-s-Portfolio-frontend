@@ -466,12 +466,34 @@ export function SkeletonViewer({
   const mountRef = useRef<HTMLDivElement | null>(null);
   const stateRef = useRef<ViewerState | null>(null);
   const rafRef = useRef<number>(0);
+  const [isInViewport, setIsInViewport] = useState(false);
   const [info, setInfo] = useState<ViewerInfo>({
     phase: "loading",
     pct: 0,
     bone: null,
     error: null,
   });
+
+  // Lazy boot when component enters viewport
+  useEffect(() => {
+    const wrapper = mountRef.current;
+    if (!wrapper) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInViewport(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "200px" }
+    );
+    observer.observe(wrapper);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   // ── Reactively update scene background when theme changes ──────────────────
   useEffect(() => {
@@ -484,6 +506,8 @@ export function SkeletonViewer({
   }, [theme]);
 
   useEffect(() => {
+    if (!isInViewport) return;
+
     const wrapper = mountRef.current;
     if (!wrapper) return;
 
@@ -701,7 +725,7 @@ export function SkeletonViewer({
       }
       canvas.remove();
     };
-  }, [showDebug, theme]);
+  }, [showDebug, theme, isInViewport]);
 
   // ─── JSX ──────────────────────────────────────────────────────────────────
   const ready = info.phase === "ready";
