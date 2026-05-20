@@ -70,6 +70,43 @@ bun run start
 - `bun run lint` — run Biome checks
 - `bun run format` — format files
 - `bun run type-check` — run TypeScript type checks
+- `bun run test` — run unit & integration tests (Vitest)
+- `bun run test:run` — run unit tests once
+- `bun run test:coverage` — run unit tests with coverage
+- `bun run test:e2e` — run E2E tests (Playwright)
+- `bun run test:e2e:ui` — run E2E tests with Playwright UI Runner
+
+## Testing Strategy
+
+This repository includes a two-tiered testing system to ensure stability:
+
+### 1. Unit & Integration Tests (Vitest)
+- Covers custom React hooks, Zustand stores, API fetchers, formatting utilities, and UI presentation components.
+- Run tests with `bun run test`.
+
+### 2. End-to-End Tests (Playwright)
+- Tests high-level user flows on both Desktop Chrome and Mobile Chrome viewports.
+- E2E tests cover:
+  - **Homepage**: Hero loading, links, and CTAs.
+  - **Articles**: Loading lists, category filtering, and reading progress tracking.
+  - **Chambers**: Grid display, schedules, hotline/assistant contacts, Google maps location links, and deep-linking to the appointment form.
+  - **Appointment Form Wizard**: Step-by-step booking form flows (chamber selection, patient details with Bangladesh phone pattern checks, preferred schedules, and submission).
+  - **Contact Page**: Required form fields validation and redirection logic.
+- Before running E2E tests for the first time, you must download the local browsers:
+  ```bash
+  bunx playwright install
+  ```
+- Run E2E tests: `bun run test:e2e`.
+- Run E2E tests in interactive mode: `bun run test:e2e:ui`.
+
+## CI/CD Pipeline
+
+The GitHub Actions CI pipeline runs automatically on every push or PR to tracked branches:
+- **Lint & Format**: Biome checks styling rules (`biome ci`).
+- **TypeScript**: Validates types without emitting files (`tsc --noEmit`).
+- **Unit Tests**: Runs Vitest unit tests with coverage reports.
+- **E2E Tests**: Downloads cached Playwright browsers and executes the E2E test suite.
+- **Production Build**: Compiles Next.js app (`next build`) to ensure build integrity.
 
 ## Notes for reviewers
 
