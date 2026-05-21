@@ -35,6 +35,7 @@ export default function AppointmentPage() {
           title="Schedule Your Consultation"
           subtitle="Take the first step towards pain-free movement. Please fill out the form below, and my team will contact you shortly to confirm your time slot."
           centered
+          priority
         />
 
         <div className="bg-white dark:bg-card-dark rounded-3xl shadow-2xl overflow-hidden border border-border-light dark:border-border-dark">

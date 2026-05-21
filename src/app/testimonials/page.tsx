@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { Breadcrumbs } from "@/components/shared/Breadcrumbs";
 import { SectionHeading } from "@/components/shared/SectionHeading";
-import { TestimonialCard } from "@/components/testimonials/TestimonialCard";
-import { EmptyState } from "@/components/ui/EmptyState";
-import { getTestimonials } from "@/lib/api/testimonials";
+import { TestimonialsList } from "@/components/testimonials/TestimonialsList";
+import { Skeleton } from "@/components/ui/Skeleton";
 
 export const metadata: Metadata = {
   title: "Patient Stories",
@@ -11,9 +11,18 @@ export const metadata: Metadata = {
     "Read what patients have to say about their recovery journey and orthopedic care with Dr. Sahidur Rahman Khan.",
 };
 
-export default async function TestimonialsPage() {
-  const data = await getTestimonials();
+function TestimonialsListFallback() {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {Array.from({ length: 6 }).map((_, i) => (
+        // biome-ignore lint/suspicious/noArrayIndexKey: static skeleton grid
+        <Skeleton key={i} variant="card" className="h-80" />
+      ))}
+    </div>
+  );
+}
 
+export default function TestimonialsPage() {
   return (
     <div className="container mx-auto px-6 py-20">
       <Breadcrumbs title="Patient Stories" />
@@ -24,25 +33,10 @@ export default async function TestimonialsPage() {
         centered
       />
 
-      {!data?.docs || data.docs.length === 0 ? (
-        <EmptyState
-          title="No Testimonials Yet"
-          description="We haven't added any patient stories yet. If you've been a patient of Dr. Sahidur, we'd love to hear from you!"
-        />
-      ) : (
-        <div className="flex flex-col gap-10 md:block md:columns-2 lg:columns-3 md:gap-10 md:[column-fill:balance] md:space-y-10">
-          {data.docs.map((testimonial, idx) => (
-            <div
-              key={testimonial._id}
-              className="md:break-inside-avoid md:mb-10"
-            >
-              <TestimonialCard testimonial={testimonial} idx={idx} />
-            </div>
-          ))}
-        </div>
-      )}
+      <Suspense fallback={<TestimonialsListFallback />}>
+        <TestimonialsList />
+      </Suspense>
 
-      {/* Submission Hint */}
       <div className="mt-32 max-w-3xl mx-auto text-center p-16 rounded-[2.5rem] bg-brand-softbg dark:bg-brand-primary/10 border border-dashed border-brand-primary/30">
         <h3 className="text-3xl font-bold text-text-heading-light dark:text-text-heading-dark mb-6">
           Share Your Journey

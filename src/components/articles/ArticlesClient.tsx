@@ -9,19 +9,12 @@ import { EmptyState } from "@/components/ui/EmptyState";
 import { Pagination } from "@/components/ui/Pagination";
 import { Skeleton } from "@/components/ui/Skeleton";
 import { useDebounce } from "@/hooks/useDebounce";
-import { fetchArticlesClient } from "@/lib/api/articles";
+import { fetchArticlesClient, fetchCategoriesClient } from "@/lib/api/articles";
 import { useSetParams } from "@/lib/url";
 import { cn } from "@/lib/utils";
-import type { PaginatedData } from "@/types/api";
-import type { Article, ArticleCategory, ArticleType } from "@/types/article";
+import type { ArticleType } from "@/types/article";
 
-export function ArticlesClient({
-  initialArticles,
-  categories,
-}: {
-  initialArticles?: PaginatedData<Article>;
-  categories: ArticleCategory[];
-}) {
+export function ArticlesClient() {
   const searchParams = useSearchParams();
   const setParams = useSetParams();
 
@@ -45,7 +38,13 @@ export function ArticlesClient({
     [page, category, articleType, debouncedSearch],
   );
 
-  const { data, isFetching, isError } = useQuery({
+  const { data: categories = [] } = useQuery({
+    queryKey: ["article-categories"],
+    queryFn: fetchCategoriesClient,
+    staleTime: 30 * 60 * 1000,
+  });
+
+  const { data, isFetching, isPending, isError } = useQuery({
     queryKey,
     queryFn: async () =>
       fetchArticlesClient({
@@ -55,12 +54,10 @@ export function ArticlesClient({
         articleType: articleType || undefined,
         search: debouncedSearch || undefined,
       }),
-    initialData:
-      !category && !articleType && !search && page === 1
-        ? initialArticles
-        : undefined,
     staleTime: 5 * 60 * 1000,
   });
+
+  const listLoading = isPending || (isFetching && !data);
 
   const activePills = [
     category ? { key: "category", label: `Category: ${category}` } : null,
@@ -133,7 +130,7 @@ export function ArticlesClient({
           title="Something went wrong"
           description="Failed to load articles. Please try again."
         />
-      ) : isFetching ? (
+      ) : listLoading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {Array.from({ length: 12 }).map((_, i) => (
             // biome-ignore lint/suspicious/noArrayIndexKey: static skeleton grid

@@ -41,6 +41,13 @@ export async function getCategories(): Promise<ArticleCategory[]> {
   });
 }
 
+export async function fetchCategoriesClient(): Promise<ArticleCategory[]> {
+  const { data: response } = await api.get<ApiResponse<ArticleCategory[]>>(
+    "/articles/categories",
+  );
+  return Array.isArray(response.data) ? response.data : [];
+}
+
 export async function fetchArticlesClient(
   params: ArticleFilterParams,
 ): Promise<PaginatedData<Article>> {

@@ -1,5 +1,6 @@
 import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
+import { persist } from "zustand/middleware";
+import { safeLocalStorage } from "@/lib/safe-persist-storage";
 
 interface UIState {
   isMobileMenuOpen: boolean;
@@ -26,15 +27,7 @@ export const useUIStore = create<UIState>()(
     }),
     {
       name: "ds-ui",
-      storage: createJSONStorage(() =>
-        typeof window !== "undefined"
-          ? localStorage
-          : {
-              getItem: () => null,
-              setItem: () => {},
-              removeItem: () => {},
-            },
-      ),
+      storage: safeLocalStorage,
       // Only persist cookieConsent — mobile menu resets on page load
       partialize: (state) => ({
         cookieConsentAccepted: state.cookieConsentAccepted,
