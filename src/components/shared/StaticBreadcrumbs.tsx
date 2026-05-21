@@ -8,7 +8,10 @@ interface StaticBreadcrumbsProps {
 }
 
 /** Server breadcrumbs for static pages (no client hydration required). */
-export function StaticBreadcrumbs({ titleEn, titleBn }: StaticBreadcrumbsProps) {
+export function StaticBreadcrumbs({
+  titleEn,
+  titleBn,
+}: StaticBreadcrumbsProps) {
   return (
     <nav aria-label="Breadcrumb" className="mb-8">
       <ol className="flex flex-wrap items-center gap-2 text-sm text-text-para-light/90 dark:text-text-para-dark/90">

@@ -14,52 +14,6 @@ export const ArticleContent = ({ html, className }: ArticleContentProps) => {
     null,
   );
   const containerRef = useRef<HTMLDivElement>(null);
-  const [cleanHtml, setCleanHtml] = useState(html);
-
-  useEffect(() => {
-    import("isomorphic-dompurify").then((module) => {
-      const DOMPurify = module.default;
-      setCleanHtml(
-        DOMPurify.sanitize(html, {
-          ALLOWED_TAGS: [
-            "h1",
-            "h2",
-            "h3",
-            "p",
-            "a",
-            "img",
-            "blockquote",
-            "pre",
-            "code",
-            "ul",
-            "ol",
-            "li",
-            "strong",
-            "em",
-            "table",
-            "thead",
-            "tbody",
-            "tr",
-            "td",
-            "th",
-            "br",
-            "hr",
-            "iframe",
-          ],
-          ALLOWED_ATTR: [
-            "href",
-            "src",
-            "alt",
-            "class",
-            "target",
-            "rel",
-            "frameborder",
-            "allowfullscreen",
-          ],
-        }),
-      );
-    });
-  }, [html]);
 
   // biome-ignore lint/correctness/useExhaustiveDependencies: Re-run when HTML prop changes
   useEffect(() => {
@@ -100,8 +54,8 @@ export const ArticleContent = ({ html, className }: ArticleContentProps) => {
           "prose-strong:text-brand-primary dark:prose-strong:text-brand-accent",
           className,
         )}
-        // biome-ignore lint/security/noDangerouslySetInnerHtml: user-supplied article HTML is sanitized via DOMPurify
-        dangerouslySetInnerHTML={{ __html: cleanHtml }}
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: HTML is sanitized on the server before render
+        dangerouslySetInnerHTML={{ __html: html }}
       />
 
       <AnimatePresence>

@@ -43,7 +43,9 @@ export const SectionHeading = ({
           !priority && "animate-slide-up",
         )}
         style={
-          priority ? undefined : { animationDelay: "0.1s", animationFillMode: "both" }
+          priority
+            ? undefined
+            : { animationDelay: "0.1s", animationFillMode: "both" }
         }
       >
         {title}
@@ -55,7 +57,9 @@ export const SectionHeading = ({
             !priority && "animate-slide-up",
           )}
           style={
-            priority ? undefined : { animationDelay: "0.2s", animationFillMode: "both" }
+            priority
+              ? undefined
+              : { animationDelay: "0.2s", animationFillMode: "both" }
           }
         >
           {subtitle}

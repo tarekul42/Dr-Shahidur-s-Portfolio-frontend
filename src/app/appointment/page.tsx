@@ -1,9 +1,24 @@
 import type { Metadata } from "next";
-import { AppointmentForm } from "@/components/forms/AppointmentForm";
+import dynamic from "next/dynamic";
 import { Breadcrumbs } from "@/components/shared/Breadcrumbs";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { FALLBACKS } from "@/constants/fallbacks";
 import { RecaptchaProvider } from "@/providers/RecaptchaProvider";
+
+const AppointmentForm = dynamic(
+  () =>
+    import("@/components/forms/AppointmentForm").then(
+      (mod) => mod.AppointmentForm,
+    ),
+  {
+    loading: () => (
+      <div
+        className="h-96 rounded-2xl bg-border-light/30 dark:bg-border-dark/30 animate-pulse"
+        aria-hidden
+      />
+    ),
+  },
+);
 
 export const metadata: Metadata = {
   title: "Book an Appointment",

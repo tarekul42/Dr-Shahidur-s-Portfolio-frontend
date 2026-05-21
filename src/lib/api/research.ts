@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { api } from "@/lib/axios";
 import { serverFetch } from "@/lib/fetcher";
 import type { ApiResponse, PaginatedData } from "@/types/api";
@@ -18,12 +19,14 @@ export async function getResearchList(
   );
 }
 
-export async function getResearchBySlug(slug: string): Promise<Research> {
-  return serverFetch<Research>(`/research/${slug}`, {
-    revalidate: 600,
-    tags: ["research", slug],
-  });
-}
+export const getResearchBySlug = cache(
+  async (slug: string): Promise<Research> => {
+    return serverFetch<Research>(`/research/${slug}`, {
+      revalidate: 600,
+      tags: ["research", slug],
+    });
+  },
+);
 
 export async function fetchResearchClient(
   params: ResearchFilterParams,

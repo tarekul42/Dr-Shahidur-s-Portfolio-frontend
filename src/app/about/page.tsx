@@ -5,6 +5,7 @@ import { AboutHero } from "@/components/about/AboutHero";
 import { AboutQualifications } from "@/components/about/AboutQualifications";
 import { Breadcrumbs } from "@/components/shared/Breadcrumbs";
 import { getAppInfo } from "@/lib/api/app-info";
+import { sanitizeHtml } from "@/lib/sanitize-html";
 
 export const metadata: Metadata = {
   title: "About Dr. Sahidur",
@@ -28,7 +29,11 @@ export default async function AboutPage() {
         doctorImageUrl={appInfo?.doctorImage?.url}
       />
 
-      <AboutBio doctorBio={appInfo?.doctorBio} />
+      <AboutBio
+        doctorBio={
+          appInfo?.doctorBio ? sanitizeHtml(appInfo.doctorBio) : undefined
+        }
+      />
 
       <AboutQualifications />
 

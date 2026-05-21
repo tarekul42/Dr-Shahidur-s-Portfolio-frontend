@@ -29,7 +29,7 @@ export function HeroViewer() {
         ) : (
           <>
             <Image
-              src="/skeleton_placeholder.png"
+              src="/skeleton_placeholder.webp"
               alt="Interactive 3D skeleton model preview"
               fill
               sizes="(max-width: 1280px) 50vw, 500px"

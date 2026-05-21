@@ -1,6 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
 
-// Mock axios before importing the module that uses it
 vi.mock("@/lib/axios", () => ({
   api: {
     post: vi.fn(),
@@ -12,24 +11,72 @@ import { api } from "@/lib/axios";
 import { createAppointment, getBookedSlots } from "./appointments";
 
 describe("createAppointment()", () => {
-  it("sends POST to /appointments with payload", async () => {
+  it("sends POST with chemberId when chamberId is provided (backend typo field)", async () => {
     const mockResponse = {
       data: { data: { _id: "apt123" } },
     };
     vi.mocked(api.post).mockResolvedValueOnce(mockResponse);
 
+    const mongoId = "507f1f77bcf86cd799439011";
     const payload = {
       name: "John Doe",
       phone: "+8801712345678",
       preferredDate: "2026-05-16",
       preferredTime: "10:00 AM",
+      chamberId: mongoId,
       recaptchaToken: "token",
     };
 
     const result = await createAppointment(payload);
 
-    expect(api.post).toHaveBeenCalledWith("/appointments", payload);
+    expect(api.post).toHaveBeenCalledWith("/appointments", {
+      name: "John Doe",
+      phone: "+8801712345678",
+      preferredDate: "2026-05-16",
+      preferredTime: "10:00 AM",
+      recaptchaToken: "token",
+      chemberId: mongoId,
+    });
     expect(result._id).toBe("apt123");
+  });
+
+  it("sends chemberId for fallback slug ids when API mapping is unavailable", async () => {
+    vi.mocked(api.post).mockResolvedValueOnce({
+      data: { data: { _id: "apt-slug" } },
+    });
+
+    await createAppointment({
+      name: "Jane",
+      phone: "+8801712345678",
+      preferredDate: "2026-06-01",
+      preferredTime: "6:00 PM",
+      chamberId: "dhaka",
+    });
+
+    expect(api.post).toHaveBeenCalledWith(
+      "/appointments",
+      expect.objectContaining({ chemberId: "dhaka" }),
+    );
+  });
+
+  it("omits chemberId when chamberId is not provided", async () => {
+    vi.mocked(api.post).mockResolvedValueOnce({
+      data: { data: { _id: "apt-no-chamber" } },
+    });
+
+    await createAppointment({
+      name: "Jane",
+      phone: "+8801712345678",
+      preferredDate: "2026-06-01",
+      preferredTime: "6:00 PM",
+    });
+
+    expect(api.post).toHaveBeenCalledWith("/appointments", {
+      name: "Jane",
+      phone: "+8801712345678",
+      preferredDate: "2026-06-01",
+      preferredTime: "6:00 PM",
+    });
   });
 });
 

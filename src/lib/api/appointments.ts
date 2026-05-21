@@ -10,13 +10,12 @@ export async function createAppointment(
 ): Promise<Appointment> {
   const { chamberId, ...rest } = payload;
 
-  // Only send chemberId if it is a valid 24-character hex MongoDB ObjectId to prevent backend CastError
-  const isValidObjectId = !!chamberId && /^[0-9a-fA-F]{24}$/.test(chamberId);
-
+  // Backend field is intentionally spelled `chemberId` (backend contract).
   const backendPayload = {
     ...rest,
-    ...(isValidObjectId ? { chemberId: chamberId } : {}),
+    ...(chamberId ? { chemberId: chamberId } : {}),
   };
+
   const { data } = await api.post<ApiResponse<Appointment>>(
     "/appointments",
     backendPayload,

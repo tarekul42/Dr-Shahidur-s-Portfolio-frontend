@@ -10,6 +10,7 @@ import { ShareButtons } from "@/components/shared/ShareButtons";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { getArticleBySlug, getArticles } from "@/lib/api/articles";
+import { sanitizeHtml } from "@/lib/sanitize-html";
 import { formatDate, readingTime } from "@/lib/utils";
 import type { Article } from "@/types/article";
 
@@ -124,7 +125,7 @@ export default async function ArticleDetailPage({ params }: Props) {
 
       <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_320px]">
         <div className="space-y-16">
-          <ArticleContent html={article.content} />
+          <ArticleContent html={sanitizeHtml(article.content)} />
 
           {relatedArticles.length > 0 ? (
             <section className="space-y-8">

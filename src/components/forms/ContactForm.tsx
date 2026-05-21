@@ -138,7 +138,7 @@ export const ContactForm = () => {
         <a
           href="https://policies.google.com/privacy"
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
           className="underline hover:text-brand-primary transition-colors"
         >
           {t("contact.privacyPolicy")}
@@ -147,7 +147,7 @@ export const ContactForm = () => {
         <a
           href="https://policies.google.com/terms"
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
           className="underline hover:text-brand-primary transition-colors"
         >
           {t("contact.termsOfService")}

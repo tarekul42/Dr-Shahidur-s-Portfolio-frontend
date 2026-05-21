@@ -97,6 +97,7 @@ export function SpecialtiesSection() {
                   strokeLinejoin="round"
                   aria-hidden
                 >
+                  <title>{translate(item.titleKey)}</title>
                   {item.icon}
                 </svg>
               </div>

@@ -5,6 +5,7 @@ import type React from "react";
 import type { AppInfo } from "@/types/app-info";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
+import { ScrollToTopOnNavigate } from "./ScrollToTopOnNavigate";
 
 const AnalyticsTracker = dynamic(
   () =>
@@ -16,7 +17,9 @@ const AnalyticsTracker = dynamic(
 
 const CookieConsent = dynamic(
   () =>
-    import("@/components/shared/CookieConsent").then((mod) => mod.CookieConsent),
+    import("@/components/shared/CookieConsent").then(
+      (mod) => mod.CookieConsent,
+    ),
   { ssr: false },
 );
 
@@ -47,6 +50,7 @@ export const AppShell = ({ children, appInfo }: AppShellProps) => {
       >
         Skip to main content
       </a>
+      <ScrollToTopOnNavigate />
       <Header appInfo={appInfo} />
       <main
         id="main-content"

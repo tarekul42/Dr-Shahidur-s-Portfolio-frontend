@@ -50,11 +50,13 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const appInfo = await getAppInfo().catch(() => undefined);
+
   return (
     <html
       lang="en"
@@ -98,7 +100,7 @@ export default function RootLayout({
       >
         <ThemeProvider>
           <QueryProvider>
-            <AppShell>{children}</AppShell>
+            <AppShell appInfo={appInfo}>{children}</AppShell>
             <DeferredToaster />
           </QueryProvider>
         </ThemeProvider>

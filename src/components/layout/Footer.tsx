@@ -158,7 +158,11 @@ export const Footer = ({ appInfo }: { appInfo?: AppInfo }) => {
             </span>
             <span className="flex items-center gap-1">
               DESIGNED BY
-              <Link href="https://pietenium.vercel.app" target="_blank">
+              <Link
+                href="https://pietenium.vercel.app"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <span className="text-brand-primary">PIETENIUM</span>
               </Link>
             </span>

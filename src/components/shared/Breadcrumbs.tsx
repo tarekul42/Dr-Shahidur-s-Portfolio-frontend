@@ -11,7 +11,7 @@ export const Breadcrumbs = ({ title }: { title?: string }) => {
 
   const LABELS: Record<string, string> = {
     articles: t("nav.articles"),
-    research: t("nav.articles"),
+    research: t("nav.research"),
     appointment: t("nav.appointment"),
     contact: t("nav.contact"),
     testimonials: t("nav.testimonials"),

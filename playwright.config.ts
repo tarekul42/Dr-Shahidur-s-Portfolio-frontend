@@ -16,6 +16,10 @@ export default defineConfig({
   webServer: {
     command: "bun run dev",
     url: "http://localhost:3000",
-    reuseExistingServer: true,
+    reuseExistingServer: !process.env.CI,
+    env: {
+      ...process.env,
+      NEXT_PUBLIC_DISABLE_ANALYTICS: "true",
+    },
   },
 });

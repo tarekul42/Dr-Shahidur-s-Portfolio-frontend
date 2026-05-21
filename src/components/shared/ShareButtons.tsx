@@ -71,7 +71,7 @@ export const ShareButtons = ({
       <a
         href={url}
         target="_blank"
-        rel="noreferrer"
+        rel="noopener noreferrer"
         className="w-10 h-10 rounded-full border border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark flex items-center justify-center transition hover:border-brand-primary hover:bg-brand-primary hover:text-white"
         aria-label="Copy link"
       >

@@ -1,5 +1,4 @@
 import type { ElementType, ReactNode } from "react";
-import { cn } from "@/lib/utils";
 
 interface BilingualTextProps {
   en: ReactNode;

@@ -4,49 +4,45 @@ import { Hero } from "@/components/home/Hero";
 import {
   AboutSection,
   FeaturedArticlesSection,
-  TestimonialsSection,
 } from "@/components/home/HomeAsyncSections";
-import { HomeBelowFoldSkeleton } from "@/components/home/HomeBelowFoldSkeleton";
 import { HomeChamberOverview } from "@/components/home/HomeChamberOverview";
 import { HomeSectionSkeleton } from "@/components/home/HomeSectionSkeleton";
 import { SpecialtiesSection } from "@/components/home/SpecialtiesSection";
-import { DeferredBelowFold } from "@/components/shared/DeferredBelowFold";
 
-const HomeMarketingLazy = dynamic(
-  () =>
-    import("@/components/home/HomeMarketingSections").then(
-      (mod) => mod.HomeMarketingSections,
-    ),
+const HomeMarketingLazy = dynamic(() =>
+  import("@/components/home/HomeMarketingSections").then(
+    (mod) => mod.HomeMarketingSections,
+  ),
 );
+
+import { TestimonialsCarouselLazy } from "@/components/home/TestimonialsCarouselLazy";
 
 export default function Home() {
   return (
     <div className="flex flex-col w-full">
       <Hero />
 
-      <DeferredBelowFold fallback={<HomeBelowFoldSkeleton />}>
-        <SpecialtiesSection />
+      <SpecialtiesSection />
 
-        <Suspense
-          fallback={
-            <HomeSectionSkeleton className="bg-brand-softbg dark:bg-brand-primary/5" />
-          }
-        >
-          <AboutSection />
-        </Suspense>
+      <Suspense
+        fallback={
+          <HomeSectionSkeleton className="bg-brand-softbg dark:bg-brand-primary/5" />
+        }
+      >
+        <AboutSection />
+      </Suspense>
 
-        <HomeChamberOverview />
+      <HomeChamberOverview />
 
-        <Suspense fallback={<HomeSectionSkeleton />}>
-          <FeaturedArticlesSection />
-        </Suspense>
+      <Suspense fallback={<HomeSectionSkeleton />}>
+        <FeaturedArticlesSection />
+      </Suspense>
 
-        <Suspense fallback={null}>
-          <TestimonialsSection />
-        </Suspense>
+      <Suspense fallback={null}>
+        <TestimonialsCarouselLazy />
+      </Suspense>
 
-        <HomeMarketingLazy />
-      </DeferredBelowFold>
+      <HomeMarketingLazy />
     </div>
   );
 }

@@ -7,7 +7,10 @@ import { translate } from "@/lib/translations";
 
 export function HomeChamberOverview() {
   return (
-    <section id="chambers" className="py-20 bg-bg-light-soft dark:bg-bg-dark-soft border-y border-border-light/40 dark:border-border-dark/40">
+    <section
+      id="chambers"
+      className="py-20 bg-bg-light-soft dark:bg-bg-dark-soft border-y border-border-light/40 dark:border-border-dark/40"
+    >
       <div className="container mx-auto px-6">
         <div className="mb-12 space-y-4 text-center flex flex-col items-center">
           <span className="inline-block px-3 py-1 text-[10px] font-bold tracking-[0.2em] uppercase text-brand-primary bg-brand-softbg dark:bg-brand-primary/10 rounded-full">
@@ -36,7 +39,10 @@ export function HomeChamberOverview() {
         <div className="flex justify-center mt-12">
           <Link
             href="/chambers"
-            className={heroCtaLinkClass("primary", "shadow-lg shadow-brand-primary/20")}
+            className={heroCtaLinkClass(
+              "primary",
+              "shadow-lg shadow-brand-primary/20",
+            )}
           >
             <BilingualText
               en="View All Chambers & Schedules"

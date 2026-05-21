@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { BilingualText } from "@/components/shared/BilingualText";
 import { HeroViewerIsland } from "@/components/home/HeroViewerIsland";
+import { BilingualText } from "@/components/shared/BilingualText";
 import { heroCtaLinkClass } from "@/lib/link-styles";
 import { translate } from "@/lib/translations";
 

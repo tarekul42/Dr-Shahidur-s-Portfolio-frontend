@@ -22,7 +22,6 @@ export function AboutHero({
 
   return (
     <section className="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center pt-32 pb-20">
-      {/* Photo column */}
       <div className="relative group">
         <div className="absolute inset-0 bg-brand-primary rounded-2xl rotate-3 group-hover:rotate-6 transition-transform duration-500 -z-10 opacity-10" />
 
@@ -37,7 +36,6 @@ export function AboutHero({
           />
         </div>
 
-        {/* Experience badge */}
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -53,53 +51,27 @@ export function AboutHero({
         </motion.div>
       </div>
 
-      {/* Text column */}
       <div className="space-y-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
+        <div>
           <span className="inline-block px-4 py-1.5 bg-brand-primary/10 text-brand-primary rounded-full text-xs font-bold tracking-widest uppercase mb-4">
             {t("about.badge")}
           </span>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-text-heading-light dark:text-text-heading-dark leading-tight">
             {doctorName}
           </h1>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.1 }}
-        >
-          <p className="text-lg text-brand-primary font-semibold">
-            {doctorTitle} — {doctorSpecialty}
-          </p>
-        </motion.div>
+        <p className="text-lg text-brand-primary font-semibold">
+          {doctorTitle} — {doctorSpecialty}
+        </p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-        >
-          <p className="text-lg text-text-para-light dark:text-text-para-dark max-w-lg leading-relaxed">
-            {t("aboutHero.tagline")}
-          </p>
-        </motion.div>
+        <p className="text-lg text-text-para-light dark:text-text-para-dark max-w-lg leading-relaxed">
+          {t("aboutHero.tagline")}
+        </p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
-        >
-          <Button size="lg" href="/appointment">
-            {t("hero.cta.primary")}
-          </Button>
-        </motion.div>
+        <Button size="lg" href="/appointment">
+          {t("hero.cta.primary")}
+        </Button>
       </div>
     </section>
   );

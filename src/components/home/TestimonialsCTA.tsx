@@ -41,8 +41,9 @@ export const TestimonialsCTA = () => {
             style={{ animationDelay: "0.3s", animationFillMode: "both" }}
           >
             <Button
-              variant="ghost"
-              className="bg-white text-brand-primary hover:bg-gray-100 h-16 px-10 text-lg shadow-2xl"
+              variant="white"
+              size="lg"
+              className="h-16 px-10 text-lg shadow-2xl"
               href="/testimonials"
             >
               {t("testimonialsCta.read")}
