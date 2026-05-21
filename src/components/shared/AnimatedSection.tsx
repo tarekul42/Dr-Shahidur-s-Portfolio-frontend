@@ -39,10 +39,7 @@ export const AnimatedSection = ({
   }, [delay]);
 
   return (
-    <section
-      ref={ref}
-      className={`animated-section ${className ?? ""}`}
-    >
+    <section ref={ref} className={`animated-section ${className ?? ""}`}>
       {children}
     </section>
   );

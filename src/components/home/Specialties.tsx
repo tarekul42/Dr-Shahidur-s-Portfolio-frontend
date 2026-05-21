@@ -144,7 +144,10 @@ export const Specialties = () => {
             <div
               key={item.titleKey}
               className="group p-8 rounded-2xl bg-card-light dark:bg-card-dark border border-border-light dark:border-border-dark hover:border-brand-primary transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-brand-primary/5 animate-slide-up"
-              style={{ animationDelay: `${idx * 0.07}s`, animationFillMode: "both" }}
+              style={{
+                animationDelay: `${idx * 0.07}s`,
+                animationFillMode: "both",
+              }}
             >
               <div className="w-14 h-14 bg-brand-softbg dark:bg-brand-primary/10 rounded-xl flex items-center justify-center text-brand-primary mb-6 group-hover:scale-110 transition-transform duration-500">
                 {item.icon}

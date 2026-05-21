@@ -10,7 +10,11 @@ interface ArticleCardProps {
   isPriority?: boolean;
 }
 
-export const ArticleCard = ({ article, idx = 0, isPriority = false }: ArticleCardProps) => {
+export const ArticleCard = ({
+  article,
+  idx = 0,
+  isPriority = false,
+}: ArticleCardProps) => {
   return (
     <div
       className="group bg-card-light dark:bg-card-dark rounded-2xl border border-border-light dark:border-border-dark overflow-hidden hover:shadow-2xl transition-all duration-500 animate-slide-up"

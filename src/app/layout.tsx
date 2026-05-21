@@ -98,7 +98,9 @@ export default async function RootLayout({
           }}
         />
       </head>
-      <body className={`${inter.variable} ${hindSiliguri.variable} min-h-full flex flex-col bg-bg-light dark:bg-bg-dark text-text-heading-light dark:text-text-heading-dark`}>
+      <body
+        className={`${inter.variable} ${hindSiliguri.variable} min-h-full flex flex-col bg-bg-light dark:bg-bg-dark text-text-heading-light dark:text-text-heading-dark`}
+      >
         <ThemeProvider>
           <QueryProvider>
             <AppShell appInfo={appInfo}>{children}</AppShell>

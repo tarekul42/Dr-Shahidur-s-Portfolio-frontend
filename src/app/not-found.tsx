@@ -38,9 +38,24 @@ function MedicalScanIllustration() {
         <path d="M12 5c-3 0-5 1.5-5 3s2 3 5 3M12 5c3 0 5 1.5 5 3s-2 3-5 3" />
         <path d="M12 8c-4 0-6 2-6 4.5s2 4.5 5 4.5M12 8c4 0 6 2 6 4.5s-2 4.5-5 4.5" />
         <path d="M12 11c-5 0-7 2.5-7 5.5s2 5.5 7 5.5M12 11c5 0 7 2.5 7 5.5s-2 5.5-7 5.5" />
-        <circle cx="12" cy="5" r="1.2" className="fill-brand-accent animate-pulse" />
-        <circle cx="12" cy="11" r="1.2" className="fill-brand-accent animate-pulse" />
-        <circle cx="12" cy="17" r="1.2" className="fill-brand-accent animate-pulse" />
+        <circle
+          cx="12"
+          cy="5"
+          r="1.2"
+          className="fill-brand-accent animate-pulse"
+        />
+        <circle
+          cx="12"
+          cy="11"
+          r="1.2"
+          className="fill-brand-accent animate-pulse"
+        />
+        <circle
+          cx="12"
+          cy="17"
+          r="1.2"
+          className="fill-brand-accent animate-pulse"
+        />
       </svg>
 
       {/* Moving scanning beam */}

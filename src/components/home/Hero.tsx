@@ -9,9 +9,9 @@ import { useTheme } from "@/providers/ThemeProvider";
 
 // Only start downloading Three.js when user clicks "Explore 3D"
 const SkeletonViewer = lazy(() =>
-  import("@/components/main/SkeletonViewer/SkeletonViewer").then(
-    (mod) => ({ default: mod.SkeletonViewer }),
-  ),
+  import("@/components/main/SkeletonViewer/SkeletonViewer").then((mod) => ({
+    default: mod.SkeletonViewer,
+  })),
 );
 
 export const Hero = () => {
@@ -26,13 +26,9 @@ export const Hero = () => {
 
       <div className="container mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 min-h-[92vh]">
         {/* ── Left: text content ──────────────────────────────────── */}
-        <div
-          className="flex flex-col justify-center gap-8 py-24 lg:py-0 lg:pr-10"
-        >
+        <div className="flex flex-col justify-center gap-8 py-24 lg:py-0 lg:pr-10">
           <div className="space-y-5">
-            <span
-              className="inline-block px-4 py-1.5 bg-brand-primary/10 text-brand-primary rounded-full text-xs font-bold tracking-widest uppercase"
-            >
+            <span className="inline-block px-4 py-1.5 bg-brand-primary/10 text-brand-primary rounded-full text-xs font-bold tracking-widest uppercase">
               {t("hero.badge")}
             </span>
 
@@ -88,13 +84,15 @@ export const Hero = () => {
         </div>
 
         {/* ── Right: teal stage + 3D card (CSS-only visibility, no JS gating) ── */}
-        <div
-          className="hidden lg:flex items-center justify-center bg-brand-softbg dark:bg-brand-primary/5 rounded-l-[80px] p-8 relative overflow-hidden"
-        >
+        <div className="hidden lg:flex items-center justify-center bg-brand-softbg dark:bg-brand-primary/5 rounded-l-[80px] p-8 relative overflow-hidden">
           {/* Dark 3D medical viewer card */}
           <div className="relative w-full max-w-125 aspect-4/5 max-h-[80vh] rounded-4xl overflow-hidden bg-bg-light dark:bg-bg-dark shadow-[0_24px_80px_-12px_rgba(0,0,0,0.25),0_0_0_1px_rgba(47,160,132,0.15)] mx-auto">
             {isInteractive ? (
-              <Suspense fallback={<div className="h-full w-full animate-pulse bg-gray-200 dark:bg-gray-800 rounded-4xl" />}>
+              <Suspense
+                fallback={
+                  <div className="h-full w-full animate-pulse bg-gray-200 dark:bg-gray-800 rounded-4xl" />
+                }
+              >
                 <SkeletonViewer showDebug={false} theme={resolvedTheme} />
               </Suspense>
             ) : (

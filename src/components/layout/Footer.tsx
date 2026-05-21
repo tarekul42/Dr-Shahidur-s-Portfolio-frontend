@@ -64,9 +64,7 @@ export const Footer = ({ appInfo }: { appInfo?: AppInfo }) => {
                       className="w-8 h-8 rounded-full border border-border-dark/20 dark:border-white/10 flex items-center justify-center hover:bg-brand-primary hover:border-brand-primary transition-all duration-300 group"
                       aria-label={key}
                     >
-                      <IconComponent
-                        className="w-3 h-3 text-text-para-light group-hover:text-white"
-                      />
+                      <IconComponent className="w-3 h-3 text-text-para-light group-hover:text-white" />
                     </a>
                   );
                 })}

@@ -47,7 +47,11 @@ export const SectionHeading = ({
       )}
       <div
         className="h-1.5 bg-brand-primary rounded-full mt-6 animate-scale-in"
-        style={{ animationDelay: "0.3s", animationFillMode: "both", width: "80px" }}
+        style={{
+          animationDelay: "0.3s",
+          animationFillMode: "both",
+          width: "80px",
+        }}
       />
     </div>
   );

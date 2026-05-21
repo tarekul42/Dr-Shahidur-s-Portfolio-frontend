@@ -80,7 +80,10 @@ export const Header = ({ appInfo }: { appInfo?: AppInfo }) => {
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden lg:flex items-center gap-8" aria-label="Main navigation">
+        <nav
+          className="hidden lg:flex items-center gap-8"
+          aria-label="Main navigation"
+        >
           {NAV_LINKS.map((link) => (
             <Link
               key={link.href}
