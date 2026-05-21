@@ -354,10 +354,10 @@ $jscomp.polyfill(
             var w = [],
               B = 0;
             do
-              (w.push(void 0),
+              w.push(void 0),
                 B++,
                 k(u.value).callWhenSettled_(v(w.length - 1), F),
-                (u = q.next()));
+                (u = q.next());
             while (!u.done);
           });
     };
@@ -370,7 +370,7 @@ $jscomp.owns = (h, n) => Object.hasOwn(h, n);
 $jscomp.assign =
   $jscomp.TRUST_ES6_POLYFILLS && "function" == typeof Object.assign
     ? Object.assign
-    : (h, n) => {
+    : function (h, n) {
         for (var k = 1; k < arguments.length; k++) {
           var p = arguments[k];
           if (p) for (var l in p) $jscomp.owns(p, l) && (h[l] = p[l]);
@@ -898,7 +898,7 @@ var DracoDecoderModule = (() => {
       process.argv.slice(2);
       a.inspect = () => "[Emscripten Module object]";
     } else if (ta || fa)
-      (fa
+      fa
         ? (U = self.location.href)
         : "undefined" != typeof document &&
           document.currentScript &&
@@ -933,7 +933,7 @@ var DracoDecoderModule = (() => {
           };
           d.onerror = c;
           d.send(null);
-        }));
+        });
     a.print || console.log.bind(console);
     var da = a.printErr || console.warn.bind(console);
     Object.assign(a, Ta);
@@ -1026,8 +1026,7 @@ var DracoDecoderModule = (() => {
         try {
           return a.instantiateWasm(d, e);
         } catch (g) {
-          (da("Module.instantiateWasm callback failed with error: " + g),
-            ka(g));
+          da("Module.instantiateWasm callback failed with error: " + g), ka(g);
         }
       (() =>
         ea ||
@@ -1046,607 +1045,717 @@ var DracoDecoderModule = (() => {
             ))().catch(ka);
       return {};
     })();
-    var Xa = (a._emscripten_bind_VoidPtr___destroy___0 = () =>
-        (Xa = a._emscripten_bind_VoidPtr___destroy___0 = a.asm.h).apply(
+    var Xa = (a._emscripten_bind_VoidPtr___destroy___0 = function () {
+        return (Xa = a._emscripten_bind_VoidPtr___destroy___0 = a.asm.h).apply(
           null,
           arguments,
-        )),
-      za = (a._emscripten_bind_DecoderBuffer_DecoderBuffer_0 = () =>
-        (za = a._emscripten_bind_DecoderBuffer_DecoderBuffer_0 = a.asm.i).apply(
+        );
+      }),
+      za = (a._emscripten_bind_DecoderBuffer_DecoderBuffer_0 = function () {
+        return (za = a._emscripten_bind_DecoderBuffer_DecoderBuffer_0 =
+          a.asm.i).apply(null, arguments);
+      }),
+      Ya = (a._emscripten_bind_DecoderBuffer_Init_2 = function () {
+        return (Ya = a._emscripten_bind_DecoderBuffer_Init_2 = a.asm.j).apply(
           null,
           arguments,
-        )),
-      Ya = (a._emscripten_bind_DecoderBuffer_Init_2 = () =>
-        (Ya = a._emscripten_bind_DecoderBuffer_Init_2 = a.asm.j).apply(
-          null,
-          arguments,
-        )),
-      Za = (a._emscripten_bind_DecoderBuffer___destroy___0 = () =>
-        (Za = a._emscripten_bind_DecoderBuffer___destroy___0 = a.asm.k).apply(
-          null,
-          arguments,
-        )),
+        );
+      }),
+      Za = (a._emscripten_bind_DecoderBuffer___destroy___0 = function () {
+        return (Za = a._emscripten_bind_DecoderBuffer___destroy___0 =
+          a.asm.k).apply(null, arguments);
+      }),
       Aa = (a._emscripten_bind_AttributeTransformData_AttributeTransformData_0 =
-        () =>
-          (Aa =
+        function () {
+          return (Aa =
             a._emscripten_bind_AttributeTransformData_AttributeTransformData_0 =
-              a.asm.l).apply(null, arguments)),
-      $a = (a._emscripten_bind_AttributeTransformData_transform_type_0 = () =>
-        ($a = a._emscripten_bind_AttributeTransformData_transform_type_0 =
-          a.asm.m).apply(null, arguments)),
-      ab = (a._emscripten_bind_AttributeTransformData___destroy___0 = () =>
-        (ab = a._emscripten_bind_AttributeTransformData___destroy___0 =
-          a.asm.n).apply(null, arguments)),
-      Ba = (a._emscripten_bind_GeometryAttribute_GeometryAttribute_0 = () =>
-        (Ba = a._emscripten_bind_GeometryAttribute_GeometryAttribute_0 =
-          a.asm.o).apply(null, arguments)),
-      bb = (a._emscripten_bind_GeometryAttribute___destroy___0 = () =>
-        (bb = a._emscripten_bind_GeometryAttribute___destroy___0 =
-          a.asm.p).apply(null, arguments)),
-      Ca = (a._emscripten_bind_PointAttribute_PointAttribute_0 = () =>
-        (Ca = a._emscripten_bind_PointAttribute_PointAttribute_0 =
-          a.asm.q).apply(null, arguments)),
-      cb = (a._emscripten_bind_PointAttribute_size_0 = () =>
-        (cb = a._emscripten_bind_PointAttribute_size_0 = a.asm.r).apply(
+              a.asm.l).apply(null, arguments);
+        }),
+      $a = (a._emscripten_bind_AttributeTransformData_transform_type_0 =
+        function () {
+          return ($a =
+            a._emscripten_bind_AttributeTransformData_transform_type_0 =
+              a.asm.m).apply(null, arguments);
+        }),
+      ab = (a._emscripten_bind_AttributeTransformData___destroy___0 =
+        function () {
+          return (ab = a._emscripten_bind_AttributeTransformData___destroy___0 =
+            a.asm.n).apply(null, arguments);
+        }),
+      Ba = (a._emscripten_bind_GeometryAttribute_GeometryAttribute_0 =
+        function () {
+          return (Ba =
+            a._emscripten_bind_GeometryAttribute_GeometryAttribute_0 =
+              a.asm.o).apply(null, arguments);
+        }),
+      bb = (a._emscripten_bind_GeometryAttribute___destroy___0 = function () {
+        return (bb = a._emscripten_bind_GeometryAttribute___destroy___0 =
+          a.asm.p).apply(null, arguments);
+      }),
+      Ca = (a._emscripten_bind_PointAttribute_PointAttribute_0 = function () {
+        return (Ca = a._emscripten_bind_PointAttribute_PointAttribute_0 =
+          a.asm.q).apply(null, arguments);
+      }),
+      cb = (a._emscripten_bind_PointAttribute_size_0 = function () {
+        return (cb = a._emscripten_bind_PointAttribute_size_0 = a.asm.r).apply(
           null,
           arguments,
-        )),
+        );
+      }),
       db = (a._emscripten_bind_PointAttribute_GetAttributeTransformData_0 =
-        () =>
-          (db = a._emscripten_bind_PointAttribute_GetAttributeTransformData_0 =
-            a.asm.s).apply(null, arguments)),
-      eb = (a._emscripten_bind_PointAttribute_attribute_type_0 = () =>
-        (eb = a._emscripten_bind_PointAttribute_attribute_type_0 =
-          a.asm.t).apply(null, arguments)),
-      fb = (a._emscripten_bind_PointAttribute_data_type_0 = () =>
-        (fb = a._emscripten_bind_PointAttribute_data_type_0 = a.asm.u).apply(
-          null,
-          arguments,
-        )),
-      gb = (a._emscripten_bind_PointAttribute_num_components_0 = () =>
-        (gb = a._emscripten_bind_PointAttribute_num_components_0 =
-          a.asm.v).apply(null, arguments)),
-      hb = (a._emscripten_bind_PointAttribute_normalized_0 = () =>
-        (hb = a._emscripten_bind_PointAttribute_normalized_0 = a.asm.w).apply(
-          null,
-          arguments,
-        )),
-      ib = (a._emscripten_bind_PointAttribute_byte_stride_0 = () =>
-        (ib = a._emscripten_bind_PointAttribute_byte_stride_0 = a.asm.x).apply(
-          null,
-          arguments,
-        )),
-      jb = (a._emscripten_bind_PointAttribute_byte_offset_0 = () =>
-        (jb = a._emscripten_bind_PointAttribute_byte_offset_0 = a.asm.y).apply(
-          null,
-          arguments,
-        )),
-      kb = (a._emscripten_bind_PointAttribute_unique_id_0 = () =>
-        (kb = a._emscripten_bind_PointAttribute_unique_id_0 = a.asm.z).apply(
-          null,
-          arguments,
-        )),
-      lb = (a._emscripten_bind_PointAttribute___destroy___0 = () =>
-        (lb = a._emscripten_bind_PointAttribute___destroy___0 = a.asm.A).apply(
-          null,
-          arguments,
-        )),
+        function () {
+          return (db =
+            a._emscripten_bind_PointAttribute_GetAttributeTransformData_0 =
+              a.asm.s).apply(null, arguments);
+        }),
+      eb = (a._emscripten_bind_PointAttribute_attribute_type_0 = function () {
+        return (eb = a._emscripten_bind_PointAttribute_attribute_type_0 =
+          a.asm.t).apply(null, arguments);
+      }),
+      fb = (a._emscripten_bind_PointAttribute_data_type_0 = function () {
+        return (fb = a._emscripten_bind_PointAttribute_data_type_0 =
+          a.asm.u).apply(null, arguments);
+      }),
+      gb = (a._emscripten_bind_PointAttribute_num_components_0 = function () {
+        return (gb = a._emscripten_bind_PointAttribute_num_components_0 =
+          a.asm.v).apply(null, arguments);
+      }),
+      hb = (a._emscripten_bind_PointAttribute_normalized_0 = function () {
+        return (hb = a._emscripten_bind_PointAttribute_normalized_0 =
+          a.asm.w).apply(null, arguments);
+      }),
+      ib = (a._emscripten_bind_PointAttribute_byte_stride_0 = function () {
+        return (ib = a._emscripten_bind_PointAttribute_byte_stride_0 =
+          a.asm.x).apply(null, arguments);
+      }),
+      jb = (a._emscripten_bind_PointAttribute_byte_offset_0 = function () {
+        return (jb = a._emscripten_bind_PointAttribute_byte_offset_0 =
+          a.asm.y).apply(null, arguments);
+      }),
+      kb = (a._emscripten_bind_PointAttribute_unique_id_0 = function () {
+        return (kb = a._emscripten_bind_PointAttribute_unique_id_0 =
+          a.asm.z).apply(null, arguments);
+      }),
+      lb = (a._emscripten_bind_PointAttribute___destroy___0 = function () {
+        return (lb = a._emscripten_bind_PointAttribute___destroy___0 =
+          a.asm.A).apply(null, arguments);
+      }),
       Da =
         (a._emscripten_bind_AttributeQuantizationTransform_AttributeQuantizationTransform_0 =
-          () =>
-            (Da =
+          function () {
+            return (Da =
               a._emscripten_bind_AttributeQuantizationTransform_AttributeQuantizationTransform_0 =
-                a.asm.B).apply(null, arguments)),
+                a.asm.B).apply(null, arguments);
+          }),
       mb =
         (a._emscripten_bind_AttributeQuantizationTransform_InitFromAttribute_1 =
-          () =>
-            (mb =
+          function () {
+            return (mb =
               a._emscripten_bind_AttributeQuantizationTransform_InitFromAttribute_1 =
-                a.asm.C).apply(null, arguments)),
+                a.asm.C).apply(null, arguments);
+          }),
       nb =
         (a._emscripten_bind_AttributeQuantizationTransform_quantization_bits_0 =
-          () =>
-            (nb =
+          function () {
+            return (nb =
               a._emscripten_bind_AttributeQuantizationTransform_quantization_bits_0 =
-                a.asm.D).apply(null, arguments)),
+                a.asm.D).apply(null, arguments);
+          }),
       ob = (a._emscripten_bind_AttributeQuantizationTransform_min_value_1 =
-        () =>
-          (ob = a._emscripten_bind_AttributeQuantizationTransform_min_value_1 =
-            a.asm.E).apply(null, arguments)),
-      pb = (a._emscripten_bind_AttributeQuantizationTransform_range_0 = () =>
-        (pb = a._emscripten_bind_AttributeQuantizationTransform_range_0 =
-          a.asm.F).apply(null, arguments)),
+        function () {
+          return (ob =
+            a._emscripten_bind_AttributeQuantizationTransform_min_value_1 =
+              a.asm.E).apply(null, arguments);
+        }),
+      pb = (a._emscripten_bind_AttributeQuantizationTransform_range_0 =
+        function () {
+          return (pb =
+            a._emscripten_bind_AttributeQuantizationTransform_range_0 =
+              a.asm.F).apply(null, arguments);
+        }),
       qb = (a._emscripten_bind_AttributeQuantizationTransform___destroy___0 =
-        () =>
-          (qb =
+        function () {
+          return (qb =
             a._emscripten_bind_AttributeQuantizationTransform___destroy___0 =
-              a.asm.G).apply(null, arguments)),
+              a.asm.G).apply(null, arguments);
+        }),
       Ea =
         (a._emscripten_bind_AttributeOctahedronTransform_AttributeOctahedronTransform_0 =
-          () =>
-            (Ea =
+          function () {
+            return (Ea =
               a._emscripten_bind_AttributeOctahedronTransform_AttributeOctahedronTransform_0 =
-                a.asm.H).apply(null, arguments)),
+                a.asm.H).apply(null, arguments);
+          }),
       rb =
         (a._emscripten_bind_AttributeOctahedronTransform_InitFromAttribute_1 =
-          () =>
-            (rb =
+          function () {
+            return (rb =
               a._emscripten_bind_AttributeOctahedronTransform_InitFromAttribute_1 =
-                a.asm.I).apply(null, arguments)),
+                a.asm.I).apply(null, arguments);
+          }),
       sb =
         (a._emscripten_bind_AttributeOctahedronTransform_quantization_bits_0 =
-          () =>
-            (sb =
+          function () {
+            return (sb =
               a._emscripten_bind_AttributeOctahedronTransform_quantization_bits_0 =
-                a.asm.J).apply(null, arguments)),
+                a.asm.J).apply(null, arguments);
+          }),
       tb = (a._emscripten_bind_AttributeOctahedronTransform___destroy___0 =
-        () =>
-          (tb = a._emscripten_bind_AttributeOctahedronTransform___destroy___0 =
-            a.asm.K).apply(null, arguments)),
-      Fa = (a._emscripten_bind_PointCloud_PointCloud_0 = () =>
-        (Fa = a._emscripten_bind_PointCloud_PointCloud_0 = a.asm.L).apply(
+        function () {
+          return (tb =
+            a._emscripten_bind_AttributeOctahedronTransform___destroy___0 =
+              a.asm.K).apply(null, arguments);
+        }),
+      Fa = (a._emscripten_bind_PointCloud_PointCloud_0 = function () {
+        return (Fa = a._emscripten_bind_PointCloud_PointCloud_0 =
+          a.asm.L).apply(null, arguments);
+      }),
+      ub = (a._emscripten_bind_PointCloud_num_attributes_0 = function () {
+        return (ub = a._emscripten_bind_PointCloud_num_attributes_0 =
+          a.asm.M).apply(null, arguments);
+      }),
+      vb = (a._emscripten_bind_PointCloud_num_points_0 = function () {
+        return (vb = a._emscripten_bind_PointCloud_num_points_0 =
+          a.asm.N).apply(null, arguments);
+      }),
+      wb = (a._emscripten_bind_PointCloud___destroy___0 = function () {
+        return (wb = a._emscripten_bind_PointCloud___destroy___0 =
+          a.asm.O).apply(null, arguments);
+      }),
+      Ga = (a._emscripten_bind_Mesh_Mesh_0 = function () {
+        return (Ga = a._emscripten_bind_Mesh_Mesh_0 = a.asm.P).apply(
           null,
           arguments,
-        )),
-      ub = (a._emscripten_bind_PointCloud_num_attributes_0 = () =>
-        (ub = a._emscripten_bind_PointCloud_num_attributes_0 = a.asm.M).apply(
+        );
+      }),
+      xb = (a._emscripten_bind_Mesh_num_faces_0 = function () {
+        return (xb = a._emscripten_bind_Mesh_num_faces_0 = a.asm.Q).apply(
           null,
           arguments,
-        )),
-      vb = (a._emscripten_bind_PointCloud_num_points_0 = () =>
-        (vb = a._emscripten_bind_PointCloud_num_points_0 = a.asm.N).apply(
+        );
+      }),
+      yb = (a._emscripten_bind_Mesh_num_attributes_0 = function () {
+        return (yb = a._emscripten_bind_Mesh_num_attributes_0 = a.asm.R).apply(
           null,
           arguments,
-        )),
-      wb = (a._emscripten_bind_PointCloud___destroy___0 = () =>
-        (wb = a._emscripten_bind_PointCloud___destroy___0 = a.asm.O).apply(
+        );
+      }),
+      zb = (a._emscripten_bind_Mesh_num_points_0 = function () {
+        return (zb = a._emscripten_bind_Mesh_num_points_0 = a.asm.S).apply(
           null,
           arguments,
-        )),
-      Ga = (a._emscripten_bind_Mesh_Mesh_0 = () =>
-        (Ga = a._emscripten_bind_Mesh_Mesh_0 = a.asm.P).apply(null, arguments)),
-      xb = (a._emscripten_bind_Mesh_num_faces_0 = () =>
-        (xb = a._emscripten_bind_Mesh_num_faces_0 = a.asm.Q).apply(
+        );
+      }),
+      Ab = (a._emscripten_bind_Mesh___destroy___0 = function () {
+        return (Ab = a._emscripten_bind_Mesh___destroy___0 = a.asm.T).apply(
           null,
           arguments,
-        )),
-      yb = (a._emscripten_bind_Mesh_num_attributes_0 = () =>
-        (yb = a._emscripten_bind_Mesh_num_attributes_0 = a.asm.R).apply(
+        );
+      }),
+      Ha = (a._emscripten_bind_Metadata_Metadata_0 = function () {
+        return (Ha = a._emscripten_bind_Metadata_Metadata_0 = a.asm.U).apply(
           null,
           arguments,
-        )),
-      zb = (a._emscripten_bind_Mesh_num_points_0 = () =>
-        (zb = a._emscripten_bind_Mesh_num_points_0 = a.asm.S).apply(
+        );
+      }),
+      Bb = (a._emscripten_bind_Metadata___destroy___0 = function () {
+        return (Bb = a._emscripten_bind_Metadata___destroy___0 = a.asm.V).apply(
           null,
           arguments,
-        )),
-      Ab = (a._emscripten_bind_Mesh___destroy___0 = () =>
-        (Ab = a._emscripten_bind_Mesh___destroy___0 = a.asm.T).apply(
+        );
+      }),
+      Cb = (a._emscripten_bind_Status_code_0 = function () {
+        return (Cb = a._emscripten_bind_Status_code_0 = a.asm.W).apply(
           null,
           arguments,
-        )),
-      Ha = (a._emscripten_bind_Metadata_Metadata_0 = () =>
-        (Ha = a._emscripten_bind_Metadata_Metadata_0 = a.asm.U).apply(
+        );
+      }),
+      Db = (a._emscripten_bind_Status_ok_0 = function () {
+        return (Db = a._emscripten_bind_Status_ok_0 = a.asm.X).apply(
           null,
           arguments,
-        )),
-      Bb = (a._emscripten_bind_Metadata___destroy___0 = () =>
-        (Bb = a._emscripten_bind_Metadata___destroy___0 = a.asm.V).apply(
+        );
+      }),
+      Eb = (a._emscripten_bind_Status_error_msg_0 = function () {
+        return (Eb = a._emscripten_bind_Status_error_msg_0 = a.asm.Y).apply(
           null,
           arguments,
-        )),
-      Cb = (a._emscripten_bind_Status_code_0 = () =>
-        (Cb = a._emscripten_bind_Status_code_0 = a.asm.W).apply(
+        );
+      }),
+      Fb = (a._emscripten_bind_Status___destroy___0 = function () {
+        return (Fb = a._emscripten_bind_Status___destroy___0 = a.asm.Z).apply(
           null,
           arguments,
-        )),
-      Db = (a._emscripten_bind_Status_ok_0 = () =>
-        (Db = a._emscripten_bind_Status_ok_0 = a.asm.X).apply(null, arguments)),
-      Eb = (a._emscripten_bind_Status_error_msg_0 = () =>
-        (Eb = a._emscripten_bind_Status_error_msg_0 = a.asm.Y).apply(
+        );
+      }),
+      Ia = (a._emscripten_bind_DracoFloat32Array_DracoFloat32Array_0 =
+        function () {
+          return (Ia =
+            a._emscripten_bind_DracoFloat32Array_DracoFloat32Array_0 =
+              a.asm._).apply(null, arguments);
+        }),
+      Gb = (a._emscripten_bind_DracoFloat32Array_GetValue_1 = function () {
+        return (Gb = a._emscripten_bind_DracoFloat32Array_GetValue_1 =
+          a.asm.$).apply(null, arguments);
+      }),
+      Hb = (a._emscripten_bind_DracoFloat32Array_size_0 = function () {
+        return (Hb = a._emscripten_bind_DracoFloat32Array_size_0 =
+          a.asm.aa).apply(null, arguments);
+      }),
+      Ib = (a._emscripten_bind_DracoFloat32Array___destroy___0 = function () {
+        return (Ib = a._emscripten_bind_DracoFloat32Array___destroy___0 =
+          a.asm.ba).apply(null, arguments);
+      }),
+      Ja = (a._emscripten_bind_DracoInt8Array_DracoInt8Array_0 = function () {
+        return (Ja = a._emscripten_bind_DracoInt8Array_DracoInt8Array_0 =
+          a.asm.ca).apply(null, arguments);
+      }),
+      Jb = (a._emscripten_bind_DracoInt8Array_GetValue_1 = function () {
+        return (Jb = a._emscripten_bind_DracoInt8Array_GetValue_1 =
+          a.asm.da).apply(null, arguments);
+      }),
+      Kb = (a._emscripten_bind_DracoInt8Array_size_0 = function () {
+        return (Kb = a._emscripten_bind_DracoInt8Array_size_0 = a.asm.ea).apply(
           null,
           arguments,
-        )),
-      Fb = (a._emscripten_bind_Status___destroy___0 = () =>
-        (Fb = a._emscripten_bind_Status___destroy___0 = a.asm.Z).apply(
+        );
+      }),
+      Lb = (a._emscripten_bind_DracoInt8Array___destroy___0 = function () {
+        return (Lb = a._emscripten_bind_DracoInt8Array___destroy___0 =
+          a.asm.fa).apply(null, arguments);
+      }),
+      Ka = (a._emscripten_bind_DracoUInt8Array_DracoUInt8Array_0 = function () {
+        return (Ka = a._emscripten_bind_DracoUInt8Array_DracoUInt8Array_0 =
+          a.asm.ga).apply(null, arguments);
+      }),
+      Mb = (a._emscripten_bind_DracoUInt8Array_GetValue_1 = function () {
+        return (Mb = a._emscripten_bind_DracoUInt8Array_GetValue_1 =
+          a.asm.ha).apply(null, arguments);
+      }),
+      Nb = (a._emscripten_bind_DracoUInt8Array_size_0 = function () {
+        return (Nb = a._emscripten_bind_DracoUInt8Array_size_0 =
+          a.asm.ia).apply(null, arguments);
+      }),
+      Ob = (a._emscripten_bind_DracoUInt8Array___destroy___0 = function () {
+        return (Ob = a._emscripten_bind_DracoUInt8Array___destroy___0 =
+          a.asm.ja).apply(null, arguments);
+      }),
+      La = (a._emscripten_bind_DracoInt16Array_DracoInt16Array_0 = function () {
+        return (La = a._emscripten_bind_DracoInt16Array_DracoInt16Array_0 =
+          a.asm.ka).apply(null, arguments);
+      }),
+      Pb = (a._emscripten_bind_DracoInt16Array_GetValue_1 = function () {
+        return (Pb = a._emscripten_bind_DracoInt16Array_GetValue_1 =
+          a.asm.la).apply(null, arguments);
+      }),
+      Qb = (a._emscripten_bind_DracoInt16Array_size_0 = function () {
+        return (Qb = a._emscripten_bind_DracoInt16Array_size_0 =
+          a.asm.ma).apply(null, arguments);
+      }),
+      Rb = (a._emscripten_bind_DracoInt16Array___destroy___0 = function () {
+        return (Rb = a._emscripten_bind_DracoInt16Array___destroy___0 =
+          a.asm.na).apply(null, arguments);
+      }),
+      Ma = (a._emscripten_bind_DracoUInt16Array_DracoUInt16Array_0 =
+        function () {
+          return (Ma = a._emscripten_bind_DracoUInt16Array_DracoUInt16Array_0 =
+            a.asm.oa).apply(null, arguments);
+        }),
+      Sb = (a._emscripten_bind_DracoUInt16Array_GetValue_1 = function () {
+        return (Sb = a._emscripten_bind_DracoUInt16Array_GetValue_1 =
+          a.asm.pa).apply(null, arguments);
+      }),
+      Tb = (a._emscripten_bind_DracoUInt16Array_size_0 = function () {
+        return (Tb = a._emscripten_bind_DracoUInt16Array_size_0 =
+          a.asm.qa).apply(null, arguments);
+      }),
+      Ub = (a._emscripten_bind_DracoUInt16Array___destroy___0 = function () {
+        return (Ub = a._emscripten_bind_DracoUInt16Array___destroy___0 =
+          a.asm.ra).apply(null, arguments);
+      }),
+      Na = (a._emscripten_bind_DracoInt32Array_DracoInt32Array_0 = function () {
+        return (Na = a._emscripten_bind_DracoInt32Array_DracoInt32Array_0 =
+          a.asm.sa).apply(null, arguments);
+      }),
+      Vb = (a._emscripten_bind_DracoInt32Array_GetValue_1 = function () {
+        return (Vb = a._emscripten_bind_DracoInt32Array_GetValue_1 =
+          a.asm.ta).apply(null, arguments);
+      }),
+      Wb = (a._emscripten_bind_DracoInt32Array_size_0 = function () {
+        return (Wb = a._emscripten_bind_DracoInt32Array_size_0 =
+          a.asm.ua).apply(null, arguments);
+      }),
+      Xb = (a._emscripten_bind_DracoInt32Array___destroy___0 = function () {
+        return (Xb = a._emscripten_bind_DracoInt32Array___destroy___0 =
+          a.asm.va).apply(null, arguments);
+      }),
+      Oa = (a._emscripten_bind_DracoUInt32Array_DracoUInt32Array_0 =
+        function () {
+          return (Oa = a._emscripten_bind_DracoUInt32Array_DracoUInt32Array_0 =
+            a.asm.wa).apply(null, arguments);
+        }),
+      Yb = (a._emscripten_bind_DracoUInt32Array_GetValue_1 = function () {
+        return (Yb = a._emscripten_bind_DracoUInt32Array_GetValue_1 =
+          a.asm.xa).apply(null, arguments);
+      }),
+      Zb = (a._emscripten_bind_DracoUInt32Array_size_0 = function () {
+        return (Zb = a._emscripten_bind_DracoUInt32Array_size_0 =
+          a.asm.ya).apply(null, arguments);
+      }),
+      $b = (a._emscripten_bind_DracoUInt32Array___destroy___0 = function () {
+        return ($b = a._emscripten_bind_DracoUInt32Array___destroy___0 =
+          a.asm.za).apply(null, arguments);
+      }),
+      Pa = (a._emscripten_bind_MetadataQuerier_MetadataQuerier_0 = function () {
+        return (Pa = a._emscripten_bind_MetadataQuerier_MetadataQuerier_0 =
+          a.asm.Aa).apply(null, arguments);
+      }),
+      ac = (a._emscripten_bind_MetadataQuerier_HasEntry_2 = function () {
+        return (ac = a._emscripten_bind_MetadataQuerier_HasEntry_2 =
+          a.asm.Ba).apply(null, arguments);
+      }),
+      bc = (a._emscripten_bind_MetadataQuerier_GetIntEntry_2 = function () {
+        return (bc = a._emscripten_bind_MetadataQuerier_GetIntEntry_2 =
+          a.asm.Ca).apply(null, arguments);
+      }),
+      cc = (a._emscripten_bind_MetadataQuerier_GetIntEntryArray_3 =
+        function () {
+          return (cc = a._emscripten_bind_MetadataQuerier_GetIntEntryArray_3 =
+            a.asm.Da).apply(null, arguments);
+        }),
+      dc = (a._emscripten_bind_MetadataQuerier_GetDoubleEntry_2 = function () {
+        return (dc = a._emscripten_bind_MetadataQuerier_GetDoubleEntry_2 =
+          a.asm.Ea).apply(null, arguments);
+      }),
+      ec = (a._emscripten_bind_MetadataQuerier_GetStringEntry_2 = function () {
+        return (ec = a._emscripten_bind_MetadataQuerier_GetStringEntry_2 =
+          a.asm.Fa).apply(null, arguments);
+      }),
+      fc = (a._emscripten_bind_MetadataQuerier_NumEntries_1 = function () {
+        return (fc = a._emscripten_bind_MetadataQuerier_NumEntries_1 =
+          a.asm.Ga).apply(null, arguments);
+      }),
+      gc = (a._emscripten_bind_MetadataQuerier_GetEntryName_2 = function () {
+        return (gc = a._emscripten_bind_MetadataQuerier_GetEntryName_2 =
+          a.asm.Ha).apply(null, arguments);
+      }),
+      hc = (a._emscripten_bind_MetadataQuerier___destroy___0 = function () {
+        return (hc = a._emscripten_bind_MetadataQuerier___destroy___0 =
+          a.asm.Ia).apply(null, arguments);
+      }),
+      Qa = (a._emscripten_bind_Decoder_Decoder_0 = function () {
+        return (Qa = a._emscripten_bind_Decoder_Decoder_0 = a.asm.Ja).apply(
           null,
           arguments,
-        )),
-      Ia = (a._emscripten_bind_DracoFloat32Array_DracoFloat32Array_0 = () =>
-        (Ia = a._emscripten_bind_DracoFloat32Array_DracoFloat32Array_0 =
-          a.asm._).apply(null, arguments)),
-      Gb = (a._emscripten_bind_DracoFloat32Array_GetValue_1 = () =>
-        (Gb = a._emscripten_bind_DracoFloat32Array_GetValue_1 = a.asm.$).apply(
+        );
+      }),
+      ic = (a._emscripten_bind_Decoder_DecodeArrayToPointCloud_3 = function () {
+        return (ic = a._emscripten_bind_Decoder_DecodeArrayToPointCloud_3 =
+          a.asm.Ka).apply(null, arguments);
+      }),
+      jc = (a._emscripten_bind_Decoder_DecodeArrayToMesh_3 = function () {
+        return (jc = a._emscripten_bind_Decoder_DecodeArrayToMesh_3 =
+          a.asm.La).apply(null, arguments);
+      }),
+      kc = (a._emscripten_bind_Decoder_GetAttributeId_2 = function () {
+        return (kc = a._emscripten_bind_Decoder_GetAttributeId_2 =
+          a.asm.Ma).apply(null, arguments);
+      }),
+      lc = (a._emscripten_bind_Decoder_GetAttributeIdByName_2 = function () {
+        return (lc = a._emscripten_bind_Decoder_GetAttributeIdByName_2 =
+          a.asm.Na).apply(null, arguments);
+      }),
+      mc = (a._emscripten_bind_Decoder_GetAttributeIdByMetadataEntry_3 =
+        function () {
+          return (mc =
+            a._emscripten_bind_Decoder_GetAttributeIdByMetadataEntry_3 =
+              a.asm.Oa).apply(null, arguments);
+        }),
+      nc = (a._emscripten_bind_Decoder_GetAttribute_2 = function () {
+        return (nc = a._emscripten_bind_Decoder_GetAttribute_2 =
+          a.asm.Pa).apply(null, arguments);
+      }),
+      oc = (a._emscripten_bind_Decoder_GetAttributeByUniqueId_2 = function () {
+        return (oc = a._emscripten_bind_Decoder_GetAttributeByUniqueId_2 =
+          a.asm.Qa).apply(null, arguments);
+      }),
+      pc = (a._emscripten_bind_Decoder_GetMetadata_1 = function () {
+        return (pc = a._emscripten_bind_Decoder_GetMetadata_1 = a.asm.Ra).apply(
           null,
           arguments,
-        )),
-      Hb = (a._emscripten_bind_DracoFloat32Array_size_0 = () =>
-        (Hb = a._emscripten_bind_DracoFloat32Array_size_0 = a.asm.aa).apply(
-          null,
-          arguments,
-        )),
-      Ib = (a._emscripten_bind_DracoFloat32Array___destroy___0 = () =>
-        (Ib = a._emscripten_bind_DracoFloat32Array___destroy___0 =
-          a.asm.ba).apply(null, arguments)),
-      Ja = (a._emscripten_bind_DracoInt8Array_DracoInt8Array_0 = () =>
-        (Ja = a._emscripten_bind_DracoInt8Array_DracoInt8Array_0 =
-          a.asm.ca).apply(null, arguments)),
-      Jb = (a._emscripten_bind_DracoInt8Array_GetValue_1 = () =>
-        (Jb = a._emscripten_bind_DracoInt8Array_GetValue_1 = a.asm.da).apply(
-          null,
-          arguments,
-        )),
-      Kb = (a._emscripten_bind_DracoInt8Array_size_0 = () =>
-        (Kb = a._emscripten_bind_DracoInt8Array_size_0 = a.asm.ea).apply(
-          null,
-          arguments,
-        )),
-      Lb = (a._emscripten_bind_DracoInt8Array___destroy___0 = () =>
-        (Lb = a._emscripten_bind_DracoInt8Array___destroy___0 = a.asm.fa).apply(
-          null,
-          arguments,
-        )),
-      Ka = (a._emscripten_bind_DracoUInt8Array_DracoUInt8Array_0 = () =>
-        (Ka = a._emscripten_bind_DracoUInt8Array_DracoUInt8Array_0 =
-          a.asm.ga).apply(null, arguments)),
-      Mb = (a._emscripten_bind_DracoUInt8Array_GetValue_1 = () =>
-        (Mb = a._emscripten_bind_DracoUInt8Array_GetValue_1 = a.asm.ha).apply(
-          null,
-          arguments,
-        )),
-      Nb = (a._emscripten_bind_DracoUInt8Array_size_0 = () =>
-        (Nb = a._emscripten_bind_DracoUInt8Array_size_0 = a.asm.ia).apply(
-          null,
-          arguments,
-        )),
-      Ob = (a._emscripten_bind_DracoUInt8Array___destroy___0 = () =>
-        (Ob = a._emscripten_bind_DracoUInt8Array___destroy___0 =
-          a.asm.ja).apply(null, arguments)),
-      La = (a._emscripten_bind_DracoInt16Array_DracoInt16Array_0 = () =>
-        (La = a._emscripten_bind_DracoInt16Array_DracoInt16Array_0 =
-          a.asm.ka).apply(null, arguments)),
-      Pb = (a._emscripten_bind_DracoInt16Array_GetValue_1 = () =>
-        (Pb = a._emscripten_bind_DracoInt16Array_GetValue_1 = a.asm.la).apply(
-          null,
-          arguments,
-        )),
-      Qb = (a._emscripten_bind_DracoInt16Array_size_0 = () =>
-        (Qb = a._emscripten_bind_DracoInt16Array_size_0 = a.asm.ma).apply(
-          null,
-          arguments,
-        )),
-      Rb = (a._emscripten_bind_DracoInt16Array___destroy___0 = () =>
-        (Rb = a._emscripten_bind_DracoInt16Array___destroy___0 =
-          a.asm.na).apply(null, arguments)),
-      Ma = (a._emscripten_bind_DracoUInt16Array_DracoUInt16Array_0 = () =>
-        (Ma = a._emscripten_bind_DracoUInt16Array_DracoUInt16Array_0 =
-          a.asm.oa).apply(null, arguments)),
-      Sb = (a._emscripten_bind_DracoUInt16Array_GetValue_1 = () =>
-        (Sb = a._emscripten_bind_DracoUInt16Array_GetValue_1 = a.asm.pa).apply(
-          null,
-          arguments,
-        )),
-      Tb = (a._emscripten_bind_DracoUInt16Array_size_0 = () =>
-        (Tb = a._emscripten_bind_DracoUInt16Array_size_0 = a.asm.qa).apply(
-          null,
-          arguments,
-        )),
-      Ub = (a._emscripten_bind_DracoUInt16Array___destroy___0 = () =>
-        (Ub = a._emscripten_bind_DracoUInt16Array___destroy___0 =
-          a.asm.ra).apply(null, arguments)),
-      Na = (a._emscripten_bind_DracoInt32Array_DracoInt32Array_0 = () =>
-        (Na = a._emscripten_bind_DracoInt32Array_DracoInt32Array_0 =
-          a.asm.sa).apply(null, arguments)),
-      Vb = (a._emscripten_bind_DracoInt32Array_GetValue_1 = () =>
-        (Vb = a._emscripten_bind_DracoInt32Array_GetValue_1 = a.asm.ta).apply(
-          null,
-          arguments,
-        )),
-      Wb = (a._emscripten_bind_DracoInt32Array_size_0 = () =>
-        (Wb = a._emscripten_bind_DracoInt32Array_size_0 = a.asm.ua).apply(
-          null,
-          arguments,
-        )),
-      Xb = (a._emscripten_bind_DracoInt32Array___destroy___0 = () =>
-        (Xb = a._emscripten_bind_DracoInt32Array___destroy___0 =
-          a.asm.va).apply(null, arguments)),
-      Oa = (a._emscripten_bind_DracoUInt32Array_DracoUInt32Array_0 = () =>
-        (Oa = a._emscripten_bind_DracoUInt32Array_DracoUInt32Array_0 =
-          a.asm.wa).apply(null, arguments)),
-      Yb = (a._emscripten_bind_DracoUInt32Array_GetValue_1 = () =>
-        (Yb = a._emscripten_bind_DracoUInt32Array_GetValue_1 = a.asm.xa).apply(
-          null,
-          arguments,
-        )),
-      Zb = (a._emscripten_bind_DracoUInt32Array_size_0 = () =>
-        (Zb = a._emscripten_bind_DracoUInt32Array_size_0 = a.asm.ya).apply(
-          null,
-          arguments,
-        )),
-      $b = (a._emscripten_bind_DracoUInt32Array___destroy___0 = () =>
-        ($b = a._emscripten_bind_DracoUInt32Array___destroy___0 =
-          a.asm.za).apply(null, arguments)),
-      Pa = (a._emscripten_bind_MetadataQuerier_MetadataQuerier_0 = () =>
-        (Pa = a._emscripten_bind_MetadataQuerier_MetadataQuerier_0 =
-          a.asm.Aa).apply(null, arguments)),
-      ac = (a._emscripten_bind_MetadataQuerier_HasEntry_2 = () =>
-        (ac = a._emscripten_bind_MetadataQuerier_HasEntry_2 = a.asm.Ba).apply(
-          null,
-          arguments,
-        )),
-      bc = (a._emscripten_bind_MetadataQuerier_GetIntEntry_2 = () =>
-        (bc = a._emscripten_bind_MetadataQuerier_GetIntEntry_2 =
-          a.asm.Ca).apply(null, arguments)),
-      cc = (a._emscripten_bind_MetadataQuerier_GetIntEntryArray_3 = () =>
-        (cc = a._emscripten_bind_MetadataQuerier_GetIntEntryArray_3 =
-          a.asm.Da).apply(null, arguments)),
-      dc = (a._emscripten_bind_MetadataQuerier_GetDoubleEntry_2 = () =>
-        (dc = a._emscripten_bind_MetadataQuerier_GetDoubleEntry_2 =
-          a.asm.Ea).apply(null, arguments)),
-      ec = (a._emscripten_bind_MetadataQuerier_GetStringEntry_2 = () =>
-        (ec = a._emscripten_bind_MetadataQuerier_GetStringEntry_2 =
-          a.asm.Fa).apply(null, arguments)),
-      fc = (a._emscripten_bind_MetadataQuerier_NumEntries_1 = () =>
-        (fc = a._emscripten_bind_MetadataQuerier_NumEntries_1 = a.asm.Ga).apply(
-          null,
-          arguments,
-        )),
-      gc = (a._emscripten_bind_MetadataQuerier_GetEntryName_2 = () =>
-        (gc = a._emscripten_bind_MetadataQuerier_GetEntryName_2 =
-          a.asm.Ha).apply(null, arguments)),
-      hc = (a._emscripten_bind_MetadataQuerier___destroy___0 = () =>
-        (hc = a._emscripten_bind_MetadataQuerier___destroy___0 =
-          a.asm.Ia).apply(null, arguments)),
-      Qa = (a._emscripten_bind_Decoder_Decoder_0 = () =>
-        (Qa = a._emscripten_bind_Decoder_Decoder_0 = a.asm.Ja).apply(
-          null,
-          arguments,
-        )),
-      ic = (a._emscripten_bind_Decoder_DecodeArrayToPointCloud_3 = () =>
-        (ic = a._emscripten_bind_Decoder_DecodeArrayToPointCloud_3 =
-          a.asm.Ka).apply(null, arguments)),
-      jc = (a._emscripten_bind_Decoder_DecodeArrayToMesh_3 = () =>
-        (jc = a._emscripten_bind_Decoder_DecodeArrayToMesh_3 = a.asm.La).apply(
-          null,
-          arguments,
-        )),
-      kc = (a._emscripten_bind_Decoder_GetAttributeId_2 = () =>
-        (kc = a._emscripten_bind_Decoder_GetAttributeId_2 = a.asm.Ma).apply(
-          null,
-          arguments,
-        )),
-      lc = (a._emscripten_bind_Decoder_GetAttributeIdByName_2 = () =>
-        (lc = a._emscripten_bind_Decoder_GetAttributeIdByName_2 =
-          a.asm.Na).apply(null, arguments)),
-      mc = (a._emscripten_bind_Decoder_GetAttributeIdByMetadataEntry_3 = () =>
-        (mc = a._emscripten_bind_Decoder_GetAttributeIdByMetadataEntry_3 =
-          a.asm.Oa).apply(null, arguments)),
-      nc = (a._emscripten_bind_Decoder_GetAttribute_2 = () =>
-        (nc = a._emscripten_bind_Decoder_GetAttribute_2 = a.asm.Pa).apply(
-          null,
-          arguments,
-        )),
-      oc = (a._emscripten_bind_Decoder_GetAttributeByUniqueId_2 = () =>
-        (oc = a._emscripten_bind_Decoder_GetAttributeByUniqueId_2 =
-          a.asm.Qa).apply(null, arguments)),
-      pc = (a._emscripten_bind_Decoder_GetMetadata_1 = () =>
-        (pc = a._emscripten_bind_Decoder_GetMetadata_1 = a.asm.Ra).apply(
-          null,
-          arguments,
-        )),
-      qc = (a._emscripten_bind_Decoder_GetAttributeMetadata_2 = () =>
-        (qc = a._emscripten_bind_Decoder_GetAttributeMetadata_2 =
-          a.asm.Sa).apply(null, arguments)),
-      rc = (a._emscripten_bind_Decoder_GetFaceFromMesh_3 = () =>
-        (rc = a._emscripten_bind_Decoder_GetFaceFromMesh_3 = a.asm.Ta).apply(
-          null,
-          arguments,
-        )),
-      sc = (a._emscripten_bind_Decoder_GetTriangleStripsFromMesh_2 = () =>
-        (sc = a._emscripten_bind_Decoder_GetTriangleStripsFromMesh_2 =
-          a.asm.Ua).apply(null, arguments)),
-      tc = (a._emscripten_bind_Decoder_GetTrianglesUInt16Array_3 = () =>
-        (tc = a._emscripten_bind_Decoder_GetTrianglesUInt16Array_3 =
-          a.asm.Va).apply(null, arguments)),
-      uc = (a._emscripten_bind_Decoder_GetTrianglesUInt32Array_3 = () =>
-        (uc = a._emscripten_bind_Decoder_GetTrianglesUInt32Array_3 =
-          a.asm.Wa).apply(null, arguments)),
-      vc = (a._emscripten_bind_Decoder_GetAttributeFloat_3 = () =>
-        (vc = a._emscripten_bind_Decoder_GetAttributeFloat_3 = a.asm.Xa).apply(
-          null,
-          arguments,
-        )),
-      wc = (a._emscripten_bind_Decoder_GetAttributeFloatForAllPoints_3 = () =>
-        (wc = a._emscripten_bind_Decoder_GetAttributeFloatForAllPoints_3 =
-          a.asm.Ya).apply(null, arguments)),
-      xc = (a._emscripten_bind_Decoder_GetAttributeIntForAllPoints_3 = () =>
-        (xc = a._emscripten_bind_Decoder_GetAttributeIntForAllPoints_3 =
-          a.asm.Za).apply(null, arguments)),
-      yc = (a._emscripten_bind_Decoder_GetAttributeInt8ForAllPoints_3 = () =>
-        (yc = a._emscripten_bind_Decoder_GetAttributeInt8ForAllPoints_3 =
-          a.asm._a).apply(null, arguments)),
-      zc = (a._emscripten_bind_Decoder_GetAttributeUInt8ForAllPoints_3 = () =>
-        (zc = a._emscripten_bind_Decoder_GetAttributeUInt8ForAllPoints_3 =
-          a.asm.$a).apply(null, arguments)),
-      Ac = (a._emscripten_bind_Decoder_GetAttributeInt16ForAllPoints_3 = () =>
-        (Ac = a._emscripten_bind_Decoder_GetAttributeInt16ForAllPoints_3 =
-          a.asm.ab).apply(null, arguments)),
-      Bc = (a._emscripten_bind_Decoder_GetAttributeUInt16ForAllPoints_3 = () =>
-        (Bc = a._emscripten_bind_Decoder_GetAttributeUInt16ForAllPoints_3 =
-          a.asm.bb).apply(null, arguments)),
-      Cc = (a._emscripten_bind_Decoder_GetAttributeInt32ForAllPoints_3 = () =>
-        (Cc = a._emscripten_bind_Decoder_GetAttributeInt32ForAllPoints_3 =
-          a.asm.cb).apply(null, arguments)),
-      Dc = (a._emscripten_bind_Decoder_GetAttributeUInt32ForAllPoints_3 = () =>
-        (Dc = a._emscripten_bind_Decoder_GetAttributeUInt32ForAllPoints_3 =
-          a.asm.db).apply(null, arguments)),
+        );
+      }),
+      qc = (a._emscripten_bind_Decoder_GetAttributeMetadata_2 = function () {
+        return (qc = a._emscripten_bind_Decoder_GetAttributeMetadata_2 =
+          a.asm.Sa).apply(null, arguments);
+      }),
+      rc = (a._emscripten_bind_Decoder_GetFaceFromMesh_3 = function () {
+        return (rc = a._emscripten_bind_Decoder_GetFaceFromMesh_3 =
+          a.asm.Ta).apply(null, arguments);
+      }),
+      sc = (a._emscripten_bind_Decoder_GetTriangleStripsFromMesh_2 =
+        function () {
+          return (sc = a._emscripten_bind_Decoder_GetTriangleStripsFromMesh_2 =
+            a.asm.Ua).apply(null, arguments);
+        }),
+      tc = (a._emscripten_bind_Decoder_GetTrianglesUInt16Array_3 = function () {
+        return (tc = a._emscripten_bind_Decoder_GetTrianglesUInt16Array_3 =
+          a.asm.Va).apply(null, arguments);
+      }),
+      uc = (a._emscripten_bind_Decoder_GetTrianglesUInt32Array_3 = function () {
+        return (uc = a._emscripten_bind_Decoder_GetTrianglesUInt32Array_3 =
+          a.asm.Wa).apply(null, arguments);
+      }),
+      vc = (a._emscripten_bind_Decoder_GetAttributeFloat_3 = function () {
+        return (vc = a._emscripten_bind_Decoder_GetAttributeFloat_3 =
+          a.asm.Xa).apply(null, arguments);
+      }),
+      wc = (a._emscripten_bind_Decoder_GetAttributeFloatForAllPoints_3 =
+        function () {
+          return (wc =
+            a._emscripten_bind_Decoder_GetAttributeFloatForAllPoints_3 =
+              a.asm.Ya).apply(null, arguments);
+        }),
+      xc = (a._emscripten_bind_Decoder_GetAttributeIntForAllPoints_3 =
+        function () {
+          return (xc =
+            a._emscripten_bind_Decoder_GetAttributeIntForAllPoints_3 =
+              a.asm.Za).apply(null, arguments);
+        }),
+      yc = (a._emscripten_bind_Decoder_GetAttributeInt8ForAllPoints_3 =
+        function () {
+          return (yc =
+            a._emscripten_bind_Decoder_GetAttributeInt8ForAllPoints_3 =
+              a.asm._a).apply(null, arguments);
+        }),
+      zc = (a._emscripten_bind_Decoder_GetAttributeUInt8ForAllPoints_3 =
+        function () {
+          return (zc =
+            a._emscripten_bind_Decoder_GetAttributeUInt8ForAllPoints_3 =
+              a.asm.$a).apply(null, arguments);
+        }),
+      Ac = (a._emscripten_bind_Decoder_GetAttributeInt16ForAllPoints_3 =
+        function () {
+          return (Ac =
+            a._emscripten_bind_Decoder_GetAttributeInt16ForAllPoints_3 =
+              a.asm.ab).apply(null, arguments);
+        }),
+      Bc = (a._emscripten_bind_Decoder_GetAttributeUInt16ForAllPoints_3 =
+        function () {
+          return (Bc =
+            a._emscripten_bind_Decoder_GetAttributeUInt16ForAllPoints_3 =
+              a.asm.bb).apply(null, arguments);
+        }),
+      Cc = (a._emscripten_bind_Decoder_GetAttributeInt32ForAllPoints_3 =
+        function () {
+          return (Cc =
+            a._emscripten_bind_Decoder_GetAttributeInt32ForAllPoints_3 =
+              a.asm.cb).apply(null, arguments);
+        }),
+      Dc = (a._emscripten_bind_Decoder_GetAttributeUInt32ForAllPoints_3 =
+        function () {
+          return (Dc =
+            a._emscripten_bind_Decoder_GetAttributeUInt32ForAllPoints_3 =
+              a.asm.db).apply(null, arguments);
+        }),
       Ec = (a._emscripten_bind_Decoder_GetAttributeDataArrayForAllPoints_5 =
-        () =>
-          (Ec = a._emscripten_bind_Decoder_GetAttributeDataArrayForAllPoints_5 =
-            a.asm.eb).apply(null, arguments)),
-      Fc = (a._emscripten_bind_Decoder_SkipAttributeTransform_1 = () =>
-        (Fc = a._emscripten_bind_Decoder_SkipAttributeTransform_1 =
-          a.asm.fb).apply(null, arguments)),
+        function () {
+          return (Ec =
+            a._emscripten_bind_Decoder_GetAttributeDataArrayForAllPoints_5 =
+              a.asm.eb).apply(null, arguments);
+        }),
+      Fc = (a._emscripten_bind_Decoder_SkipAttributeTransform_1 = function () {
+        return (Fc = a._emscripten_bind_Decoder_SkipAttributeTransform_1 =
+          a.asm.fb).apply(null, arguments);
+      }),
       Gc = (a._emscripten_bind_Decoder_GetEncodedGeometryType_Deprecated_1 =
-        () =>
-          (Gc = a._emscripten_bind_Decoder_GetEncodedGeometryType_Deprecated_1 =
-            a.asm.gb).apply(null, arguments)),
-      Hc = (a._emscripten_bind_Decoder_DecodeBufferToPointCloud_2 = () =>
-        (Hc = a._emscripten_bind_Decoder_DecodeBufferToPointCloud_2 =
-          a.asm.hb).apply(null, arguments)),
-      Ic = (a._emscripten_bind_Decoder_DecodeBufferToMesh_2 = () =>
-        (Ic = a._emscripten_bind_Decoder_DecodeBufferToMesh_2 = a.asm.ib).apply(
+        function () {
+          return (Gc =
+            a._emscripten_bind_Decoder_GetEncodedGeometryType_Deprecated_1 =
+              a.asm.gb).apply(null, arguments);
+        }),
+      Hc = (a._emscripten_bind_Decoder_DecodeBufferToPointCloud_2 =
+        function () {
+          return (Hc = a._emscripten_bind_Decoder_DecodeBufferToPointCloud_2 =
+            a.asm.hb).apply(null, arguments);
+        }),
+      Ic = (a._emscripten_bind_Decoder_DecodeBufferToMesh_2 = function () {
+        return (Ic = a._emscripten_bind_Decoder_DecodeBufferToMesh_2 =
+          a.asm.ib).apply(null, arguments);
+      }),
+      Jc = (a._emscripten_bind_Decoder___destroy___0 = function () {
+        return (Jc = a._emscripten_bind_Decoder___destroy___0 = a.asm.jb).apply(
           null,
           arguments,
-        )),
-      Jc = (a._emscripten_bind_Decoder___destroy___0 = () =>
-        (Jc = a._emscripten_bind_Decoder___destroy___0 = a.asm.jb).apply(
-          null,
-          arguments,
-        )),
+        );
+      }),
       Kc =
         (a._emscripten_enum_draco_AttributeTransformType_ATTRIBUTE_INVALID_TRANSFORM =
-          () =>
-            (Kc =
+          function () {
+            return (Kc =
               a._emscripten_enum_draco_AttributeTransformType_ATTRIBUTE_INVALID_TRANSFORM =
-                a.asm.kb).apply(null, arguments)),
+                a.asm.kb).apply(null, arguments);
+          }),
       Lc =
         (a._emscripten_enum_draco_AttributeTransformType_ATTRIBUTE_NO_TRANSFORM =
-          () =>
-            (Lc =
+          function () {
+            return (Lc =
               a._emscripten_enum_draco_AttributeTransformType_ATTRIBUTE_NO_TRANSFORM =
-                a.asm.lb).apply(null, arguments)),
+                a.asm.lb).apply(null, arguments);
+          }),
       Mc =
         (a._emscripten_enum_draco_AttributeTransformType_ATTRIBUTE_QUANTIZATION_TRANSFORM =
-          () =>
-            (Mc =
+          function () {
+            return (Mc =
               a._emscripten_enum_draco_AttributeTransformType_ATTRIBUTE_QUANTIZATION_TRANSFORM =
-                a.asm.mb).apply(null, arguments)),
+                a.asm.mb).apply(null, arguments);
+          }),
       Nc =
         (a._emscripten_enum_draco_AttributeTransformType_ATTRIBUTE_OCTAHEDRON_TRANSFORM =
-          () =>
-            (Nc =
+          function () {
+            return (Nc =
               a._emscripten_enum_draco_AttributeTransformType_ATTRIBUTE_OCTAHEDRON_TRANSFORM =
-                a.asm.nb).apply(null, arguments)),
-      Oc = (a._emscripten_enum_draco_GeometryAttribute_Type_INVALID = () =>
-        (Oc = a._emscripten_enum_draco_GeometryAttribute_Type_INVALID =
-          a.asm.ob).apply(null, arguments)),
-      Pc = (a._emscripten_enum_draco_GeometryAttribute_Type_POSITION = () =>
-        (Pc = a._emscripten_enum_draco_GeometryAttribute_Type_POSITION =
-          a.asm.pb).apply(null, arguments)),
-      Qc = (a._emscripten_enum_draco_GeometryAttribute_Type_NORMAL = () =>
-        (Qc = a._emscripten_enum_draco_GeometryAttribute_Type_NORMAL =
-          a.asm.qb).apply(null, arguments)),
-      Rc = (a._emscripten_enum_draco_GeometryAttribute_Type_COLOR = () =>
-        (Rc = a._emscripten_enum_draco_GeometryAttribute_Type_COLOR =
-          a.asm.rb).apply(null, arguments)),
-      Sc = (a._emscripten_enum_draco_GeometryAttribute_Type_TEX_COORD = () =>
-        (Sc = a._emscripten_enum_draco_GeometryAttribute_Type_TEX_COORD =
-          a.asm.sb).apply(null, arguments)),
-      Tc = (a._emscripten_enum_draco_GeometryAttribute_Type_GENERIC = () =>
-        (Tc = a._emscripten_enum_draco_GeometryAttribute_Type_GENERIC =
-          a.asm.tb).apply(null, arguments)),
+                a.asm.nb).apply(null, arguments);
+          }),
+      Oc = (a._emscripten_enum_draco_GeometryAttribute_Type_INVALID =
+        function () {
+          return (Oc = a._emscripten_enum_draco_GeometryAttribute_Type_INVALID =
+            a.asm.ob).apply(null, arguments);
+        }),
+      Pc = (a._emscripten_enum_draco_GeometryAttribute_Type_POSITION =
+        function () {
+          return (Pc =
+            a._emscripten_enum_draco_GeometryAttribute_Type_POSITION =
+              a.asm.pb).apply(null, arguments);
+        }),
+      Qc = (a._emscripten_enum_draco_GeometryAttribute_Type_NORMAL =
+        function () {
+          return (Qc = a._emscripten_enum_draco_GeometryAttribute_Type_NORMAL =
+            a.asm.qb).apply(null, arguments);
+        }),
+      Rc = (a._emscripten_enum_draco_GeometryAttribute_Type_COLOR =
+        function () {
+          return (Rc = a._emscripten_enum_draco_GeometryAttribute_Type_COLOR =
+            a.asm.rb).apply(null, arguments);
+        }),
+      Sc = (a._emscripten_enum_draco_GeometryAttribute_Type_TEX_COORD =
+        function () {
+          return (Sc =
+            a._emscripten_enum_draco_GeometryAttribute_Type_TEX_COORD =
+              a.asm.sb).apply(null, arguments);
+        }),
+      Tc = (a._emscripten_enum_draco_GeometryAttribute_Type_GENERIC =
+        function () {
+          return (Tc = a._emscripten_enum_draco_GeometryAttribute_Type_GENERIC =
+            a.asm.tb).apply(null, arguments);
+        }),
       Uc = (a._emscripten_enum_draco_EncodedGeometryType_INVALID_GEOMETRY_TYPE =
-        () =>
-          (Uc =
+        function () {
+          return (Uc =
             a._emscripten_enum_draco_EncodedGeometryType_INVALID_GEOMETRY_TYPE =
-              a.asm.ub).apply(null, arguments)),
-      Vc = (a._emscripten_enum_draco_EncodedGeometryType_POINT_CLOUD = () =>
-        (Vc = a._emscripten_enum_draco_EncodedGeometryType_POINT_CLOUD =
-          a.asm.vb).apply(null, arguments)),
-      Wc = (a._emscripten_enum_draco_EncodedGeometryType_TRIANGULAR_MESH = () =>
-        (Wc = a._emscripten_enum_draco_EncodedGeometryType_TRIANGULAR_MESH =
-          a.asm.wb).apply(null, arguments)),
-      Xc = (a._emscripten_enum_draco_DataType_DT_INVALID = () =>
-        (Xc = a._emscripten_enum_draco_DataType_DT_INVALID = a.asm.xb).apply(
+              a.asm.ub).apply(null, arguments);
+        }),
+      Vc = (a._emscripten_enum_draco_EncodedGeometryType_POINT_CLOUD =
+        function () {
+          return (Vc =
+            a._emscripten_enum_draco_EncodedGeometryType_POINT_CLOUD =
+              a.asm.vb).apply(null, arguments);
+        }),
+      Wc = (a._emscripten_enum_draco_EncodedGeometryType_TRIANGULAR_MESH =
+        function () {
+          return (Wc =
+            a._emscripten_enum_draco_EncodedGeometryType_TRIANGULAR_MESH =
+              a.asm.wb).apply(null, arguments);
+        }),
+      Xc = (a._emscripten_enum_draco_DataType_DT_INVALID = function () {
+        return (Xc = a._emscripten_enum_draco_DataType_DT_INVALID =
+          a.asm.xb).apply(null, arguments);
+      }),
+      Yc = (a._emscripten_enum_draco_DataType_DT_INT8 = function () {
+        return (Yc = a._emscripten_enum_draco_DataType_DT_INT8 =
+          a.asm.yb).apply(null, arguments);
+      }),
+      Zc = (a._emscripten_enum_draco_DataType_DT_UINT8 = function () {
+        return (Zc = a._emscripten_enum_draco_DataType_DT_UINT8 =
+          a.asm.zb).apply(null, arguments);
+      }),
+      $c = (a._emscripten_enum_draco_DataType_DT_INT16 = function () {
+        return ($c = a._emscripten_enum_draco_DataType_DT_INT16 =
+          a.asm.Ab).apply(null, arguments);
+      }),
+      ad = (a._emscripten_enum_draco_DataType_DT_UINT16 = function () {
+        return (ad = a._emscripten_enum_draco_DataType_DT_UINT16 =
+          a.asm.Bb).apply(null, arguments);
+      }),
+      bd = (a._emscripten_enum_draco_DataType_DT_INT32 = function () {
+        return (bd = a._emscripten_enum_draco_DataType_DT_INT32 =
+          a.asm.Cb).apply(null, arguments);
+      }),
+      cd = (a._emscripten_enum_draco_DataType_DT_UINT32 = function () {
+        return (cd = a._emscripten_enum_draco_DataType_DT_UINT32 =
+          a.asm.Db).apply(null, arguments);
+      }),
+      dd = (a._emscripten_enum_draco_DataType_DT_INT64 = function () {
+        return (dd = a._emscripten_enum_draco_DataType_DT_INT64 =
+          a.asm.Eb).apply(null, arguments);
+      }),
+      ed = (a._emscripten_enum_draco_DataType_DT_UINT64 = function () {
+        return (ed = a._emscripten_enum_draco_DataType_DT_UINT64 =
+          a.asm.Fb).apply(null, arguments);
+      }),
+      fd = (a._emscripten_enum_draco_DataType_DT_FLOAT32 = function () {
+        return (fd = a._emscripten_enum_draco_DataType_DT_FLOAT32 =
+          a.asm.Gb).apply(null, arguments);
+      }),
+      gd = (a._emscripten_enum_draco_DataType_DT_FLOAT64 = function () {
+        return (gd = a._emscripten_enum_draco_DataType_DT_FLOAT64 =
+          a.asm.Hb).apply(null, arguments);
+      }),
+      hd = (a._emscripten_enum_draco_DataType_DT_BOOL = function () {
+        return (hd = a._emscripten_enum_draco_DataType_DT_BOOL =
+          a.asm.Ib).apply(null, arguments);
+      }),
+      id = (a._emscripten_enum_draco_DataType_DT_TYPES_COUNT = function () {
+        return (id = a._emscripten_enum_draco_DataType_DT_TYPES_COUNT =
+          a.asm.Jb).apply(null, arguments);
+      }),
+      jd = (a._emscripten_enum_draco_StatusCode_OK = function () {
+        return (jd = a._emscripten_enum_draco_StatusCode_OK = a.asm.Kb).apply(
           null,
           arguments,
-        )),
-      Yc = (a._emscripten_enum_draco_DataType_DT_INT8 = () =>
-        (Yc = a._emscripten_enum_draco_DataType_DT_INT8 = a.asm.yb).apply(
-          null,
-          arguments,
-        )),
-      Zc = (a._emscripten_enum_draco_DataType_DT_UINT8 = () =>
-        (Zc = a._emscripten_enum_draco_DataType_DT_UINT8 = a.asm.zb).apply(
-          null,
-          arguments,
-        )),
-      $c = (a._emscripten_enum_draco_DataType_DT_INT16 = () =>
-        ($c = a._emscripten_enum_draco_DataType_DT_INT16 = a.asm.Ab).apply(
-          null,
-          arguments,
-        )),
-      ad = (a._emscripten_enum_draco_DataType_DT_UINT16 = () =>
-        (ad = a._emscripten_enum_draco_DataType_DT_UINT16 = a.asm.Bb).apply(
-          null,
-          arguments,
-        )),
-      bd = (a._emscripten_enum_draco_DataType_DT_INT32 = () =>
-        (bd = a._emscripten_enum_draco_DataType_DT_INT32 = a.asm.Cb).apply(
-          null,
-          arguments,
-        )),
-      cd = (a._emscripten_enum_draco_DataType_DT_UINT32 = () =>
-        (cd = a._emscripten_enum_draco_DataType_DT_UINT32 = a.asm.Db).apply(
-          null,
-          arguments,
-        )),
-      dd = (a._emscripten_enum_draco_DataType_DT_INT64 = () =>
-        (dd = a._emscripten_enum_draco_DataType_DT_INT64 = a.asm.Eb).apply(
-          null,
-          arguments,
-        )),
-      ed = (a._emscripten_enum_draco_DataType_DT_UINT64 = () =>
-        (ed = a._emscripten_enum_draco_DataType_DT_UINT64 = a.asm.Fb).apply(
-          null,
-          arguments,
-        )),
-      fd = (a._emscripten_enum_draco_DataType_DT_FLOAT32 = () =>
-        (fd = a._emscripten_enum_draco_DataType_DT_FLOAT32 = a.asm.Gb).apply(
-          null,
-          arguments,
-        )),
-      gd = (a._emscripten_enum_draco_DataType_DT_FLOAT64 = () =>
-        (gd = a._emscripten_enum_draco_DataType_DT_FLOAT64 = a.asm.Hb).apply(
-          null,
-          arguments,
-        )),
-      hd = (a._emscripten_enum_draco_DataType_DT_BOOL = () =>
-        (hd = a._emscripten_enum_draco_DataType_DT_BOOL = a.asm.Ib).apply(
-          null,
-          arguments,
-        )),
-      id = (a._emscripten_enum_draco_DataType_DT_TYPES_COUNT = () =>
-        (id = a._emscripten_enum_draco_DataType_DT_TYPES_COUNT =
-          a.asm.Jb).apply(null, arguments)),
-      jd = (a._emscripten_enum_draco_StatusCode_OK = () =>
-        (jd = a._emscripten_enum_draco_StatusCode_OK = a.asm.Kb).apply(
-          null,
-          arguments,
-        )),
-      kd = (a._emscripten_enum_draco_StatusCode_DRACO_ERROR = () =>
-        (kd = a._emscripten_enum_draco_StatusCode_DRACO_ERROR = a.asm.Lb).apply(
-          null,
-          arguments,
-        )),
-      ld = (a._emscripten_enum_draco_StatusCode_IO_ERROR = () =>
-        (ld = a._emscripten_enum_draco_StatusCode_IO_ERROR = a.asm.Mb).apply(
-          null,
-          arguments,
-        )),
-      md = (a._emscripten_enum_draco_StatusCode_INVALID_PARAMETER = () =>
-        (md = a._emscripten_enum_draco_StatusCode_INVALID_PARAMETER =
-          a.asm.Nb).apply(null, arguments)),
-      nd = (a._emscripten_enum_draco_StatusCode_UNSUPPORTED_VERSION = () =>
-        (nd = a._emscripten_enum_draco_StatusCode_UNSUPPORTED_VERSION =
-          a.asm.Ob).apply(null, arguments)),
-      od = (a._emscripten_enum_draco_StatusCode_UNKNOWN_VERSION = () =>
-        (od = a._emscripten_enum_draco_StatusCode_UNKNOWN_VERSION =
-          a.asm.Pb).apply(null, arguments));
-    a._malloc = () => (a._malloc = a.asm.Qb).apply(null, arguments);
-    a._free = () => (a._free = a.asm.Rb).apply(null, arguments);
-    var ua = () => (ua = a.asm.Sb).apply(null, arguments);
+        );
+      }),
+      kd = (a._emscripten_enum_draco_StatusCode_DRACO_ERROR = function () {
+        return (kd = a._emscripten_enum_draco_StatusCode_DRACO_ERROR =
+          a.asm.Lb).apply(null, arguments);
+      }),
+      ld = (a._emscripten_enum_draco_StatusCode_IO_ERROR = function () {
+        return (ld = a._emscripten_enum_draco_StatusCode_IO_ERROR =
+          a.asm.Mb).apply(null, arguments);
+      }),
+      md = (a._emscripten_enum_draco_StatusCode_INVALID_PARAMETER =
+        function () {
+          return (md = a._emscripten_enum_draco_StatusCode_INVALID_PARAMETER =
+            a.asm.Nb).apply(null, arguments);
+        }),
+      nd = (a._emscripten_enum_draco_StatusCode_UNSUPPORTED_VERSION =
+        function () {
+          return (nd = a._emscripten_enum_draco_StatusCode_UNSUPPORTED_VERSION =
+            a.asm.Ob).apply(null, arguments);
+        }),
+      od = (a._emscripten_enum_draco_StatusCode_UNKNOWN_VERSION = function () {
+        return (od = a._emscripten_enum_draco_StatusCode_UNKNOWN_VERSION =
+          a.asm.Pb).apply(null, arguments);
+      });
+    a._malloc = function () {
+      return (a._malloc = a.asm.Qb).apply(null, arguments);
+    };
+    a._free = function () {
+      return (a._free = a.asm.Rb).apply(null, arguments);
+    };
+    var ua = function () {
+      return (ua = a.asm.Sb).apply(null, arguments);
+    };
     a.___start_em_js = 11660;
     a.___stop_em_js = 11758;
     var la;

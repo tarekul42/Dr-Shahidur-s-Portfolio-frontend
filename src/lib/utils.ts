@@ -72,14 +72,17 @@ export function extractApiErrorMessage(
     if ("response" in error) {
       const res = (
         error as {
-          response?: { data?: { message?: unknown; errors?: Array<{ message?: string }> } };
+          response?: {
+            data?: { message?: unknown; errors?: Array<{ message?: string }> };
+          };
         }
       ).response;
       const msg = res?.data?.message;
       if (typeof msg === "string" && msg.trim()) return msg.trim();
       // Sometimes backend returns errors array
       const firstErr = res?.data?.errors?.[0]?.message;
-      if (typeof firstErr === "string" && firstErr.trim()) return firstErr.trim();
+      if (typeof firstErr === "string" && firstErr.trim())
+        return firstErr.trim();
     }
     // Network error (no response — timeout, CORS, server unreachable)
     if ("code" in error) {

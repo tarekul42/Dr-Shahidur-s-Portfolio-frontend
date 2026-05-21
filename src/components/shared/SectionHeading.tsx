@@ -6,6 +6,8 @@ interface SectionHeadingProps {
   centered?: boolean;
   className?: string;
   badge?: string;
+  /** Skip entrance animations so above-the-fold copy paints immediately (LCP). */
+  priority?: boolean;
 }
 
 export const SectionHeading = ({

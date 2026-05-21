@@ -4,10 +4,11 @@ import { BackToTop } from "./BackToTop";
 import * as useScrollPositionHook from "@/hooks/useScrollPosition";
 
 describe("BackToTop component", () => {
-  it("does not render when isVisible is false", () => {
+  it("is hidden when isVisible is false", () => {
     vi.spyOn(useScrollPositionHook, "useScrollPosition").mockReturnValue(false);
     render(<BackToTop />);
-    expect(screen.queryByRole("button", { name: "Back to top" })).not.toBeInTheDocument();
+    const button = screen.getByRole("button", { name: "Back to top" });
+    expect(button).toHaveClass("opacity-0", "pointer-events-none");
   });
 
   it("renders when isVisible is true and scrolls to top on click", () => {
