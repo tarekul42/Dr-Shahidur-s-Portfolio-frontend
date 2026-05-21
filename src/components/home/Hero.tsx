@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { lazy, Suspense, useState } from "react";
 
 import { Button } from "@/components/ui/Button";
@@ -97,13 +96,14 @@ export const Hero = () => {
               </Suspense>
             ) : (
               <>
-                {/* Static high-quality placeholder — zero JS cost */}
-                <Image
-                  src="/skeleton_placeholder.png"
-                  alt="Interactive 3D skeleton model preview"
-                  fill
-                  sizes="(max-width: 1024px) 0px, 500px"
-                  className="object-cover"
+                {/* Static high-quality placeholder — zero JS cost and zero mobile download cost */}
+                <div
+                  className="absolute inset-0 bg-cover bg-center"
+                  style={{
+                    backgroundImage: "url('/skeleton_placeholder.png')",
+                  }}
+                  role="img"
+                  aria-label="Interactive 3D skeleton model preview"
                 />
 
                 {/* Premium "Explore 3D" overlay button */}

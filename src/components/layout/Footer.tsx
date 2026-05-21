@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   FacebookIcon,
   InstagramIcon,
@@ -7,7 +8,6 @@ import {
   XTwitterIcon,
   YoutubeIcon,
 } from "@/components/shared/Icons";
-import Link from "next/link";
 import { FALLBACKS } from "@/constants/fallbacks";
 import { FOOTER_LINKS } from "@/constants/navigation";
 import { useTranslation } from "@/hooks/useTranslation";
