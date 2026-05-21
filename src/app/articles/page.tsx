@@ -2,9 +2,6 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { ArticlesClient } from "@/components/articles/ArticlesClient";
 import { SectionHeading } from "@/components/shared/SectionHeading";
-import { Skeleton } from "@/components/ui/Skeleton";
-import { getArticles, getCategories } from "@/lib/api/articles";
-import type { ArticleCategory, ArticleType } from "@/types/article";
 
 export const metadata: Metadata = {
   title: "Articles & Insights",
@@ -12,49 +9,27 @@ export const metadata: Metadata = {
     "Explore the latest orthopedic insights, surgical techniques, and patient care tips by Dr. Sahidur Rahman Khan.",
 };
 
-export default async function ArticlesPage({
-  searchParams,
-}: {
-  searchParams: Promise<{
-    page?: string;
-    category?: string;
-    articleType?: string;
-    search?: string;
-  }>;
-}) {
-  const { page: pageParam, category, articleType, search } = await searchParams;
-  const page = Number(pageParam) || 1;
+function ArticlesListFallback() {
+  return (
+    <div
+      className="min-h-[12rem] animate-pulse rounded-2xl bg-border-light/20 dark:bg-border-dark/20"
+      aria-hidden
+    />
+  );
+}
 
-  const [data, categories] = await Promise.all([
-    getArticles({
-      page,
-      category,
-      limit: 12,
-      articleType: articleType as ArticleType | undefined,
-      search,
-    }).catch(() => undefined),
-    getCategories().catch(() => [] as ArticleCategory[]),
-  ]);
-
+export default function ArticlesPage() {
   return (
     <div className="container mx-auto px-6 py-12">
       <SectionHeading
         badge="Knowledge Center"
         title="Articles & Medical Insights"
         subtitle="Staying informed is the first step towards recovery. Browse my latest publications on orthopedic health."
+        priority
       />
       <div className="mt-12">
-        <Suspense
-          fallback={
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {Array.from({ length: 12 }).map((_, i) => (
-                // biome-ignore lint/suspicious/noArrayIndexKey: static skeleton grid
-                <Skeleton key={i} variant="card" className="h-80" />
-              ))}
-            </div>
-          }
-        >
-          <ArticlesClient initialArticles={data} categories={categories} />
+        <Suspense fallback={<ArticlesListFallback />}>
+          <ArticlesClient />
         </Suspense>
       </div>
     </div>

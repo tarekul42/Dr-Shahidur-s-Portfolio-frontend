@@ -1,8 +1,5 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/Badge";
-import { formatDate } from "@/lib/utils";
+import { cn, formatDate } from "@/lib/utils";
 import type { Research } from "@/types/research";
 
 interface ResearchCardProps {
@@ -17,12 +14,11 @@ export const ResearchCard = ({ research, idx = 0 }: ResearchCardProps) => {
   const badgeLabel = research.uploadType === "PDF" ? "PDF" : "DOI";
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ delay: idx * 0.1 }}
-      className="group bg-card-light dark:bg-card-dark rounded-2xl border border-border-light dark:border-border-dark p-8 hover:shadow-2xl hover:border-brand-primary transition-all duration-500"
+    <div
+      className={cn(
+        "group bg-card-light dark:bg-card-dark rounded-2xl border border-border-light dark:border-border-dark p-8 hover:shadow-2xl hover:border-brand-primary transition-all duration-500",
+        idx > 0 && "animate-fade-in",
+      )}
     >
       <div className="flex flex-col h-full space-y-6">
         <div className="flex items-center justify-between">
@@ -98,6 +94,6 @@ export const ResearchCard = ({ research, idx = 0 }: ResearchCardProps) => {
           </a>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };

@@ -11,14 +11,9 @@ import { Skeleton } from "@/components/ui/Skeleton";
 import { useDebounce } from "@/hooks/useDebounce";
 import { fetchResearchClient } from "@/lib/api/research";
 import { useSetParams } from "@/lib/url";
-import type { PaginatedData } from "@/types/api";
-import type { Research, UploadType } from "@/types/research";
+import type { UploadType } from "@/types/research";
 
-export function ResearchClient({
-  initialResearch,
-}: {
-  initialResearch?: PaginatedData<Research>;
-}) {
+export function ResearchClient() {
   const searchParams = useSearchParams();
   const setParams = useSetParams();
 
@@ -35,7 +30,7 @@ export function ResearchClient({
     [page, uploadType, debouncedSearch],
   );
 
-  const { data, isFetching, isError } = useQuery({
+  const { data, isFetching, isPending, isError } = useQuery({
     queryKey,
     queryFn: async () =>
       fetchResearchClient({
@@ -44,10 +39,10 @@ export function ResearchClient({
         uploadType: uploadType || undefined,
         search: debouncedSearch || undefined,
       }),
-    initialData:
-      !uploadType && !search && page === 1 ? initialResearch : undefined,
     staleTime: 5 * 60 * 1000,
   });
+
+  const listLoading = isPending || (isFetching && !data);
 
   return (
     <div className="space-y-10">
@@ -75,7 +70,7 @@ export function ResearchClient({
           title="Something went wrong"
           description="Failed to load research items. Please try again."
         />
-      ) : isFetching ? (
+      ) : listLoading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {Array.from({ length: 8 }).map((_, i) => (
             // biome-ignore lint/suspicious/noArrayIndexKey: static skeleton grid

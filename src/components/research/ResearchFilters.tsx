@@ -1,7 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Input } from "@/components/ui/Input";
+import { cn } from "@/lib/utils";
 import type { UploadType } from "@/types/research";
 
 const TYPE_TABS: Array<{ label: string; value: UploadType | "" }> = [
@@ -23,9 +23,6 @@ export function ResearchFilters({
   onUploadTypeChange: (v: UploadType | "") => void;
   onClearAll: () => void;
 }) {
-  const activeIdx = TYPE_TABS.findIndex((t) => t.value === uploadType);
-  const tabIdx = activeIdx === -1 ? 0 : activeIdx;
-
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 items-end">
@@ -36,30 +33,26 @@ export function ResearchFilters({
           onChange={(e) => onSearchChange(e.target.value)}
         />
         <div className="lg:col-span-2 flex items-end gap-4 flex-wrap">
-          <div className="relative inline-flex rounded-full border border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark p-1">
-            <motion.div
-              layoutId="researchTypeTab"
-              className="absolute top-1 bottom-1 rounded-full bg-brand-primary"
-              style={{
-                left: `calc(${tabIdx} * 33.333% + 0.25rem)`,
-                width: "calc(33.333% - 0.5rem)",
-              }}
-              transition={{ type: "spring", stiffness: 420, damping: 35 }}
-            />
+          <div
+            role="tablist"
+            aria-label="Publication type"
+            className="flex w-full max-w-md rounded-full border border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark p-1 gap-1"
+          >
             {TYPE_TABS.map((t) => {
               const active = t.value === uploadType;
               return (
                 <button
                   key={t.label}
                   type="button"
+                  role="tab"
+                  aria-selected={active}
                   onClick={() => onUploadTypeChange(t.value)}
-                  className={[
-                    "relative z-10 px-5 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-colors",
+                  className={cn(
+                    "flex-1 min-w-0 px-3 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-colors text-center",
                     active
-                      ? "text-white"
-                      : "text-text-para-light dark:text-text-para-dark",
-                  ].join(" ")}
-                  aria-pressed={active}
+                      ? "bg-brand-primary text-white shadow-sm"
+                      : "text-text-heading-light dark:text-text-heading-dark hover:bg-brand-primary/10 dark:hover:bg-brand-primary/15",
+                  )}
                 >
                   {t.label}
                 </button>

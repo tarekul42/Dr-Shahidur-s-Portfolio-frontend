@@ -1,5 +1,6 @@
 import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
+import { persist } from "zustand/middleware";
+import { safeLocalStorage } from "@/lib/safe-persist-storage";
 import type { SearchType } from "@/types/search";
 
 interface RecentSearch {
@@ -51,15 +52,7 @@ export const useSearchStore = create<SearchState>()(
     }),
     {
       name: "ds-search",
-      storage: createJSONStorage(() =>
-        typeof window !== "undefined"
-          ? localStorage
-          : {
-              getItem: () => null,
-              setItem: () => {},
-              removeItem: () => {},
-            },
-      ),
+      storage: safeLocalStorage,
       // Only persist recentSearches and activeType
       partialize: (state) => ({
         recentSearches: state.recentSearches,
