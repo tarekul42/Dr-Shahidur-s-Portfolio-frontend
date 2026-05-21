@@ -13,6 +13,7 @@ export const useLanguageStore = create<LanguageState>((set) => ({
     set({ language });
     if (typeof window !== "undefined") {
       localStorage.setItem("language", language);
+      document.documentElement.dataset.lang = language;
     }
   },
   toggleLanguage: () =>
@@ -20,6 +21,7 @@ export const useLanguageStore = create<LanguageState>((set) => ({
       const next = state.language === "en" ? "bn" : "en";
       if (typeof window !== "undefined") {
         localStorage.setItem("language", next);
+        document.documentElement.dataset.lang = next;
       }
       return { language: next };
     }),

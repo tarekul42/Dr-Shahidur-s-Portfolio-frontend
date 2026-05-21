@@ -73,8 +73,8 @@ export const Header = ({ appInfo }: { appInfo?: AppInfo }) => {
             <span className="font-bold text-lg leading-none text-text-heading-light dark:text-text-heading-dark">
               {appInfo?.doctorName ?? FALLBACKS.doctorName}
             </span>
-            <span className="text-[10px] uppercase tracking-widest text-brand-primary font-bold">
-              {appInfo?.doctorSpecialty ?? FALLBACKS.specialty}
+            <span className="text-[10px] uppercase tracking-widest text-brand-primary font-bold max-w-[11rem] sm:max-w-xs truncate">
+              {appInfo?.doctorTitle ?? FALLBACKS.headerTagline}
             </span>
           </div>
         </Link>

@@ -1,41 +1,52 @@
-import { About } from "@/components/home/About";
-import { ChamberOverview } from "@/components/home/ChamberOverview";
-import { CTASection } from "@/components/home/CTASection";
-import { FeaturedArticles } from "@/components/home/FeaturedArticles";
+import dynamic from "next/dynamic";
+import { Suspense } from "react";
 import { Hero } from "@/components/home/Hero";
-import { NewsletterCTA } from "@/components/home/NewsletterCTA";
-import { Specialties } from "@/components/home/Specialties";
-import { TestimonialsCarousel } from "@/components/home/TestimonialsCarousel";
-import { TestimonialsCTA } from "@/components/home/TestimonialsCTA";
-import { getAppInfo } from "@/lib/api/app-info";
-import { getArticles } from "@/lib/api/articles";
-import { getTestimonials } from "@/lib/api/testimonials";
+import {
+  AboutSection,
+  FeaturedArticlesSection,
+  TestimonialsSection,
+} from "@/components/home/HomeAsyncSections";
+import { HomeBelowFoldSkeleton } from "@/components/home/HomeBelowFoldSkeleton";
+import { HomeChamberOverview } from "@/components/home/HomeChamberOverview";
+import { HomeSectionSkeleton } from "@/components/home/HomeSectionSkeleton";
+import { SpecialtiesSection } from "@/components/home/SpecialtiesSection";
+import { DeferredBelowFold } from "@/components/shared/DeferredBelowFold";
 
-export default async function Home() {
-  const [appInfo, articles, testimonials] = await Promise.all([
-    getAppInfo().catch(() => undefined),
-    getArticles({ limit: 6, articleType: "MEDICAL" }).catch(() => undefined),
-    getTestimonials().catch(() => undefined),
-  ]);
+const HomeMarketingLazy = dynamic(
+  () =>
+    import("@/components/home/HomeMarketingSections").then(
+      (mod) => mod.HomeMarketingSections,
+    ),
+);
 
+export default function Home() {
   return (
     <div className="flex flex-col w-full">
       <Hero />
-      <Specialties />
-      <About doctorImageUrl={appInfo?.doctorImage?.url} />
-      <ChamberOverview />
 
-      {articles?.docs?.length ? (
-        <FeaturedArticles articles={articles.docs} />
-      ) : null}
+      <DeferredBelowFold fallback={<HomeBelowFoldSkeleton />}>
+        <SpecialtiesSection />
 
-      {testimonials?.docs?.length ? (
-        <TestimonialsCarousel testimonials={testimonials.docs.slice(0, 5)} />
-      ) : null}
+        <Suspense
+          fallback={
+            <HomeSectionSkeleton className="bg-brand-softbg dark:bg-brand-primary/5" />
+          }
+        >
+          <AboutSection />
+        </Suspense>
 
-      <CTASection />
-      <TestimonialsCTA />
-      <NewsletterCTA />
+        <HomeChamberOverview />
+
+        <Suspense fallback={<HomeSectionSkeleton />}>
+          <FeaturedArticlesSection />
+        </Suspense>
+
+        <Suspense fallback={null}>
+          <TestimonialsSection />
+        </Suspense>
+
+        <HomeMarketingLazy />
+      </DeferredBelowFold>
     </div>
   );
 }

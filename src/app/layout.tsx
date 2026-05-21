@@ -1,25 +1,26 @@
 import type { Metadata } from "next";
 import { Hind_Siliguri, Inter } from "next/font/google";
-import { Toaster } from "sonner";
 import { AppShell } from "@/components/layout/AppShell";
+import { DeferredToaster } from "@/components/shared/DeferredToaster";
 import { getAppInfo } from "@/lib/api/app-info";
 import { QueryProvider } from "@/providers/QueryProvider";
 import { ThemeProvider } from "@/providers/ThemeProvider";
-import type { AppInfo } from "@/types/app-info";
 import "./globals.css";
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
   display: "swap",
-  weight: ["400", "600", "700"],
+  weight: ["400", "700"],
+  preload: true,
 });
 
 const hindSiliguri = Hind_Siliguri({
   subsets: ["bengali"],
   variable: "--font-bengali",
   display: "swap",
-  weight: ["400", "600", "700"],
+  weight: ["400", "700"],
+  preload: false,
 });
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -49,20 +50,11 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  let appInfo: AppInfo | undefined;
-  try {
-    appInfo = await getAppInfo();
-  } catch (error) {
-    if (process.env.NODE_ENV !== "production") {
-      console.error("Failed to fetch app info in RootLayout", error);
-    }
-  }
-
   return (
     <html
       lang="en"
@@ -89,6 +81,10 @@ export default async function RootLayout({
                   ) {
                     document.documentElement.classList.add('dark');
                   }
+                  var lang = localStorage.getItem('language');
+                  if (lang === 'bn' || lang === 'en') {
+                    document.documentElement.dataset.lang = lang;
+                  }
                 } catch (e) {
                   // Ignore localStorage failures.
                 }
@@ -102,14 +98,8 @@ export default async function RootLayout({
       >
         <ThemeProvider>
           <QueryProvider>
-            <AppShell appInfo={appInfo}>{children}</AppShell>
-            <Toaster
-              position="top-right"
-              richColors
-              toastOptions={{
-                style: { fontFamily: "var(--font-inter)" },
-              }}
-            />
+            <AppShell>{children}</AppShell>
+            <DeferredToaster />
           </QueryProvider>
         </ThemeProvider>
       </body>

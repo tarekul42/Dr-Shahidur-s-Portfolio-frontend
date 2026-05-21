@@ -8,6 +8,7 @@ function getFallbackData<T>(endpoint: string): T {
   if (endpoint === "/app-info") {
     return {
       doctorName: "Dr. Md. Sahidur Rahman Khan",
+      doctorTitle: "Orthopedic Surgeon",
       doctorSpecialty:
         "Ilizarov, Spine, Arthroplasty, Arthroscopy, Plastic Reconstructive & Orthopedic Trauma Surgeon",
       siteName: "Dr. Md. Sahidur Rahman Khan",

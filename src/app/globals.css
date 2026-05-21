@@ -128,6 +128,14 @@
   color-scheme: dark;
 }
 
+/* Bilingual SSR copy — toggled via html[data-lang] set in layout bootstrap */
+html[data-lang="bn"] .lang-en {
+  display: none;
+}
+html:not([data-lang="bn"]) .lang-bn {
+  display: none;
+}
+
 html {
   scroll-behavior: smooth;
 }

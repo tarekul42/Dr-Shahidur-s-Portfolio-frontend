@@ -1,7 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { AnimatedSection } from "@/components/shared/AnimatedSection";
 import { Button } from "@/components/ui/Button";
 import { CopyButton } from "@/components/ui/CopyButton";
 import type { Chamber } from "@/constants/chambers";
@@ -15,21 +13,15 @@ export function ChamberDetailList({ chambers }: ChamberDetailListProps) {
   return (
     <section className="w-full">
       <div className="space-y-8">
-        {chambers.map((chamber, idx) => (
-          <ChamberDetailCard key={chamber.id} chamber={chamber} index={idx} />
+        {chambers.map((chamber) => (
+          <ChamberDetailCard key={chamber.id} chamber={chamber} />
         ))}
       </div>
     </section>
   );
 }
 
-function ChamberDetailCard({
-  chamber,
-  index,
-}: {
-  chamber: Chamber;
-  index: number;
-}) {
+function ChamberDetailCard({ chamber }: { chamber: Chamber }) {
   const { t, language } = useTranslation();
   const isBn = language === "bn";
 
@@ -39,12 +31,8 @@ function ChamberDetailCard({
   const assistant = isBn ? chamber.assistantBn : chamber.assistantEn;
 
   return (
-    <AnimatedSection>
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ delay: index * 0.05 }}
+    <section>
+      <div
         className={`relative p-8 md:p-10 rounded-2xl border bg-card-light dark:bg-card-dark transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-brand-primary/5 hover:border-brand-primary group
           ${
             chamber.isPrimary
@@ -283,7 +271,7 @@ function ChamberDetailCard({
             </svg>
           </a>
         </div>
-      </motion.div>
-    </AnimatedSection>
+      </div>
+    </section>
   );
 }
