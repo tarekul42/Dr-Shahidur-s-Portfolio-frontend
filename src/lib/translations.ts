@@ -651,3 +651,12 @@ export const translations: Record<string, TranslationEntry> = {
     bn: "শুধুমাত্র {days}-বারে উপলব্ধ",
   },
 };
+
+export function translate(
+  key: keyof typeof translations | string,
+  language: Language = "en",
+): string {
+  const entry = translations[key as keyof typeof translations];
+  if (!entry) return key;
+  return entry[language] ?? entry.en ?? key;
+}

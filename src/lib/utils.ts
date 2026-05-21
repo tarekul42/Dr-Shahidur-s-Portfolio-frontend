@@ -58,3 +58,44 @@ export function extractHttpStatus(error: unknown): number | undefined {
   }
   return undefined;
 }
+
+/**
+ * Extract a human-readable error message from an Axios / API error.
+ * Falls back to a generic message when no server message is present.
+ */
+export function extractApiErrorMessage(
+  error: unknown,
+  fallback = "Something went wrong. Please try again.",
+): string {
+  if (typeof error === "object" && error !== null) {
+    // Axios error with response body
+    if ("response" in error) {
+      const res = (
+        error as {
+          response?: {
+            data?: { message?: unknown; errors?: Array<{ message?: string }> };
+          };
+        }
+      ).response;
+      const msg = res?.data?.message;
+      if (typeof msg === "string" && msg.trim()) return msg.trim();
+      // Sometimes backend returns errors array
+      const firstErr = res?.data?.errors?.[0]?.message;
+      if (typeof firstErr === "string" && firstErr.trim())
+        return firstErr.trim();
+    }
+    // Network error (no response — timeout, CORS, server unreachable)
+    if ("code" in error) {
+      const code = (error as { code?: string }).code;
+      if (code === "ECONNABORTED" || code === "ERR_NETWORK") {
+        return "Unable to reach the server. Please check your connection and try again.";
+      }
+    }
+    // Generic JS Error
+    if ("message" in error) {
+      const msg = (error as { message?: string }).message;
+      if (typeof msg === "string" && msg.trim()) return fallback;
+    }
+  }
+  return fallback;
+}

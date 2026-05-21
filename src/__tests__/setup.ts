@@ -34,6 +34,31 @@ vi.mock("next/image", () => ({
   },
 }));
 
+// jsdom does not provide IntersectionObserver (used by AnimatedSection, etc.)
+class IntersectionObserverMock implements IntersectionObserver {
+  readonly root: Element | Document | null = null;
+  readonly rootMargin = "";
+  readonly thresholds: readonly number[] = [];
+
+  constructor(
+    private readonly callback: IntersectionObserverCallback,
+    _options?: IntersectionObserverInit,
+  ) {}
+
+  observe = (target: Element) => {
+    this.callback(
+      [{ isIntersecting: true, target } as IntersectionObserverEntry],
+      this,
+    );
+  };
+  unobserve = vi.fn();
+  disconnect = vi.fn();
+  takeRecords = () => [];
+}
+
+global.IntersectionObserver =
+  IntersectionObserverMock as unknown as typeof IntersectionObserver;
+
 // Mock framer-motion layout animations to prevent timing and environment errors
 vi.mock("framer-motion", () => ({
   motion: {

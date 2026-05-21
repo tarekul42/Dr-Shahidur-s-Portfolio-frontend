@@ -10,7 +10,7 @@ export function CTASection() {
   const isBn = language === "bn";
 
   return (
-    <AnimatedSection className="py-24">
+    <AnimatedSection className="py-24 overflow-hidden">
       <div className="container mx-auto px-6">
         <div className="rounded-3xl overflow-hidden border border-border-light dark:border-border-dark bg-linear-to-r from-brand-primary to-brand-hover p-10 md:p-14 text-white relative">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.25),transparent_50%)]" />
@@ -25,8 +25,8 @@ export function CTASection() {
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
               <Button
                 href="/appointment"
-                variant="ghost"
-                className="bg-white text-brand-primary hover:bg-white/90 justify-center"
+                variant="white"
+                className="justify-center shadow-md"
               >
                 {t("cta.book")}
               </Button>

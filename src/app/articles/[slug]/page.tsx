@@ -10,11 +10,28 @@ import { ShareButtons } from "@/components/shared/ShareButtons";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
 import { getArticleBySlug, getArticles } from "@/lib/api/articles";
+import { sanitizeHtml } from "@/lib/sanitize-html";
 import { formatDate, readingTime } from "@/lib/utils";
 import type { Article } from "@/types/article";
 
 interface Props {
   params: Promise<{ slug: string }>;
+}
+
+export const dynamicParams = true;
+
+export async function generateStaticParams() {
+  try {
+    const response = await getArticles({ limit: 100 });
+    return response.docs.map((article) => ({
+      slug: article.slug,
+    }));
+  } catch (error) {
+    if (process.env.NODE_ENV !== "production") {
+      console.error("Failed to generate static params for articles", error);
+    }
+    return [];
+  }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -72,7 +89,7 @@ export default async function ArticleDetailPage({ params }: Props) {
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-text-heading-light dark:text-text-heading-dark leading-tight">
               {article.title}
             </h1>
-            <div className="flex flex-wrap items-center gap-4 text-sm font-semibold text-text-para-light dark:text-text-para-dark opacity-60">
+            <div className="flex flex-wrap items-center gap-4 text-sm font-semibold text-text-para-light dark:text-text-para-dark opacity-80">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-full bg-brand-primary flex items-center justify-center text-white text-xs font-bold">
                   S
@@ -108,7 +125,7 @@ export default async function ArticleDetailPage({ params }: Props) {
 
       <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_320px]">
         <div className="space-y-16">
-          <ArticleContent html={article.content} />
+          <ArticleContent html={sanitizeHtml(article.content)} />
 
           {relatedArticles.length > 0 ? (
             <section className="space-y-8">

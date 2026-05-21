@@ -6,11 +6,27 @@ import { Breadcrumbs } from "@/components/shared/Breadcrumbs";
 import { ShareButtons } from "@/components/shared/ShareButtons";
 import { Badge } from "@/components/ui/Badge";
 import { Button } from "@/components/ui/Button";
-import { getResearchBySlug } from "@/lib/api/research";
+import { getResearchBySlug, getResearchList } from "@/lib/api/research";
 import { formatDate } from "@/lib/utils";
 
 interface Props {
   params: Promise<{ slug: string }>;
+}
+
+export const dynamicParams = true;
+
+export async function generateStaticParams() {
+  try {
+    const response = await getResearchList({ limit: 100 });
+    return response.docs.map((research) => ({
+      slug: research.slug,
+    }));
+  } catch (error) {
+    if (process.env.NODE_ENV !== "production") {
+      console.error("Failed to generate static params for research", error);
+    }
+    return [];
+  }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

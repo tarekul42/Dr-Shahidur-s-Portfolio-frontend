@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 interface SectionHeadingProps {
@@ -9,6 +6,8 @@ interface SectionHeadingProps {
   centered?: boolean;
   className?: string;
   badge?: string;
+  /** Skip entrance animations so above-the-fold copy paints immediately (LCP). */
+  priority?: boolean;
 }
 
 export const SectionHeading = ({
@@ -17,6 +16,7 @@ export const SectionHeading = ({
   centered = false,
   className,
   badge,
+  priority = false,
 }: SectionHeadingProps) => {
   return (
     <div
@@ -27,41 +27,58 @@ export const SectionHeading = ({
       )}
     >
       {badge && (
-        <motion.span
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="inline-block px-3 py-1 text-[10px] font-bold tracking-[0.2em] uppercase text-brand-primary bg-brand-softbg dark:bg-brand-primary/10 rounded-full"
+        <span
+          className={cn(
+            "inline-block px-3 py-1 text-[10px] font-bold tracking-[0.2em] uppercase text-brand-primary bg-brand-softbg dark:bg-brand-primary/10 rounded-full",
+            !priority && "animate-fade-in",
+          )}
+          style={priority ? undefined : { animationFillMode: "both" }}
         >
           {badge}
-        </motion.span>
+        </span>
       )}
-      <motion.h2
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.1 }}
-        className="text-3xl md:text-4xl lg:text-5xl font-bold text-text-heading-light dark:text-text-heading-dark leading-tight"
+      <h2
+        className={cn(
+          "text-3xl md:text-4xl lg:text-5xl font-bold text-text-heading-light dark:text-text-heading-dark leading-tight",
+          !priority && "animate-slide-up",
+        )}
+        style={
+          priority
+            ? undefined
+            : { animationDelay: "0.1s", animationFillMode: "both" }
+        }
       >
         {title}
-      </motion.h2>
+      </h2>
       {subtitle && (
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-          className="text-lg text-text-para-light dark:text-text-para-dark max-w-2xl leading-relaxed"
+        <p
+          className={cn(
+            "text-lg text-text-para-light dark:text-text-para-dark max-w-2xl leading-relaxed",
+            !priority && "animate-slide-up",
+          )}
+          style={
+            priority
+              ? undefined
+              : { animationDelay: "0.2s", animationFillMode: "both" }
+          }
         >
           {subtitle}
-        </motion.p>
+        </p>
       )}
-      <motion.div
-        initial={{ width: 0 }}
-        whileInView={{ width: 80 }}
-        viewport={{ once: true }}
-        transition={{ delay: 0.3, duration: 0.8 }}
-        className="h-1.5 bg-brand-primary rounded-full mt-6"
+      <div
+        className={cn(
+          "h-1.5 bg-brand-primary rounded-full mt-6",
+          !priority && "animate-scale-in",
+        )}
+        style={
+          priority
+            ? { width: "80px" }
+            : {
+                animationDelay: "0.3s",
+                animationFillMode: "both",
+                width: "80px",
+              }
+        }
       />
     </div>
   );

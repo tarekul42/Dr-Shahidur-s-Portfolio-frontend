@@ -1,6 +1,5 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 
 export const WhatsAppButton = ({ phone }: { phone?: string }) => {
@@ -10,18 +9,14 @@ export const WhatsAppButton = ({ phone }: { phone?: string }) => {
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
-      <AnimatePresence>
-        {tooltip && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            className="absolute bottom-16 right-0 rounded-2xl bg-white dark:bg-card-dark border border-border-light dark:border-border-dark shadow-2xl px-4 py-3 text-sm text-text-heading-light dark:text-text-heading-dark"
-          >
-            Chat with us on WhatsApp
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Tooltip — CSS transition */}
+      <div
+        className={`absolute bottom-16 right-0 rounded-2xl bg-white dark:bg-card-dark border border-border-light dark:border-border-dark shadow-2xl px-4 py-3 text-sm text-text-heading-light dark:text-text-heading-dark whitespace-nowrap transition-all duration-200 pointer-events-none ${
+          tooltip ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2"
+        }`}
+      >
+        Chat with us on WhatsApp
+      </div>
       <a
         href={href}
         target="_blank"

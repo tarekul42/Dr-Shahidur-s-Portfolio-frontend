@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { api } from "@/lib/axios";
 import { serverFetch } from "@/lib/fetcher";
 import type { ApiResponse, PaginatedData } from "@/types/api";
@@ -24,12 +25,14 @@ export async function getArticles(
   });
 }
 
-export async function getArticleBySlug(slug: string): Promise<Article> {
-  return serverFetch<Article>(`/articles/${slug}`, {
-    revalidate: 600,
-    tags: ["article", slug],
-  });
-}
+export const getArticleBySlug = cache(
+  async (slug: string): Promise<Article> => {
+    return serverFetch<Article>(`/articles/${slug}`, {
+      revalidate: 600,
+      tags: ["article", slug],
+    });
+  },
+);
 
 export async function getCategories(): Promise<ArticleCategory[]> {
   return serverFetch<ArticleCategory[]>("/articles/categories", {

@@ -124,8 +124,8 @@ function createLights(scene: Scene): void {
   keyLight.position.set(3, 8, 4);
   keyLight.castShadow = true;
   keyLight.receiveShadow = true;
-  keyLight.shadow.mapSize.width = 2048;
-  keyLight.shadow.mapSize.height = 2048;
+  keyLight.shadow.mapSize.width = 1024;
+  keyLight.shadow.mapSize.height = 1024;
   keyLight.shadow.camera.near = 0.5;
   keyLight.shadow.camera.far = 50;
   keyLight.shadow.camera.left = -5;
@@ -282,7 +282,7 @@ function createCornerMarkers() {
 
 function createGridParticles() {
   const geometry = new BufferGeometry();
-  const count = 200;
+  const count = 100;
   const positions = new Float32Array(count * 3);
 
   for (let i = 0; i < count * 3; i += 3) {
@@ -466,12 +466,34 @@ export function SkeletonViewer({
   const mountRef = useRef<HTMLDivElement | null>(null);
   const stateRef = useRef<ViewerState | null>(null);
   const rafRef = useRef<number>(0);
+  const [isInViewport, setIsInViewport] = useState(false);
   const [info, setInfo] = useState<ViewerInfo>({
     phase: "loading",
     pct: 0,
     bone: null,
     error: null,
   });
+
+  // Lazy boot when component enters viewport
+  useEffect(() => {
+    const wrapper = mountRef.current;
+    if (!wrapper) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInViewport(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "200px" },
+    );
+    observer.observe(wrapper);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   // ── Reactively update scene background when theme changes ──────────────────
   useEffect(() => {
@@ -484,6 +506,8 @@ export function SkeletonViewer({
   }, [theme]);
 
   useEffect(() => {
+    if (!isInViewport) return;
+
     const wrapper = mountRef.current;
     if (!wrapper) return;
 
@@ -541,7 +565,7 @@ export function SkeletonViewer({
 
     // ── Load GLB ─────────────────────────────────────────────────────────────
     const dracoLoader = new DRACOLoader();
-    dracoLoader.setDecoderPath("https://www.gstatic.com/draco/v1/decoders/");
+    dracoLoader.setDecoderPath("/draco/");
 
     const loader = new GLTFLoader();
     loader.setDRACOLoader(dracoLoader);
@@ -663,6 +687,9 @@ export function SkeletonViewer({
     const tick = () => {
       rafRef.current = requestAnimationFrame(tick);
 
+      // Pause rendering when tab is not visible to save CPU/GPU
+      if (document.hidden) return;
+
       // Subtle grid animation
       if (gridGroup) {
         gridGroup.children.forEach((child, index) => {
@@ -701,7 +728,7 @@ export function SkeletonViewer({
       }
       canvas.remove();
     };
-  }, [showDebug, theme]);
+  }, [showDebug, theme, isInViewport]);
 
   // ─── JSX ──────────────────────────────────────────────────────────────────
   const ready = info.phase === "ready";

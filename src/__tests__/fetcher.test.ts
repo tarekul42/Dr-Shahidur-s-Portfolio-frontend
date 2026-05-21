@@ -13,14 +13,15 @@ describe("serverFetch", () => {
   });
 
   it("returns data from ApiResponse wrapper", async () => {
+    const body = {
+      statusCode: 200,
+      success: true,
+      message: "OK",
+      data: { doctorName: "Dr. Test" },
+    };
     mockFetch.mockResolvedValueOnce({
       ok: true,
-      json: async () => ({
-        statusCode: 200,
-        success: true,
-        message: "OK",
-        data: { doctorName: "Dr. Test" },
-      }),
+      text: async () => JSON.stringify(body),
     });
 
     const result = await serverFetch<{ doctorName: string }>("/app-info");
@@ -36,14 +37,15 @@ describe("serverFetch", () => {
       page: 1,
     };
 
+    const body = {
+      statusCode: 200,
+      success: true,
+      message: "OK",
+      data: paginatedData,
+    };
     mockFetch.mockResolvedValueOnce({
       ok: true,
-      json: async () => ({
-        statusCode: 200,
-        success: true,
-        message: "OK",
-        data: paginatedData,
-      }),
+      text: async () => JSON.stringify(body),
     });
 
     const result = await serverFetch("/articles");
@@ -63,14 +65,15 @@ describe("serverFetch", () => {
   });
 
   it("passes revalidate and tags options", async () => {
+    const body = {
+      statusCode: 200,
+      success: true,
+      message: "OK",
+      data: [],
+    };
     mockFetch.mockResolvedValueOnce({
       ok: true,
-      json: async () => ({
-        statusCode: 200,
-        success: true,
-        message: "OK",
-        data: [],
-      }),
+      text: async () => JSON.stringify(body),
     });
 
     await serverFetch("/articles", { revalidate: 300, tags: ["articles"] });

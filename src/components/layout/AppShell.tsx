@@ -1,14 +1,40 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import type React from "react";
-import { AnalyticsTracker } from "@/components/shared/AnalyticsTracker";
-import { CookieConsent } from "@/components/shared/CookieConsent";
-import { PageTransition } from "@/components/shared/PageTransition";
-import { WhatsAppButton } from "@/components/shared/WhatsAppButton";
-import { BackToTop } from "@/components/ui/BackToTop";
 import type { AppInfo } from "@/types/app-info";
 import { Footer } from "./Footer";
 import { Header } from "./Header";
+import { ScrollToTopOnNavigate } from "./ScrollToTopOnNavigate";
+
+const AnalyticsTracker = dynamic(
+  () =>
+    import("@/components/shared/AnalyticsTracker").then(
+      (mod) => mod.AnalyticsTracker,
+    ),
+  { ssr: false },
+);
+
+const CookieConsent = dynamic(
+  () =>
+    import("@/components/shared/CookieConsent").then(
+      (mod) => mod.CookieConsent,
+    ),
+  { ssr: false },
+);
+
+const BackToTop = dynamic(
+  () => import("@/components/ui/BackToTop").then((mod) => mod.BackToTop),
+  { ssr: false },
+);
+
+const WhatsAppButton = dynamic(
+  () =>
+    import("@/components/shared/WhatsAppButton").then(
+      (mod) => mod.WhatsAppButton,
+    ),
+  { ssr: false },
+);
 
 interface AppShellProps {
   children: React.ReactNode;
@@ -24,26 +50,20 @@ export const AppShell = ({ children, appInfo }: AppShellProps) => {
       >
         Skip to main content
       </a>
-      <AnalyticsTracker />
+      <ScrollToTopOnNavigate />
       <Header appInfo={appInfo} />
-      <AppShellContent>{children}</AppShellContent>
+      <main
+        id="main-content"
+        tabIndex={-1}
+        className="flex-1 pt-24 focus:outline-none"
+      >
+        {children}
+      </main>
       <Footer appInfo={appInfo} />
+      <AnalyticsTracker />
       <BackToTop />
       <CookieConsent />
       <WhatsAppButton phone={appInfo?.phone} />
     </>
-  );
-};
-
-// Internal wrapper to separate layout from page transitions
-const AppShellContent = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <main
-      id="main-content"
-      tabIndex={-1}
-      className="flex-1 pt-24 focus:outline-none"
-    >
-      <PageTransition>{children}</PageTransition>
-    </main>
   );
 };

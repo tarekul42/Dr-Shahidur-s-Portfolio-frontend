@@ -4,11 +4,11 @@
 
 @theme inline {
   /* ── Brand ── */
-  --color-brand-primary: #2fa084;
-  --color-brand-secondary: #578fca;
+  --color-brand-primary: var(--brand-primary);
+  --color-brand-secondary: var(--brand-secondary);
   --color-brand-accent: #6fcf97;
   --color-brand-light: #a1e3f9;
-  --color-brand-hover: #267d68;
+  --color-brand-hover: var(--brand-hover);
   --color-brand-softbg: #e8f7ef;
 
   /* ── Backgrounds ── */
@@ -35,8 +35,8 @@
   --color-footer-hover: #6fcf97;
 
   /* ── Typography ── */
-  --font-sans: "Inter", "Hind Siliguri", system-ui, sans-serif;
-  --font-bengali: "Hind Siliguri", system-ui, sans-serif;
+  --font-sans: var(--font-inter), var(--font-bengali), system-ui, sans-serif;
+  --font-bengali: var(--font-bengali), system-ui, sans-serif;
 
   /* ── Animations ── */
   --animate-fade-in: fade-in 0.5s ease-out;
@@ -110,8 +110,9 @@
   --border: #e5e7eb;
   --text-heading: #1f2937;
   --text-para: #6b7280;
-  --brand-primary: #2fa084;
-  --brand-secondary: #578fca;
+  --brand-primary: #1d7660;
+  --brand-secondary: #2563eb;
+  --brand-hover: #165d4c;
   color-scheme: light;
 }
 
@@ -121,7 +122,18 @@
   --border: #334155;
   --text-heading: #f8fafc;
   --text-para: #cbd5e1;
+  --brand-primary: #2fa084;
+  --brand-secondary: #578fca;
+  --brand-hover: #267d68;
   color-scheme: dark;
+}
+
+/* Bilingual SSR copy — toggled via html[data-lang] set in layout bootstrap */
+html[data-lang="bn"] .lang-en {
+  display: none;
+}
+html:not([data-lang="bn"]) .lang-bn {
+  display: none;
 }
 
 html {
@@ -187,4 +199,13 @@ body {
   visibility: hidden;
   opacity: 0;
   pointer-events: none;
+}
+
+/* AnimatedSection — IntersectionObserver driven */
+.animated-section {
+  transform: translateY(20px);
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.animated-section.in-view {
+  transform: translateY(0);
 }

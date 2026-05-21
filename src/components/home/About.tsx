@@ -20,7 +20,7 @@ interface AboutProps {
 
 export const About = ({ doctorImageUrl }: AboutProps) => {
   const { t } = useTranslation();
-  const imageUrl = doctorImageUrl ?? "/HELLO_DR_Sahid2.png";
+  const imageUrl = doctorImageUrl ?? "/HELLO_DR_Sahid2.webp";
 
   return (
     <AnimatedSection className="py-24 bg-brand-softbg dark:bg-brand-primary/5">
@@ -35,7 +35,7 @@ export const About = ({ doctorImageUrl }: AboutProps) => {
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
               className="object-cover"
-              priority
+              loading="lazy"
             />
           </div>
         </div>

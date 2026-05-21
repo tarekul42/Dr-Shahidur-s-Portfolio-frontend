@@ -9,10 +9,13 @@ export async function createAppointment(
   payload: AppointmentCreatePayload,
 ): Promise<Appointment> {
   const { chamberId, ...rest } = payload;
+
+  // Backend field is intentionally spelled `chemberId` (backend contract).
   const backendPayload = {
     ...rest,
     ...(chamberId ? { chemberId: chamberId } : {}),
   };
+
   const { data } = await api.post<ApiResponse<Appointment>>(
     "/appointments",
     backendPayload,

@@ -1,8 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
+import { cn } from "@/lib/utils";
 import type { ArticleCategory, ArticleType } from "@/types/article";
 
 const TYPE_TABS: Array<{ label: string; value: ArticleType | "" }> = [
@@ -58,30 +58,28 @@ export function ArticleFilters({
         </button>
       </div>
 
-      <div className="relative inline-flex rounded-full border border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark p-1">
+      <div
+        role="tablist"
+        aria-label="Article type"
+        className="flex w-full max-w-lg rounded-full border border-border-light dark:border-border-dark bg-card-light dark:bg-card-dark p-1 gap-1"
+      >
         {TYPE_TABS.map((t) => {
           const active = t.value === articleType;
           return (
             <button
               key={t.label}
               type="button"
+              role="tab"
+              aria-selected={active}
               onClick={() => onArticleTypeChange(t.value)}
-              className={[
-                "relative px-5 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-colors",
+              className={cn(
+                "flex-1 min-w-0 px-3 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-colors text-center",
                 active
-                  ? "text-white"
-                  : "text-text-para-light dark:text-text-para-dark",
-              ].join(" ")}
-              aria-pressed={active}
-            >
-              {active && (
-                <motion.div
-                  layoutId="articleTypeTab"
-                  className="absolute inset-0 rounded-full bg-brand-primary"
-                  transition={{ type: "spring", stiffness: 420, damping: 35 }}
-                />
+                  ? "bg-brand-primary text-white shadow-sm"
+                  : "text-text-heading-light dark:text-text-heading-dark hover:bg-brand-primary/10 dark:hover:bg-brand-primary/15",
               )}
-              <span className="relative z-10">{t.label}</span>
+            >
+              {t.label}
             </button>
           );
         })}

@@ -1,14 +1,13 @@
 "use client";
 
-import {
-  faFacebookF,
-  faInstagram,
-  faLinkedinIn,
-  faXTwitter,
-  faYoutube,
-} from "@fortawesome/free-brands-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Link from "next/link";
+import {
+  FacebookIcon,
+  InstagramIcon,
+  LinkedinIcon,
+  XTwitterIcon,
+  YoutubeIcon,
+} from "@/components/shared/Icons";
 import { FALLBACKS } from "@/constants/fallbacks";
 import { FOOTER_LINKS } from "@/constants/navigation";
 import { useTranslation } from "@/hooks/useTranslation";
@@ -48,16 +47,14 @@ export const Footer = ({ appInfo }: { appInfo?: AppInfo }) => {
               )
                 .filter(([, url]) => Boolean(url))
                 .map(([key, url]) => {
-                  const icons: Record<
-                    string,
-                    import("@fortawesome/fontawesome-svg-core").IconDefinition
-                  > = {
-                    facebook: faFacebookF,
-                    twitter: faXTwitter,
-                    linkedin: faLinkedinIn,
-                    youtube: faYoutube,
-                    instagram: faInstagram,
+                  const icons = {
+                    facebook: FacebookIcon,
+                    twitter: XTwitterIcon,
+                    linkedin: LinkedinIcon,
+                    youtube: YoutubeIcon,
+                    instagram: InstagramIcon,
                   };
+                  const IconComponent = icons[key];
                   return (
                     <a
                       key={key}
@@ -67,10 +64,7 @@ export const Footer = ({ appInfo }: { appInfo?: AppInfo }) => {
                       className="w-8 h-8 rounded-full border border-border-dark/20 dark:border-white/10 flex items-center justify-center hover:bg-brand-primary hover:border-brand-primary transition-all duration-300 group"
                       aria-label={key}
                     >
-                      <FontAwesomeIcon
-                        icon={icons[key]}
-                        className="w-3 h-3 text-text-para-light group-hover:text-white"
-                      />
+                      <IconComponent className="w-3 h-3 text-text-para-light group-hover:text-white" />
                     </a>
                   );
                 })}
@@ -164,7 +158,11 @@ export const Footer = ({ appInfo }: { appInfo?: AppInfo }) => {
             </span>
             <span className="flex items-center gap-1">
               DESIGNED BY
-              <Link href="https://pietenium.vercel.app" target="_blank">
+              <Link
+                href="https://pietenium.vercel.app"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <span className="text-brand-primary">PIETENIUM</span>
               </Link>
             </span>

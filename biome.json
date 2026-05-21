@@ -13,7 +13,8 @@
       "!dist",
       "!build",
       "!**/*.test.{ts,tsx}",
-      "!src/__tests__"
+      "!src/__tests__",
+      "!public/draco"
     ],
     "ignoreUnknown": true
   },

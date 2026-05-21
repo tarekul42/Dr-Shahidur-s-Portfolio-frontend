@@ -2,13 +2,14 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
-import { trackPageView } from "@/lib/api/analytics";
+import { isAnalyticsEnabled, trackPageView } from "@/lib/api/analytics";
 
 export const AnalyticsTracker = () => {
   const pathname = usePathname();
   const visitorIdRef = useRef<string | null>(null);
 
   useEffect(() => {
+    if (!isAnalyticsEnabled()) return;
     // Basic persistent visitor ID (simulated)
     if (!visitorIdRef.current) {
       let vid = localStorage.getItem("v_id");
@@ -25,21 +26,12 @@ export const AnalyticsTracker = () => {
       sessionStorage.setItem("s_id", sessionId);
     }
 
-    const track = async () => {
-      try {
-        await trackPageView({
-          page: pathname,
-          sessionId,
-          visitorId: visitorIdRef.current || undefined,
-          referrer: document.referrer || undefined,
-        });
-      } catch (err) {
-        // Silently fail analytics
-        console.warn("Analytics tracking failed", err);
-      }
-    };
-
-    track();
+    void trackPageView({
+      page: pathname,
+      sessionId,
+      visitorId: visitorIdRef.current || undefined,
+      referrer: document.referrer || undefined,
+    });
   }, [pathname]);
 
   return null;
