@@ -10,7 +10,9 @@ interface ArticleContentProps {
 }
 
 export const ArticleContent = ({ html, className }: ArticleContentProps) => {
-  const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(null);
+  const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(
+    null,
+  );
   const containerRef = useRef<HTMLDivElement>(null);
   const [cleanHtml, setCleanHtml] = useState(html);
 
@@ -20,12 +22,41 @@ export const ArticleContent = ({ html, className }: ArticleContentProps) => {
       setCleanHtml(
         DOMPurify.sanitize(html, {
           ALLOWED_TAGS: [
-            "h1", "h2", "h3", "p", "a", "img", "blockquote", "pre", "code", "ul", "ol", "li", "strong", "em", "table", "thead", "tbody", "tr", "td", "th", "br", "hr", "iframe",
+            "h1",
+            "h2",
+            "h3",
+            "p",
+            "a",
+            "img",
+            "blockquote",
+            "pre",
+            "code",
+            "ul",
+            "ol",
+            "li",
+            "strong",
+            "em",
+            "table",
+            "thead",
+            "tbody",
+            "tr",
+            "td",
+            "th",
+            "br",
+            "hr",
+            "iframe",
           ],
           ALLOWED_ATTR: [
-            "href", "src", "alt", "class", "target", "rel", "frameborder", "allowfullscreen",
+            "href",
+            "src",
+            "alt",
+            "class",
+            "target",
+            "rel",
+            "frameborder",
+            "allowfullscreen",
           ],
-        })
+        }),
       );
     });
   }, [html]);
@@ -38,7 +69,10 @@ export const ArticleContent = ({ html, className }: ArticleContentProps) => {
 
     const handleClick = (e: Event) => {
       const target = e.target as HTMLImageElement;
-      setLightbox({ src: target.src, alt: target.alt || "Article illustration" });
+      setLightbox({
+        src: target.src,
+        alt: target.alt || "Article illustration",
+      });
     };
 
     images.forEach((img) => {

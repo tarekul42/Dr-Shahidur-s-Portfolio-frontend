@@ -67,7 +67,9 @@ export async function serverFetch<T>(
     if (!res.ok) throw new Error(`API error: ${res.status}`);
     const rawText = await res.text();
     if (!rawText || rawText.trim() === "") {
-      throw new Error(`API returned an empty response body (Status: ${res.status})`);
+      throw new Error(
+        `API returned an empty response body (Status: ${res.status})`,
+      );
     }
     const json = JSON.parse(rawText) as ApiResponse<unknown>;
 
@@ -81,7 +83,8 @@ export async function serverFetch<T>(
         pagingCounter: 1,
         hasPrevPage: Number(json.meta.page) > 1,
         hasNextPage: Number(json.meta.page) < json.meta.totalPage,
-        prevPage: Number(json.meta.page) > 1 ? Number(json.meta.page) - 1 : null,
+        prevPage:
+          Number(json.meta.page) > 1 ? Number(json.meta.page) - 1 : null,
         nextPage:
           Number(json.meta.page) < json.meta.totalPage
             ? Number(json.meta.page) + 1
@@ -93,7 +96,10 @@ export async function serverFetch<T>(
   } catch (error) {
     clearTimeout(timeoutId);
     if (process.env.NODE_ENV !== "production") {
-      console.warn(`[serverFetch] Failed to fetch ${endpoint}, using fallback.`, error);
+      console.warn(
+        `[serverFetch] Failed to fetch ${endpoint}, using fallback.`,
+        error,
+      );
     }
     try {
       return getFallbackData<T>(endpoint);
@@ -103,4 +109,3 @@ export async function serverFetch<T>(
     }
   }
 }
-

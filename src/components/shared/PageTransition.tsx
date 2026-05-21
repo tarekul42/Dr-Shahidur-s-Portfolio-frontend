@@ -7,7 +7,5 @@ interface PageTransitionProps {
 }
 
 export const PageTransition = ({ children }: PageTransitionProps) => {
-  return (
-    <>{children}</>
-  );
+  return <>{children}</>;
 };

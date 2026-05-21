@@ -31,7 +31,7 @@ const appointmentSchema = z.object({
   name: z.string().min(2, "Name is required").trim(),
   phone: z
     .string()
-    .regex(/^\+8801[3-9]\d{8}$/, "Invalid Bangladesh phone format"),
+    .regex(/^(?:\+?88)?01[3-9]\d{8}$/, "Invalid Bangladesh phone format"),
   email: z.string().email("Invalid email").optional().or(z.literal("")),
   preferredDate: z
     .string()
@@ -366,12 +366,20 @@ function AppointmentFormContent() {
       ? `${chamberText}\n\n${data.message}`
       : chamberText;
 
+    // Normalize phone number to +8801XXXXXXXXX format for the backend
+    let normalizedPhone = data.phone.trim();
+    if (normalizedPhone.startsWith("01")) {
+      normalizedPhone = `+88${normalizedPhone}`;
+    } else if (normalizedPhone.startsWith("8801")) {
+      normalizedPhone = `+${normalizedPhone}`;
+    }
+
     const dbChamberId =
       mapChamberIdToDbId(data.chamberId, dbChambers) || data.chamberId;
 
     appointmentMutation.mutate({
       name: data.name,
-      phone: data.phone,
+      phone: normalizedPhone,
       email: data.email || undefined,
       message: finalMessage,
       preferredDate: data.preferredDate,

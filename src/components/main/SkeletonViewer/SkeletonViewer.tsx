@@ -486,7 +486,7 @@ export function SkeletonViewer({
           observer.disconnect();
         }
       },
-      { rootMargin: "200px" }
+      { rootMargin: "200px" },
     );
     observer.observe(wrapper);
 

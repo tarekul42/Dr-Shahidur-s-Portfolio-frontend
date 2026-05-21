@@ -35,7 +35,7 @@ export function ChamberOverview() {
                       ? "border-brand-primary/40 ring-1 ring-brand-primary/5"
                       : "border-border-light dark:border-border-dark"
                   }`}
-                  style={{ animationDelay: `${index * 0.05}s`, animationFillMode: "both" }}
+                  style={{ animationDelay: `${index * 0.05}s` }}
                 >
                   <div>
                     {/* Primary Badge */}

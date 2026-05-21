@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, type ReactNode } from "react";
+import { type ReactNode, useEffect, useRef } from "react";
 
 interface AnimatedSectionProps {
   children: ReactNode;
@@ -39,10 +39,7 @@ export const AnimatedSection = ({
   }, [delay]);
 
   return (
-    <section
-      ref={ref}
-      className={`animated-section ${className ?? ""}`}
-    >
+    <section ref={ref} className={`animated-section ${className ?? ""}`}>
       {children}
     </section>
   );
