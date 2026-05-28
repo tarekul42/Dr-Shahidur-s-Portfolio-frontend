@@ -31,7 +31,8 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # env files (can opt-in for committing if needed)
-.env*
+.env
+!.env.example
 
 # vercel
 .vercel
@@ -54,4 +55,5 @@ package-lock.json
 biome.json
 .vscode/
 
-test_failures.log
+test_failures.log.env
+.env.local
